@@ -1,0 +1,7 @@
+{
+  "name": "Barangku",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular"
+}
