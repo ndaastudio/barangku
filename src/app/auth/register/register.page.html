@@ -1,0 +1,44 @@
+<ion-content scrollY="false">
+  <div class="flex justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+    <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/login']">
+      <ion-button>
+        <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
+  </div>
+  <div class="ion-padding">
+    <div class="space-y-4" *ngIf="!isValidKodeDaftar">
+      <ion-item fill="outline">
+        <ion-label position="floating">Kode Daftar</ion-label>
+        <ion-input placeholder="Kode Daftar" type="text" [(ngModel)]="kode_daftar"></ion-input>
+        <ion-button class="text-white ms-4" slot="end" (click)="cekKodeDaftar()">Verifikasi</ion-button>
+      </ion-item>
+      <p class="text-sm">Belum punya kode daftar? <span (click)="hubungiAdmin()"
+          class="font-bold text-[#30a2ff]">Hubungi admin</span></p>
+    </div>
+    <div class="space-y-4" *ngIf="isValidKodeDaftar">
+      <ion-item fill="outline">
+        <ion-label position="floating">Nama</ion-label>
+        <ion-input placeholder="Nama" type="number" [(ngModel)]="nama"></ion-input>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Nomor Telepon</ion-label>
+        <ion-input placeholder="Nomor Telepon" type="number" [(ngModel)]="nomor_telepon" readonly></ion-input>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Password</ion-label>
+        <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+      </ion-item>
+      <ion-item fill="outline">
+        <ion-label position="floating">Konfirmasi Password</ion-label>
+        <ion-input placeholder="Konfirmasi Password" type="password" [(ngModel)]="konfirmasi_password"></ion-input>
+      </ion-item>
+      <ion-checkbox labelPlacement="end">
+        <p class="whitespace-normal">Saya setuju dengan syarat & kebijakan privasi <span
+            class="font-semibold text-[#30a2ff]">Barangku</span></p>
+      </ion-checkbox>
+      <ion-button (click)="submitDaftar()" expand="block" class="text-white">Daftar</ion-button>
+    </div>
+  </div>
+</ion-content>

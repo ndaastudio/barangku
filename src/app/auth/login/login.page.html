@@ -1,0 +1,46 @@
+<div class="flex justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+    <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
+</div>
+
+<ion-content class="ion-padding" scrollY="false">
+    <div class="space-y-4">
+        <ion-item fill="outline">
+            <ion-label position="floating">Nomor Telepon</ion-label>
+            <ion-input placeholder="Nomor Telepon" type="number" [(ngModel)]="nomor_telepon"></ion-input>
+        </ion-item>
+        <ion-item fill="outline">
+            <ion-label position="floating">Password</ion-label>
+            <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+        </ion-item>
+        <div class="flex justify-end">
+            <p id="lupa-pw" class="font-bold text-[#30a2ff]">Lupa Password?</p>
+        </div>
+        <ion-button (click)="submitLogin()" expand="block" class="text-white">Masuk</ion-button>
+    </div>
+
+    <ion-modal #modal trigger="lupa-pw" [initialBreakpoint]="0.3" [breakpoints]="[0, 0.3, 0.5, 0.75]">
+        <ng-template>
+            <ion-content class="ion-padding">
+                <div class="space-y-2">
+                    <div class="text-center">
+                        <p class="font-bold text-blue-500">Lupa Password?</p>
+                        <p>Masukkan nomor telepon Anda</p>
+                    </div>
+                    <ion-item fill="outline">
+                        <ion-label position="floating">Nomor Telepon</ion-label>
+                        <ion-input [(ngModel)]="registered_nomor_telepon" placeholder="Nomor Telepon"
+                            type="number"></ion-input>
+                    </ion-item>
+                </div>
+                <ion-button (click)="submitResetPassword()" class="mt-4 text-white" expand="block">Reset
+                    Password</ion-button>
+            </ion-content>
+        </ng-template>
+    </ion-modal>
+</ion-content>
+
+<ion-footer class="ion-no-border ion-padding">
+    <div class="flex justify-center">
+        <p>Belum punya akun? <span [routerLink]="['/register']" class="font-bold text-[#30a2ff]">Daftar</span></p>
+    </div>
+</ion-footer>
