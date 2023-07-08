@@ -17,6 +17,26 @@ const routes: Routes = [
   {
     path: 'register',
     loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule)
+  },
+  {
+    path: 'edit-profil',
+    loadChildren: () => import('./edit-profil/edit-profil.module').then( m => m.EditProfilPageModule)
+  },
+  {
+    path: 'tambah-barang',
+    loadChildren: () => import('./tambah-barang/tambah-barang.module').then( m => m.TambahBarangPageModule)
+  },
+  {
+    path: 'tambah-jasa',
+    loadChildren: () => import('./tambah-jasa/tambah-jasa.module').then( m => m.TambahJasaPageModule)
+  },
+  {
+    path: 'show-barang',
+    loadChildren: () => import('./show-barang/show-barang.module').then( m => m.ShowBarangPageModule)
+  },
+  {
+    path: 'show-jasa',
+    loadChildren: () => import('./show-jasa/show-jasa.module').then( m => m.ShowJasaPageModule)
   }
 ];
 @NgModule({
