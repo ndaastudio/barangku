@@ -32,3 +32,9 @@
 ion-checkbox {
     --checkmark-color: #fff;
 }
+
+ion-datetime {
+    --title-color: #fff;
+    border-radius: 2.5%;
+    box-shadow: rgba(var(--ion-color-rose-rgb), 0.3) 0px 10px 15px -3px;
+}
