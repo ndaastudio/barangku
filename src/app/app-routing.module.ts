@@ -37,6 +37,10 @@ const routes: Routes = [
   {
     path: 'show-jasa',
     loadChildren: () => import('./show-jasa/show-jasa.module').then( m => m.ShowJasaPageModule)
+  },
+  {
+    path: 'verif-lupa-pw',
+    loadChildren: () => import('./auth/verif-lupa-pw/verif-lupa-pw.module').then( m => m.VerifLupaPwPageModule)
   }
 ];
 @NgModule({

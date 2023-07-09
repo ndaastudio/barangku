@@ -1,5 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
+import { APIService } from 'src/services/API/api.service';
+import { StorageService } from 'src/services/LocalStorage/storage.service';
 
 @Component({
   selector: 'app-login',
@@ -9,19 +12,30 @@ import { AlertController, LoadingController } from '@ionic/angular';
 export class LoginPage implements OnInit {
   nomor_telepon: any;
   password: any;
-  registered_nomor_telepon: any;
+  registered_email: any;
 
   constructor(private alertCtrl: AlertController,
-    private loadingCtrl: LoadingController) {
+    private loadingCtrl: LoadingController,
+    private apiService: APIService,
+    private router: Router,
+    private storageService: StorageService,
+    private modalCtrl: ModalController) {
   }
 
-  async showAlert(header: string, message: string) {
-    const alert = await this.alertCtrl.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
+  async showAlert(header: string, message: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+      const alert = await this.alertCtrl.create({
+        header: header,
+        message: message,
+        buttons: [{
+          text: 'OK',
+          handler: () => {
+            resolve();
+          }
+        }]
+      });
+      await alert.present();
     });
-    await alert.present();
   }
 
   async showLoading(message: string) {
@@ -31,30 +45,64 @@ export class LoginPage implements OnInit {
     await loading.present();
   }
 
+  async checkLoggedIn() {
+    const token = await this.storageService.get('access_token');
+    if (token) {
+      this.router.navigateByUrl('/tabs/tab1');
+    }
+  }
+
   ngOnInit() {
+    this.checkLoggedIn();
   }
 
   submitLogin() {
     if (this.nomor_telepon && this.password) {
-      this.showLoading('Sedang login...');
-      setTimeout(() => {
+      this.showLoading('Loading...');
+      const data = {
+        nomor_telepon: this.nomor_telepon,
+        password: this.password
+      };
+      this.apiService.loginAkun(data).then((result: any) => {
+        this.storageService.set('access_token', result.access_token);
+        this.storageService.set('profile', result.data);
+        this.nomor_telepon = '';
+        this.password = '';
         this.loadingCtrl.dismiss();
-        this.showAlert('Berhasil!', 'Akun terverifikasi login');
-      }, 1500);
+        this.router.navigateByUrl('/tabs/tab1');
+      }).catch((error: any) => {
+        this.loadingCtrl.dismiss();
+        this.showAlert('Error!', error.error.message);
+      });
     } else {
       this.showAlert('Error!', 'Tidak boleh ada yang kosong');
     }
   }
 
   submitResetPassword() {
-    if (this.registered_nomor_telepon) {
+    if (this.registered_email) {
       this.showLoading('Sedang memproses...');
-      setTimeout(() => {
+      const data = {
+        email: this.registered_email
+      };
+      this.apiService.sendKodeLupaPw(data).then((result: any) => {
+        this.registered_email = '';
         this.loadingCtrl.dismiss();
-        this.showAlert('Berhasil!', 'Kata sandi baru telah dikirim ke nomor telepon Anda');
-      }, 1500);
+        this.modalCtrl.dismiss();
+        this.showAlert('Berhasil!', result.message).then(() => {
+          this.router.navigateByUrl('/verif-lupa-pw');
+        });
+      }).catch((error: any) => {
+        this.loadingCtrl.dismiss();
+        this.showAlert('Error!', error.error.message);
+      });
     } else {
       this.showAlert('Error!', 'Tidak boleh ada yang kosong');
     }
+  }
+
+  goToVerifLupaPw() {
+    this.modalCtrl.dismiss();
+    this.router.navigateByUrl('/verif-lupa-pw');
   }
 }
