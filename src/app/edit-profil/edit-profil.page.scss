@@ -7,14 +7,6 @@
     background-color: #111;
   }
   
-  .profilepic:hover .profilepic__content {
-    opacity: 1;
-  }
-  
-  .profilepic:hover .profilepic__image {
-    opacity: .5;
-  }
-  
   .profilepic__image {
     object-fit: cover;
     opacity: 1;
