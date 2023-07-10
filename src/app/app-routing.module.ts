@@ -2,10 +2,10 @@ import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
-  // },
+  {
+    path: '',
+    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
+  },
   {
     path: '',
     loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
@@ -27,16 +27,16 @@ const routes: Routes = [
     loadChildren: () => import('./barang/create/create.module').then(m => m.TambahBarangPageModule)
   },
   {
-    path: 'tambah-jasa',
-    loadChildren: () => import('./tambah-jasa/tambah-jasa.module').then(m => m.TambahJasaPageModule)
+    path: 'jasa/create',
+    loadChildren: () => import('./jasa/create/create.module').then(m => m.TambahJasaPageModule)
   },
   {
     path: 'barang/show/:id',
     loadChildren: () => import('./barang/show/show.module').then(m => m.ShowBarangPageModule)
   },
   {
-    path: 'show-jasa',
-    loadChildren: () => import('./show-jasa/show-jasa.module').then(m => m.ShowJasaPageModule)
+    path: 'jasa/show/:id',
+    loadChildren: () => import('./jasa/show/show.module').then(m => m.ShowJasaPageModule)
   },
   {
     path: 'verif-lupa-pw',
@@ -45,6 +45,10 @@ const routes: Routes = [
   {
     path: 'barang/edit/:id',
     loadChildren: () => import('./barang/edit/edit.module').then(m => m.EditPageModule)
+  },
+  {
+    path: 'jasa/edit/:id',
+    loadChildren: () => import('./jasa/edit/edit.module').then(m => m.EditPageModule)
   }
 ];
 @NgModule({
