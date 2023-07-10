@@ -12,6 +12,7 @@ import { DatabaseService } from 'src/services/Database/database.service';
 export class TambahBarangPage implements OnInit {
   nama_barang: any;
   kategori: any;
+  kategori_lainnya: any;
   status: any;
   extend_status: any;
   jumlah_barang: any;
@@ -43,7 +44,7 @@ export class TambahBarangPage implements OnInit {
     if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.keterangan && this.jadwal_rencana && this.reminder) {
       const data = {
         nama_barang: this.nama_barang,
-        kategori: this.kategori,
+        kategori: this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori,
         status: this.status,
         extend_status: this.status == 'Dibuang' ? 'ke ' : (this.status == 'Dibeli' ? 'di ' : 'kepada ') + this.extend_status,
         jumlah_barang: this.jumlah_barang,
