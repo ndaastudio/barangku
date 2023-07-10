@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { DataSharingService } from 'src/services/Database/data-sharing.service';
+import { DatabaseService } from 'src/services/Database/database.service';
 
 @Component({
   selector: 'app-tab2',
@@ -8,9 +10,24 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab2.page.scss']
 })
 export class Tab2Page {
+  dataJasa: any = [];
 
   constructor(private alertCtrl: AlertController,
-    private router: Router) { }
+    private router: Router,
+    private databaseService: DatabaseService,
+    private dataSharingService: DataSharingService) {
+    this.databaseService.getAllJasa().then((data) => {
+      this.dataJasa = data;
+    });
+  }
+
+  ngOnInit() {
+    this.dataSharingService.refreshedData.subscribe(() => {
+      this.databaseService.getAllJasa().then((data) => {
+        this.dataJasa = data;
+      });
+    });
+  }
 
   async showKategori() {
     const alert = await this.alertCtrl.create({
@@ -46,7 +63,9 @@ export class Tab2Page {
         {
           text: 'Pilih',
           handler: (data) => {
-            console.log(data);
+            this.databaseService.getJasaByKategori(data).then((data) => {
+              this.dataJasa = data;
+            });
           }
         }
       ]
@@ -54,11 +73,24 @@ export class Tab2Page {
     alert.present();
   }
 
-  goToTambahJasa() {
-    this.router.navigateByUrl('/tambah-jasa');
+  onSearchJasa(event: any) {
+    const keyword = event.target.value;
+    if (keyword.length == 0) {
+      this.databaseService.getAllJasa().then((data) => {
+        this.dataJasa = data;
+      });
+      return;
+    }
+    this.databaseService.searchJasa(keyword).then((data) => {
+      this.dataJasa = data;
+    });
   }
 
-  goToShowJasa() {
-    this.router.navigateByUrl('/show-jasa');
+  goToTambahJasa() {
+    this.router.navigateByUrl('/jasa/create');
+  }
+
+  goToShowJasa(id: number) {
+    this.router.navigateByUrl(`/jasa/show/${id}`);
   }
 }
