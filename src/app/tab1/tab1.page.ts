@@ -80,4 +80,17 @@ export class Tab1Page {
   goToShowBarang(id: number) {
     this.router.navigateByUrl(`/barang/show/${id}`);
   }
+
+  onSearchBarang(event: any) {
+    const keyword = event.target.value;
+    if (keyword.length == 0) {
+      this.databaseService.getAllBarang().then((data) => {
+        this.dataBarang = data;
+      });
+      return;
+    }
+    this.databaseService.searchBarang(keyword).then((data) => {
+      this.dataBarang = data;
+    });
+  }
 }

@@ -4,7 +4,8 @@
 <div class="ion-padding">
     <div class="relative">
         <input type="search" placeholder="Cari barang..."
-            class="w-full h-12 px-5 pr-10 text-sm bg-gray-100 rounded-full focus:outline-none">
+            class="w-full h-12 px-5 pr-10 text-sm bg-gray-100 rounded-full focus:outline-none"
+            (input)="onSearchBarang($event)">
         <ion-buttons class="absolute top-0 right-0 mr-4" slot="primary" (click)="showKategori()">
             <ion-button>
                 <ion-icon size="small" name="filter-outline" slot="icon-only" class="text-gray-600"></ion-icon>
