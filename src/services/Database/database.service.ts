@@ -167,6 +167,21 @@ export class DatabaseService {
         }
     }
 
+    public async getJasaByKategori(kategori: string) {
+        try {
+            const sql = `SELECT * FROM jasa WHERE kategori = ?;`;
+            const result = await this.db.executeSql(sql, [kategori]);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return null;
+        }
+    }
+
     public async getJasaById(id: number) {
         try {
             const sql = `SELECT * FROM jasa WHERE id = ?;`;
@@ -191,8 +206,8 @@ export class DatabaseService {
 
     public async updateJasa(data: any) {
         try {
-            const sql = `UPDATE jasa SET nama_jasa = ?, kategori = ?, jumlah_jasa = ?, letak_jasa = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ? WHERE id = ?;`;
-            await this.db.executeSql(sql, [data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.id]);
+            const sql = `UPDATE jasa SET nama_jasa = ?, kategori = ?, jumlah_jasa = ?, letak_jasa = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, progress = ? WHERE id = ?;`;
+            await this.db.executeSql(sql, [data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress, data.id]);
             return true;
         } catch (error) {
             console.log(error);
@@ -230,6 +245,36 @@ export class DatabaseService {
         } catch (error) {
             console.log(error);
             return false;
+        }
+    }
+
+    public async searchBarang(keyword: string) {
+        try {
+            const sql = `SELECT * FROM barang WHERE nama_barang LIKE ?;`;
+            const result = await this.db.executeSql(sql, ['%' + keyword + '%']);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    public async searchJasa(keyword: string) {
+        try {
+            const sql = `SELECT * FROM jasa WHERE nama_jasa LIKE ?;`;
+            const result = await this.db.executeSql(sql, ['%' + keyword + '%']);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
         }
     }
 }
