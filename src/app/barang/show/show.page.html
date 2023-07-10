@@ -4,12 +4,12 @@
       <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-buttons class="absolute top-2 right-2" slot="primary" id="show-menu">
+  <ion-buttons class="absolute top-2 right-2" slot="primary" id="show-menu{{ dataBarang.id }}">
     <ion-button>
       <ion-icon name="ellipsis-vertical-outline" slot="icon-only" color="light"></ion-icon>
     </ion-button>
   </ion-buttons>
-  <ion-popover trigger="show-menu" triggerAction="click">
+  <ion-popover trigger="show-menu{{ dataBarang.id }}">
     <ng-template>
       <ion-content>
         <ion-item button detail="true" (click)="hapusData()">
@@ -73,19 +73,34 @@
       </div>
     </div>
   </div>
-  <div class="relative overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
     <img
       src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
       class="object-cover w-full h-full" />
+    <ion-buttons slot="primary">
+      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
+        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </div>
-  <div class="relative overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
     <img
       src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
       class="object-cover w-full h-full" />
+    <ion-buttons slot="primary">
+      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
+        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </div>
-  <div class="relative overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
     <img
       src="https://images.unsplash.com/photo-1629367494173-c78a56567877?ixlib=rb-4.0.3&amp;ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&amp;auto=format&amp;fit=crop&amp;w=927&amp;q=80"
       class="object-cover w-full h-full" />
+    <ion-buttons slot="primary">
+      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
+        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </div>
 </ion-content>

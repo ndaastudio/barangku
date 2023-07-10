@@ -10,7 +10,7 @@ import { DatabaseService } from 'src/services/Database/database.service';
   styleUrls: ['./show.page.scss'],
 })
 export class ShowBarangPage implements OnInit {
-  id: number = this.route.snapshot.params['id'];
+  id: any = this.route.snapshot.paramMap.get('id');
   dataBarang: any = [];
 
   constructor(private databaseService: DatabaseService,
@@ -30,15 +30,6 @@ export class ShowBarangPage implements OnInit {
         this.dataBarang = data;
       });
     });
-  }
-
-  async showAlert(header: string, message: string) {
-    const alert = await this.alertCtrl.create({
-      header: header,
-      message: message,
-      buttons: ['OK']
-    });
-    alert.present();
   }
 
   hapusData() {
@@ -98,7 +89,6 @@ export class ShowBarangPage implements OnInit {
             this.dataBarang.progress = data;
             this.databaseService.updateBarang(this.dataBarang).then(() => {
               this.dataSharingService.refresh();
-              this.showAlert('Berhasil!', 'Progress barang telah diubah');
             });
           }
         }
@@ -109,6 +99,9 @@ export class ShowBarangPage implements OnInit {
 
   goToEditBarang() {
     this.popoverCtrl.dismiss();
-    this.showAlert('Error!', 'Fitur ini belum tersedia');
+    this.router.navigateByUrl(`/barang/edit/${this.id}`);
+  }
+
+  deleteGambar() {
   }
 }
