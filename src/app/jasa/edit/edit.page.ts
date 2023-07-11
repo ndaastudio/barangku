@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 
@@ -24,7 +25,9 @@ export class EditPage implements OnInit {
   constructor(private databaseService: DatabaseService,
     private dataSharingService: DataSharingService,
     private router: Router,
-    private route: ActivatedRoute) { }
+    private route: ActivatedRoute,
+    private alertCtrl: AlertController) {
+  }
 
   ngOnInit() {
     this.databaseService.getJasaById(this.id).then((data) => {
@@ -38,6 +41,15 @@ export class EditPage implements OnInit {
       this.jadwal_rencana = data.jadwal_rencana;
       this.jadwal_notifikasi = data.jadwal_notifikasi;
     });
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
   }
 
   saveToDatabase() {
@@ -54,4 +66,7 @@ export class EditPage implements OnInit {
     });
   }
 
+  pickGambar() {
+    this.showAlert('Error!', 'Fitur ini belum tersedia');
+  }
 }

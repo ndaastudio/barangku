@@ -73,4 +73,8 @@ export class TambahBarangPage implements OnInit {
       this.showAlert('Error!', 'Tidak boleh ada yang kosong');
     }
   }
+
+  pickGambar() {
+    this.showAlert('Error!', 'Fitur belum tersedia');
+  }
 }

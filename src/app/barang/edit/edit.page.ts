@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
+import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 
@@ -26,7 +27,8 @@ export class EditPage implements OnInit {
   constructor(private databaseService: DatabaseService,
     private dataSharingService: DataSharingService,
     private router: Router,
-    private route: ActivatedRoute) {
+    private route: ActivatedRoute,
+    private alertCtrl: AlertController) {
   }
 
   ngOnInit() {
@@ -45,6 +47,15 @@ export class EditPage implements OnInit {
     });
   }
 
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    });
+    await alert.present();
+  }
+
   saveToDatabase() {
     this.dataBarang.nama_barang = this.nama_barang;
     this.dataBarang.kategori = this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori;
@@ -59,6 +70,10 @@ export class EditPage implements OnInit {
       this.dataSharingService.refresh();
       this.router.navigateByUrl(`/barang/show/${this.id}`);
     });
+  }
+
+  pickGambar() {
+    this.showAlert('Error!', 'Fitur ini belum tersedia');
   }
 }
 

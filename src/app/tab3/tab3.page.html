@@ -46,7 +46,7 @@
                 <p>{{ jenis_akun == 0 ? 'Trial 7 hari' : 'Aktif 1 tahun' }}</p>
             </ion-label>
         </ion-item>
-        <ion-item button detail="true">
+        <ion-item button detail="true" (click)="submitSinkronisasi()">
             <ion-icon name="sync-outline" slot="start" class="m-0 mr-4"></ion-icon>
             <ion-label>
                 <h2 class="font-bold text-gray-700">Sinkronkan Data</h2>

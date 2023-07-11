@@ -68,4 +68,7 @@ export class TambahJasaPage implements OnInit {
     }
   }
 
+  pickGambar() {
+    this.showAlert('Error!', 'Fitur ini belum tersedia');
+  }
 }

@@ -52,6 +52,10 @@ export class Tab3Page {
     this.router.navigateByUrl('/edit-profil');
   }
 
+  submitSinkronisasi() {
+    this.showAlert('Error!', 'Fitur ini belum tersedia');
+  }
+
   async submitKeluar() {
     const alert = await this.alertCtrl.create({
       header: 'Keluar',
