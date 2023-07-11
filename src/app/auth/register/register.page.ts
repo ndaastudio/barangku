@@ -59,7 +59,7 @@ export class RegisterPage implements OnInit {
           const data = {
             nama: this.nama,
             email: this.email,
-            nomor_telepon: `0${this.nomor_telepon}`,
+            nomor_telepon: this.nomor_telepon,
             password: this.password,
           };
           this.apiService.registerAkun(data).then((result: any) => {
