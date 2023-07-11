@@ -60,7 +60,7 @@ export class LoginPage implements OnInit {
     if (this.nomor_telepon && this.password) {
       this.showLoading('Loading...');
       const data = {
-        nomor_telepon: this.nomor_telepon,
+        nomor_telepon: `0${this.nomor_telepon}`,
         password: this.password
       };
       this.apiService.loginAkun(data).then((result: any) => {
