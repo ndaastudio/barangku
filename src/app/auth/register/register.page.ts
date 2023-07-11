@@ -52,14 +52,14 @@ export class RegisterPage implements OnInit {
   }
 
   submitDaftar() {
-    if (this.nama && this.nomor_telepon && this.password && this.konfirmasi_password) {
+    if (this.nama && this.email && this.nomor_telepon && this.password && this.konfirmasi_password) {
       if (this.setuju) {
         if (this.password == this.konfirmasi_password) {
           this.showLoading('Sedang mendaftar...');
           const data = {
             nama: this.nama,
             email: this.email,
-            nomor_telepon: this.nomor_telepon,
+            nomor_telepon: `0${this.nomor_telepon}`,
             password: this.password,
           };
           this.apiService.registerAkun(data).then((result: any) => {
