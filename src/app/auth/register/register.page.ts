@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { APIService } from 'src/services/API/api.service';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-register',
@@ -103,6 +104,12 @@ export class RegisterPage implements OnInit {
   }
 
   hubungiAdmin() {
+    const waAdmin = `https://wa.me/6285214283748/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
+    this.openBrowser(waAdmin);
+  }
+
+  async openBrowser(url: string) {
+    await Browser.open({ url: url });
   }
 
 }
