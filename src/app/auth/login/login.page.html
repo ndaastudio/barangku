@@ -1,9 +1,8 @@
-<div class="flex justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
-    <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
-</div>
-
-<ion-content class="ion-padding" scrollY="false">
-    <div class="space-y-4">
+<ion-content>
+    <div class="flex justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+        <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
+    </div>
+    <div class="space-y-4 ion-padding">
         <ion-item fill="outline">
             <ion-label position="floating">Nomor Telepon</ion-label>
             <ion-input placeholder="Nomor Telepon" type="number" [(ngModel)]="nomor_telepon"></ion-input>
@@ -17,8 +16,7 @@
         </div>
         <ion-button (click)="submitLogin()" expand="block" class="text-white">Masuk</ion-button>
     </div>
-
-    <ion-modal #modal trigger="lupa-pw" [initialBreakpoint]="0.35" [breakpoints]="[0, 0.35, 0.4, 0.75]">
+    <ion-modal #modal trigger="lupa-pw" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.40, 0.45, 0.75]">
         <ng-template>
             <ion-content class="ion-padding">
                 <div class="space-y-2">
@@ -41,7 +39,6 @@
         </ng-template>
     </ion-modal>
 </ion-content>
-
 <ion-footer class="ion-no-border ion-padding">
     <div class="flex justify-center font-semibold">
         <p class="text-gray-500">Belum punya akun? <span [routerLink]="['/register']"
