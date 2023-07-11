@@ -32,6 +32,15 @@ export class ShowBarangPage implements OnInit {
     });
   }
 
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    })
+    alert.present();
+  }
+
   hapusData() {
     this.popoverCtrl.dismiss();
     this.alertCtrl.create({
@@ -103,5 +112,6 @@ export class ShowBarangPage implements OnInit {
   }
 
   deleteGambar() {
+    this.showAlert('Error!', 'Fitur ini belum tersedia');
   }
 }
