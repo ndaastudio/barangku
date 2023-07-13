@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { DatabaseService } from 'src/services/Database/database.service';
+import { StatusBar, Style } from '@capacitor/status-bar';
 
 @Component({
   selector: 'app-root',
@@ -18,6 +19,14 @@ export class AppComponent {
         App.exitApp();
       }
     });
+    const setStatusBarStyleDark = async () => {
+      await StatusBar.setStyle({ style: Style.Dark });
+    };
+    setStatusBarStyleDark();
+    const setBackgroundColor = async () => {
+      await StatusBar.setBackgroundColor({ color: '#30a2ff' });
+    }
+    setBackgroundColor();
   }
 
   ngOnInit() {
