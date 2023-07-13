@@ -250,8 +250,8 @@ export class DatabaseService {
 
     public async searchBarang(keyword: string) {
         try {
-            const sql = `SELECT * FROM barang WHERE nama_barang LIKE ?;`;
-            const result = await this.db.executeSql(sql, ['%' + keyword + '%']);
+            const sql = `SELECT * FROM barang WHERE nama_barang LIKE ? OR kategori LIKE ?;`;
+            const result = await this.db.executeSql(sql, ['%' + keyword + '%', '%' + keyword + '%']);
             let data = [];
             for (let i = 0; i < result.rows.length; i++) {
                 data.push(result.rows.item(i));
@@ -265,8 +265,8 @@ export class DatabaseService {
 
     public async searchJasa(keyword: string) {
         try {
-            const sql = `SELECT * FROM jasa WHERE nama_jasa LIKE ?;`;
-            const result = await this.db.executeSql(sql, ['%' + keyword + '%']);
+            const sql = `SELECT * FROM jasa WHERE nama_jasa LIKE ? OR kategori LIKE ?;`;
+            const result = await this.db.executeSql(sql, ['%' + keyword + '%', '%' + keyword + '%']);
             let data = [];
             for (let i = 0; i < result.rows.length; i++) {
                 data.push(result.rows.item(i));
