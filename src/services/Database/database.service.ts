@@ -92,8 +92,8 @@ export class DatabaseService {
     public async createBarang(data: any) {
         try {
             const sql = `INSERT INTO barang (nama_barang, kategori, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-            await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
-            return true;
+            const result = await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
+            return result.insertId;
         } catch (error) {
             console.log(error);
             return false;
@@ -103,8 +103,8 @@ export class DatabaseService {
     public async createJasa(data: any) {
         try {
             const sql = `INSERT INTO jasa (nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?);`;
-            await this.db.executeSql(sql, [data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
-            return true;
+            const result = await this.db.executeSql(sql, [data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
+            return result.insertId;
         } catch (error) {
             console.log(error);
             return false;
