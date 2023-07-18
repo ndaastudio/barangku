@@ -18,6 +18,9 @@ export class Tab2Page {
     private dataSharingService: DataSharingService) {
     this.databaseService.getAllJasa().then((data) => {
       this.dataJasa = data;
+      this.dataJasa.forEach((jasa: any) => {
+        jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+      });
     });
   }
 
@@ -25,8 +28,20 @@ export class Tab2Page {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getAllJasa().then((data) => {
         this.dataJasa = data;
+        this.dataJasa.forEach((jasa: any) => {
+          jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+        });
       });
     });
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    })
+    alert.present();
   }
 
   async showKategori() {
@@ -62,10 +77,26 @@ export class Tab2Page {
         },
         {
           text: 'Pilih',
-          handler: (data) => {
-            this.databaseService.getJasaByKategori(data).then((data) => {
-              this.dataJasa = data;
-            });
+          handler: (dataOpsi) => {
+            if (dataOpsi) {
+              this.databaseService.getJasaByKategori(dataOpsi).then((data) => {
+                if (data?.length == 0) {
+                  this.showAlert('Error!', `Tidak ada jasa dengan kategori "${dataOpsi}"`);
+                } else {
+                  this.dataJasa = data;
+                  this.dataJasa.forEach((jasa: any) => {
+                    jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+                  });
+                }
+              });
+            } else {
+              this.databaseService.getAllJasa().then((data) => {
+                this.dataJasa = data;
+                this.dataJasa.forEach((jasa: any) => {
+                  jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+                });
+              });
+            }
           }
         }
       ]
@@ -92,5 +123,13 @@ export class Tab2Page {
 
   goToShowJasa(id: number) {
     this.router.navigateByUrl(`/jasa/show/${id}`);
+  }
+
+  formatDate(date: string) {
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const year = date.substring(0, 4);
+    const month = monthNames[parseInt(date.substring(5, 7)) - 1];
+    const day = date.substring(8, 10);
+    return `${day} ${month} ${year}`;
   }
 }
