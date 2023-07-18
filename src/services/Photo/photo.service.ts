@@ -54,7 +54,7 @@ export class PhotoService {
         };
     }
 
-    public async deletPicture(fileName: string) {
+    public async deletePicture(fileName: string) {
         await Filesystem.deleteFile({
             path: fileName,
             directory: Directory.Data
