@@ -69,34 +69,9 @@
       </div>
     </div>
   </div>
-  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
-    <img
-      src="https://images.unsplash.com/photo-1611073615830-9f76902c10fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80"
-      class="object-cover w-full h-full" />
-    <ion-buttons slot="primary">
-      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
-        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </div>
-  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
-    <img
-      src="https://images.unsplash.com/photo-1611073615830-9f76902c10fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80"
-      class="object-cover w-full h-full" />
-    <ion-buttons slot="primary">
-      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
-        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-  </div>
-  <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
-    <img
-      src="https://images.unsplash.com/photo-1611073615830-9f76902c10fe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=871&q=80"
-      class="object-cover w-full h-full" />
-    <ion-buttons slot="primary">
-      <ion-button (click)="deleteGambar()" class="absolute bg-white rounded-full top-2 right-2">
-        <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+  <div *ngFor="let image of dataImage;">
+    <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+      <img src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
+    </div>
   </div>
 </ion-content>

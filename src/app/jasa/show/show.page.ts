@@ -4,6 +4,7 @@ import { AlertController, PopoverController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { NotificationService } from 'src/services/Notification/notification.service';
+import { PhotoService } from 'src/services/Photo/photo.service';
 
 @Component({
   selector: 'app-show',
@@ -13,6 +14,7 @@ import { NotificationService } from 'src/services/Notification/notification.serv
 export class ShowJasaPage implements OnInit {
   id: any = this.route.snapshot.paramMap.get('id');
   dataJasa: any = [];
+  dataImage: any = [];
 
   constructor(private databaseService: DatabaseService,
     private route: ActivatedRoute,
@@ -20,10 +22,18 @@ export class ShowJasaPage implements OnInit {
     private dataSharingService: DataSharingService,
     private router: Router,
     private popoverCtrl: PopoverController,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private photoService: PhotoService) {
     this.databaseService.getJasaById(this.id).then((data) => {
       this.dataJasa = data;
       this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
+      this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
+        resultGambar.forEach((data: any) => {
+          this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
+            this.dataImage.push(loadedGambar);
+          });
+        });
+      });
     });
   }
 
@@ -32,6 +42,13 @@ export class ShowJasaPage implements OnInit {
       this.databaseService.getJasaById(this.id).then((data) => {
         this.dataJasa = data;
         this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
+        this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
+          resultGambar.forEach((data: any) => {
+            this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
+              this.dataImage.push(loadedGambar);
+            });
+          });
+        });
       });
     });
   }
@@ -59,6 +76,10 @@ export class ShowJasaPage implements OnInit {
           text: 'YA',
           handler: () => {
             this.databaseService.deleteJasaById(this.id).then(() => {
+              this.dataImage.forEach((dataGambar: any) => {
+                this.photoService.deletePicture(dataGambar.fileName);
+                this.databaseService.deleteGambarJasaByName(dataGambar.fileName);
+              });
               this.notificationService.cancelNotification(this.id);
               this.dataSharingService.refresh();
               this.router.navigateByUrl('/tabs/tab2');

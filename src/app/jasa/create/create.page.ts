@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { NotificationService } from 'src/services/Notification/notification.service';
+import { PhotoService } from 'src/services/Photo/photo.service';
 
 @Component({
   selector: 'app-create',
@@ -20,12 +21,15 @@ export class TambahJasaPage implements OnInit {
   jadwal_rencana: any;
   jadwal_notifikasi: any;
   reminder: any;
+  pickedPhoto: boolean = false;
+  dataImage: any = [];
 
   constructor(private databaseService: DatabaseService,
     private alertCtrl: AlertController,
     private router: Router,
     private dataSharingService: DataSharingService,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private photoService: PhotoService) {
   }
 
   ngOnInit() {
@@ -52,6 +56,14 @@ export class TambahJasaPage implements OnInit {
         jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
       };
       this.databaseService.createJasa(data).then((id) => {
+        if (this.pickedPhoto) {
+          this.dataImage.forEach((dataGambar: any) => {
+            const date = new Date().getTime();
+            this.photoService.savePicture(dataGambar, `${this.nama_jasa}-${date}.jpeg`).then((dataSave: any) => {
+              this.databaseService.createGambarJasa(id, dataSave);
+            });
+          });
+        }
         let date = new Date(data.jadwal_notifikasi);
         this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, id, new Date(date.getTime()));
         this.nama_jasa = '';
@@ -73,7 +85,30 @@ export class TambahJasaPage implements OnInit {
   }
 
   pickGambar() {
-    this.showAlert('Error!', 'Fitur ini belum tersedia');
+    this.photoService.addNewToGallery().then((data) => {
+      this.dataImage.push(data);
+      this.pickedPhoto = true;
+    });
+  }
+
+  async deleteImage(index: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Hapus',
+      message: 'Apakah anda yakin ingin menghapus gambar ini?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya',
+          handler: () => {
+            this.dataImage.splice(index, 1);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {

@@ -67,6 +67,28 @@
         <span slot="time-label">Pukul</span>
       </ion-datetime>
     </div>
+    <div *ngFor="let image of dataImage; let i = index;">
+      <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+        <img src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
+        <ion-buttons slot="primary" (click)="deleteImageFromDatabase(i)">
+          <ion-button class="absolute bg-white rounded-full top-2 right-2">
+            <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
+    </div>
+    <div *ngIf="pickedPhoto" class="space-y-4">
+      <div *ngFor="let image of otherImage; let i = index;">
+        <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+          <img src="{{ image.webPath }}" class="object-cover w-full h-full" />
+          <ion-buttons slot="primary" (click)="deleteImageFromArray(i)">
+            <ion-button class="absolute bg-white rounded-full top-2 right-2">
+              <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </div>
+    </div>
     <div class="grid grid-cols-1 space-y-2">
       <label class="text-sm font-bold tracking-wide text-gray-500">Upload Foto (Opsional)</label>
       <div class="flex items-center justify-center w-full" (click)="pickGambar()">

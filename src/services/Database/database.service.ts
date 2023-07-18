@@ -100,6 +100,17 @@ export class DatabaseService {
         }
     }
 
+    public async createGambarJasa(id: number, nama: string) {
+        try {
+            const sql = `INSERT INTO gambar_jasa (id_jasa, gambar) VALUES (?, ?);`;
+            const result = await this.db.executeSql(sql, [id, nama]);
+            return result.insertId;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     public async getGambarBarangById(id: number) {
         try {
             const sql = `SELECT * FROM gambar_barang WHERE id_barang = ?;`;
@@ -115,9 +126,35 @@ export class DatabaseService {
         }
     }
 
+    public async getGambarJasaById(id: number) {
+        try {
+            const sql = `SELECT * FROM gambar_jasa WHERE id_jasa = ?;`;
+            const result = await this.db.executeSql(sql, [id]);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
     public async deleteGambarBarangByName(fileName: string) {
         try {
             const sql = `DELETE FROM gambar_barang WHERE gambar = ?;`;
+            await this.db.executeSql(sql, [fileName]);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async deleteGambarJasaByName(fileName: string) {
+        try {
+            const sql = `DELETE FROM gambar_jasa WHERE gambar = ?;`;
             await this.db.executeSql(sql, [fileName]);
             return true;
         } catch (error) {

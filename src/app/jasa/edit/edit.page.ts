@@ -4,6 +4,7 @@ import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { NotificationService } from 'src/services/Notification/notification.service';
+import { PhotoService } from 'src/services/Photo/photo.service';
 
 @Component({
   selector: 'app-edit',
@@ -22,13 +23,17 @@ export class EditPage implements OnInit {
   jadwal_rencana: any;
   jadwal_notifikasi: any;
   reminder: any;
+  pickedPhoto: boolean = false;
+  dataImage: any = [];
+  otherImage: any = [];
 
   constructor(private databaseService: DatabaseService,
     private dataSharingService: DataSharingService,
     private router: Router,
     private route: ActivatedRoute,
     private alertCtrl: AlertController,
-    private notificationService: NotificationService) {
+    private notificationService: NotificationService,
+    private photoService: PhotoService) {
   }
 
   ngOnInit() {
@@ -42,6 +47,13 @@ export class EditPage implements OnInit {
       this.keterangan = data.keterangan;
       this.jadwal_rencana = data.jadwal_rencana;
       this.jadwal_notifikasi = data.jadwal_notifikasi;
+      this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
+        resultGambar.forEach((data: any) => {
+          this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
+            this.dataImage.push(loadedGambar);
+          });
+        });
+      });
     });
   }
 
@@ -68,13 +80,68 @@ export class EditPage implements OnInit {
     this.dataJasa.jadwal_rencana = this.jadwal_rencana;
     this.dataJasa.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
     this.databaseService.updateJasa(this.dataJasa).then(() => {
+      if (this.pickedPhoto) {
+        this.otherImage.forEach((dataGambar: any) => {
+          const date = new Date().getTime();
+          this.photoService.savePicture(dataGambar, `${this.nama_jasa}-${date}.jpeg`).then((dataSave: any) => {
+            this.databaseService.createGambarJasa(this.id, dataSave);
+          });
+        });
+      }
       this.dataSharingService.refresh();
       this.router.navigateByUrl(`/jasa/show/${this.id}`);
     });
   }
 
   pickGambar() {
-    this.showAlert('Error!', 'Fitur ini belum tersedia');
+    this.photoService.addNewToGallery().then((data) => {
+      this.otherImage.push(data);
+      this.pickedPhoto = true;
+    });
+  }
+
+  async deleteImageFromDatabase(index: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Hapus',
+      message: 'Apakah anda yakin ingin menghapus gambar ini?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya',
+          handler: () => {
+            this.databaseService.deleteGambarJasaByName(this.dataImage[index].fileName).then(() => {
+              this.photoService.deletePicture(this.dataImage[index].fileName).then(() => {
+                this.dataImage.splice(index, 1);
+              });
+            });
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  async deleteImageFromArray(index: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Hapus',
+      message: 'Apakah anda yakin ingin menghapus gambar ini?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya',
+          handler: () => {
+            this.otherImage.splice(index, 1);
+          }
+        }
+      ]
+    });
+    await alert.present();
   }
 
   customCounterFormatter(inputLength: number, maxLength: number) {
