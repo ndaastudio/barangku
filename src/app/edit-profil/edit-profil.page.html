@@ -47,7 +47,7 @@
       <p>********</p>
     </ion-label>
   </ion-item>
-  <ion-modal #modal trigger="ganti-pw" [initialBreakpoint]="0.3" [breakpoints]="[0, 0.3, 0.5, 0.75]">
+  <ion-modal #modal trigger="ganti-pw" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75, 0.8]">
     <ng-template>
       <ion-content class="ion-padding">
         <div class="space-y-2">
@@ -56,8 +56,17 @@
             <p class="text-gray-500">Masukkan password baru Anda</p>
           </div>
           <ion-item fill="outline">
+            <ion-label position="floating">Password Lama</ion-label>
+            <ion-input [(ngModel)]="password_lama" placeholder="Password Lama" type="password"></ion-input>
+          </ion-item>
+          <ion-item fill="outline">
             <ion-label position="floating">Password Baru</ion-label>
-            <ion-input [(ngModel)]="password" placeholder="Password Baru" type="text"></ion-input>
+            <ion-input [(ngModel)]="password_baru" placeholder="Password Baru" type="text"></ion-input>
+          </ion-item>
+          <ion-item fill="outline">
+            <ion-label position="floating">Konfirmasi Password Baru</ion-label>
+            <ion-input [(ngModel)]="konfirmasi_password_baru" placeholder="Konfirmasi Password Baru"
+              type="text"></ion-input>
           </ion-item>
         </div>
         <ion-button (click)="submitGantiPw()" class="mt-4 text-white" expand="block">Ganti Password</ion-button>

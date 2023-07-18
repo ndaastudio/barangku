@@ -13,7 +13,9 @@ export class EditProfilPage implements OnInit {
   email: any;
   nomor_telepon: any;
   jenis_akun: any;
-  password: any;
+  password_lama: any;
+  password_baru: any;
+  konfirmasi_password_baru: any;
 
   constructor(private modalCtrl: ModalController,
     private storageService: StorageService,
@@ -49,17 +51,21 @@ export class EditProfilPage implements OnInit {
   }
 
   async submitGantiPw() {
-    if (this.password) {
+    if (this.password_baru && this.password_lama && this.konfirmasi_password_baru) {
       this.showLoading('Sedang memproses...');
       const profile = await this.storageService.get('profile');
       const token = await this.storageService.get('access_token');
       const phoneNumber = profile.nomor_telepon;
       const data = {
         nomor_telepon: phoneNumber,
-        password: this.password
+        password_lama: this.password_lama,
+        password_baru: this.password_baru,
+        konfirmasi_password_baru: this.konfirmasi_password_baru,
       }
       this.apiService.gantiPw(data, token).then((result) => {
-        this.password = '';
+        this.password_lama = '';
+        this.password_baru = '';
+        this.konfirmasi_password_baru = '';
         this.loadingCtrl.dismiss();
         this.modalCtrl.dismiss();
         this.showAlert('Berhasil!', result.message);
@@ -69,7 +75,7 @@ export class EditProfilPage implements OnInit {
         this.showAlert('Error!', error.error.message);
       });
     } else {
-      this.showAlert('Error!', 'Password tidak boleh kosong');
+      this.showAlert('Error!', 'Tidak boleh ada data yang kosong');
     }
   }
 }
