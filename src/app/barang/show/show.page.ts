@@ -76,6 +76,10 @@ export class ShowBarangPage implements OnInit {
           text: 'YA',
           handler: () => {
             this.databaseService.deleteBarangById(this.id).then(() => {
+              this.dataImage.forEach((dataGambar: any) => {
+                this.photoService.deletePicture(dataGambar.fileName);
+                this.databaseService.deleteGambarBarangByName(dataGambar.fileName);
+              });
               this.notificationService.cancelNotification(this.id);
               this.dataSharingService.refresh();
               this.router.navigateByUrl('/tabs/tab1');
@@ -137,10 +141,6 @@ export class ShowBarangPage implements OnInit {
   goToEditBarang() {
     this.popoverCtrl.dismiss();
     this.router.navigateByUrl(`/barang/edit/${this.id}`);
-  }
-
-  deleteGambar() {
-    this.showAlert('Error!', 'Fitur ini belum tersedia');
   }
 
   formatDate(date: string) {
