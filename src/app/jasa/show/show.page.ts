@@ -3,6 +3,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, PopoverController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
+import { NotificationService } from 'src/services/Notification/notification.service';
 
 @Component({
   selector: 'app-show',
@@ -18,9 +19,11 @@ export class ShowJasaPage implements OnInit {
     private alertCtrl: AlertController,
     private dataSharingService: DataSharingService,
     private router: Router,
-    private popoverCtrl: PopoverController) {
+    private popoverCtrl: PopoverController,
+    private notificationService: NotificationService) {
     this.databaseService.getJasaById(this.id).then((data) => {
       this.dataJasa = data;
+      this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
     });
   }
 
@@ -28,6 +31,7 @@ export class ShowJasaPage implements OnInit {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getJasaById(this.id).then((data) => {
         this.dataJasa = data;
+        this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
       });
     });
   }
@@ -55,6 +59,7 @@ export class ShowJasaPage implements OnInit {
           text: 'YA',
           handler: () => {
             this.databaseService.deleteJasaById(this.id).then(() => {
+              this.notificationService.cancelNotification(this.id);
               this.dataSharingService.refresh();
               this.router.navigateByUrl('/tabs/tab2');
             });
@@ -94,9 +99,15 @@ export class ShowJasaPage implements OnInit {
         },
         {
           text: 'Pilih',
-          handler: (data) => {
-            this.dataJasa.progress = data;
+          handler: (dataOpsi) => {
+            this.dataJasa.progress = dataOpsi;
             this.databaseService.updateJasa(this.dataJasa).then(() => {
+              if (dataOpsi == 0) {
+                let date = new Date(this.dataJasa.jadwal_notifikasi);
+                this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.dataJasa.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()))
+              } else if (dataOpsi == 1) {
+                this.notificationService.cancelNotification(this.id);
+              }
               this.dataSharingService.refresh();
             });
           }
@@ -113,5 +124,13 @@ export class ShowJasaPage implements OnInit {
 
   deleteGambar() {
     this.showAlert('Error!', 'Fitur ini belum tersedia');
+  }
+
+  formatDate(date: string) {
+    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+    const year = date.substring(0, 4);
+    const month = monthNames[parseInt(date.substring(5, 7)) - 1];
+    const day = date.substring(8, 10);
+    return `${day} ${month} ${year}`;
   }
 }

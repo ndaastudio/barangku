@@ -9,9 +9,10 @@
 
 <ion-content class="ion-padding">
   <div class="space-y-4">
-    <ion-item fill="outline">
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Nama Jasa</ion-label>
-      <ion-input placeholder="Nama Jasa" type="text" [(ngModel)]="nama_jasa"></ion-input>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Pijat Refleksi)" type="text"
+        [(ngModel)]="nama_jasa" (input)="countInputNama()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
       <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --">
@@ -21,21 +22,26 @@
         <ion-select-option value="Opsi Lainnya">Opsi Lainnya</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item fill="outline" *ngIf="kategori == 'Opsi Lainnya'">
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter"
+      *ngIf="kategori == 'Opsi Lainnya'">
       <ion-label position="floating">Kategori Lainnya</ion-label>
-      <ion-input placeholder="Kategori Lainnya" type="text" [(ngModel)]="kategori_lainnya"></ion-input>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Jasa Service)" type="text"
+        [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
-      <ion-input placeholder="Jumlah" type="text" [(ngModel)]="jumlah_jasa"></ion-input>
+      <ion-input maxlength="10" autocapitalize="on" placeholder="(contoh: 1 kali)" type="text" [(ngModel)]="jumlah_jasa"
+        (input)="countInputJumlah()"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Letak Jasa</ion-label>
-      <ion-input placeholder="Letak Jasa" type="text" [(ngModel)]="letak_jasa"></ion-input>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Di kantor)" type="text"
+        [(ngModel)]="letak_jasa" (input)="countInputLetak()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
       <ion-label position="floating">Keterangan</ion-label>
-      <ion-input placeholder="Alasan/sebab" type="text" [(ngModel)]="keterangan"></ion-input>
+      <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
+        [(ngModel)]="keterangan"></ion-textarea>
     </ion-item>
     <div class="flex justify-center">
       <ion-datetime presentation="date-time" [(ngModel)]="jadwal_rencana">
@@ -65,21 +71,13 @@
       <label class="text-sm font-bold tracking-wide text-gray-500">Upload Foto (Opsional)</label>
       <div class="flex items-center justify-center w-full" (click)="pickGambar()">
         <label class="flex flex-col w-full p-10 text-center border-4 border-dashed rounded-lg h-60 group">
-          <div class="flex flex-col items-center justify-center w-full h-full text-center ">
-            -<svg xmlns="http://www.w3.org/2000/svg" class="w-10 h-10 text-blue-400 group-hover:text-blue-600"
-              fill="none" viewBox="0 0 24 24" stroke="currentColor">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
-            </svg>
+          <div class="flex flex-col items-center justify-center w-full h-full text-center">
             <div class="flex flex-auto w-2/5 mx-auto -mt-10 max-h-48">
-              <img class="object-center has-mask h-36"
-                src="https://img.freepik.com/free-vector/image-upload-concept-landing-page_52683-27130.jpg?size=338&ext=jpg"
-                alt="freepik image">
+              <img class="object-center has-mask h-36" src="../../../assets/images/upload.png">
             </div>
-            <p class="text-gray-700 pointer-none "><span class="text-sm">Silahkan </span><a
-                class="text-[#30a2ff] hover:underline">pilih file</a> foto yang ingin anda upload</p>
+            <p class="text-gray-700 pointer-none"><span class="text-sm">Silahkan </span><a class="text-[#30a2ff]">pilih
+                file</a> foto yang ingin anda upload</p>
           </div>
-          <!-- <input type="file" class="hidden"> -->
         </label>
       </div>
     </div>
