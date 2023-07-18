@@ -3,6 +3,8 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
+import { NotificationService } from 'src/services/Notification/notification.service';
+import { PhotoService } from 'src/services/Photo/photo.service';
 
 @Component({
   selector: 'app-create',
@@ -21,11 +23,15 @@ export class TambahBarangPage implements OnInit {
   jadwal_rencana: any;
   jadwal_notifikasi: any;
   reminder: any;
+  pickedPhoto: boolean = false;
+  dataImage: any = [];
 
   constructor(private databaseService: DatabaseService,
     private alertCtrl: AlertController,
     private router: Router,
-    private dataSharingService: DataSharingService) {
+    private dataSharingService: DataSharingService,
+    private photoService: PhotoService,
+    private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -53,7 +59,17 @@ export class TambahBarangPage implements OnInit {
         jadwal_rencana: this.jadwal_rencana,
         jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
       };
-      this.databaseService.createBarang(data).then(() => {
+      this.databaseService.createBarang(data).then((id) => {
+        if (this.pickedPhoto) {
+          this.dataImage.forEach((dataGambar: any) => {
+            const date = new Date().getTime();
+            this.photoService.savePicture(dataGambar, `${this.nama_barang}-${date}.jpeg`).then((dataSave: any) => {
+              this.databaseService.createGambarBarang(id, dataSave);
+            });
+          });
+        }
+        let date = new Date(data.jadwal_notifikasi);
+        this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, id, new Date(date.getTime()));
         this.nama_barang = '';
         this.kategori = '';
         this.status = '';
@@ -75,6 +91,69 @@ export class TambahBarangPage implements OnInit {
   }
 
   pickGambar() {
-    this.showAlert('Error!', 'Fitur belum tersedia');
+    this.photoService.addNewToGallery().then((data) => {
+      this.dataImage.push(data);
+      this.pickedPhoto = true;
+    });
+  }
+
+  async deleteImage(index: number) {
+    const alert = await this.alertCtrl.create({
+      header: 'Hapus',
+      message: 'Apakah anda yakin ingin menghapus gambar ini?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+        },
+        {
+          text: 'Ya',
+          handler: () => {
+            this.dataImage.splice(index, 1);
+          }
+        }
+      ]
+    });
+    await alert.present();
+  }
+
+  customCounterFormatter(inputLength: number, maxLength: number) {
+    return `${maxLength - inputLength} karakter tersisa`;
+  }
+
+  countInputNama() {
+    const maxLength = 15 - 1;
+    const inputLength = this.nama_barang.length;
+    if (inputLength > maxLength) {
+      this.nama_barang = this.nama_barang.slice(0, maxLength);
+    }
+  }
+  countInputKategori() {
+    const maxLength = 15 - 1;
+    const inputLength = this.kategori_lainnya.length;
+    if (inputLength > maxLength) {
+      this.kategori_lainnya = this.kategori_lainnya.slice(0, maxLength);
+    }
+  }
+  countInputStatus() {
+    const maxLength = 15 - 1;
+    const inputLength = this.extend_status.length;
+    if (inputLength > maxLength) {
+      this.extend_status = this.extend_status.slice(0, maxLength);
+    }
+  }
+  countInputJumlah() {
+    const maxLength = 10 - 1;
+    const inputLength = this.jumlah_barang.length;
+    if (inputLength > maxLength) {
+      this.jumlah_barang = this.jumlah_barang.slice(0, maxLength);
+    }
+  }
+  countInputLetak() {
+    const maxLength = 15 - 1;
+    const inputLength = this.letak_barang.length;
+    if (inputLength > maxLength) {
+      this.letak_barang = this.letak_barang.slice(0, maxLength);
+    }
   }
 }

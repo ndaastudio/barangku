@@ -89,6 +89,43 @@ export class DatabaseService {
         }
     }
 
+    public async createGambarBarang(id: number, nama: string) {
+        try {
+            const sql = `INSERT INTO gambar_barang (id_barang, gambar) VALUES (?, ?);`;
+            const result = await this.db.executeSql(sql, [id, nama]);
+            return result.insertId;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async getGambarBarangById(id: number) {
+        try {
+            const sql = `SELECT * FROM gambar_barang WHERE id_barang = ?;`;
+            const result = await this.db.executeSql(sql, [id]);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    public async deleteGambarBarangByName(fileName: string) {
+        try {
+            const sql = `DELETE FROM gambar_barang WHERE gambar = ?;`;
+            await this.db.executeSql(sql, [fileName]);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     public async createBarang(data: any) {
         try {
             const sql = `INSERT INTO barang (nama_barang, kategori, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
