@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
+import { NotificationService } from 'src/services/Notification/notification.service';
 
 @Component({
   selector: 'app-create',
@@ -23,7 +24,8 @@ export class TambahJasaPage implements OnInit {
   constructor(private databaseService: DatabaseService,
     private alertCtrl: AlertController,
     private router: Router,
-    private dataSharingService: DataSharingService) {
+    private dataSharingService: DataSharingService,
+    private notificationService: NotificationService) {
   }
 
   ngOnInit() {
@@ -49,7 +51,9 @@ export class TambahJasaPage implements OnInit {
         jadwal_rencana: this.jadwal_rencana,
         jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
       };
-      this.databaseService.createJasa(data).then(() => {
+      this.databaseService.createJasa(data).then((id) => {
+        let date = new Date(data.jadwal_notifikasi);
+        this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, id, new Date(date.getTime()));
         this.nama_jasa = '';
         this.kategori = '';
         this.jumlah_jasa = '';
@@ -70,5 +74,38 @@ export class TambahJasaPage implements OnInit {
 
   pickGambar() {
     this.showAlert('Error!', 'Fitur ini belum tersedia');
+  }
+
+  customCounterFormatter(inputLength: number, maxLength: number) {
+    return `${maxLength - inputLength} karakter tersisa`;
+  }
+
+  countInputNama() {
+    const maxLength = 15 - 1;
+    const inputLength = this.nama_jasa.length;
+    if (inputLength > maxLength) {
+      this.nama_jasa = this.nama_jasa.slice(0, maxLength);
+    }
+  }
+  countInputKategori() {
+    const maxLength = 15 - 1;
+    const inputLength = this.kategori_lainnya.length;
+    if (inputLength > maxLength) {
+      this.kategori_lainnya = this.kategori_lainnya.slice(0, maxLength);
+    }
+  }
+  countInputJumlah() {
+    const maxLength = 10 - 1;
+    const inputLength = this.jumlah_jasa.length;
+    if (inputLength > maxLength) {
+      this.jumlah_jasa = this.jumlah_jasa.slice(0, maxLength);
+    }
+  }
+  countInputLetak() {
+    const maxLength = 15 - 1;
+    const inputLength = this.letak_jasa.length;
+    if (inputLength > maxLength) {
+      this.letak_jasa = this.letak_jasa.slice(0, maxLength);
+    }
   }
 }
