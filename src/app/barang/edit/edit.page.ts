@@ -119,7 +119,7 @@ export class EditPage implements OnInit {
           text: 'Ya',
           handler: () => {
             this.databaseService.deleteGambarBarangByName(this.dataImage[index].fileName).then(() => {
-              this.photoService.deletPicture(this.dataImage[index].fileName).then(() => {
+              this.photoService.deletePicture(this.dataImage[index].fileName).then(() => {
                 this.dataImage.splice(index, 1);
               });
             });
