@@ -125,7 +125,7 @@ export class ShowBarangPage implements OnInit {
             this.databaseService.updateBarang(this.dataBarang).then(() => {
               if (dataOpsi == 0) {
                 let date = new Date(this.dataBarang.jadwal_notifikasi);
-                this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, this.id, new Date(date.getTime()));
+                this.notificationService.scheduleNotification('1', 'Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, this.id, new Date(date.getTime()));
               } else if (dataOpsi == 1) {
                 this.notificationService.cancelNotification(this.id);
               }

@@ -69,7 +69,7 @@ export class TambahBarangPage implements OnInit {
           });
         }
         let date = new Date(data.jadwal_notifikasi);
-        this.notificationService.scheduleNotification('Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, id, new Date(date.getTime()));
+        this.notificationService.scheduleNotification('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, id, new Date(date.getTime()));
         this.nama_barang = '';
         this.kategori = '';
         this.status = '';
