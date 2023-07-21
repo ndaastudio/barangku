@@ -1,11 +1,25 @@
 import { Injectable } from "@angular/core";
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
+import { Platform } from "@ionic/angular";
 
 @Injectable({
     providedIn: 'root'
 })
 export class PhotoService {
+
+    constructor(private platform: Platform) {
+        this.initPermissions();
+    }
+
+    async initPermissions() {
+        if (this.platform.is('android')) {
+            const cameraPermission = await Camera.checkPermissions();
+            if (!cameraPermission.camera || !cameraPermission.photos) {
+                await Camera.requestPermissions();
+            }
+        }
+    }
 
     public async addNewToGallery() {
         const capturedPhoto = await Camera.getPhoto({
