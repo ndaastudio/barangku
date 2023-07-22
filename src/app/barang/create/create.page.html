@@ -88,7 +88,7 @@
     </div>
     <div *ngFor="let image of dataImage; let i = index;">
       <div *ngIf="pickedPhoto" class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
-        <img src="{{ image.webPath }}" class="object-cover w-full h-full" />
+        <img (click)="viewFull(true, i)" src="{{ image.webPath }}" class="object-cover w-full h-full" />
         <ion-buttons slot="primary" (click)="deleteImage(i)">
           <ion-button class="absolute bg-white rounded-full top-2 right-2">
             <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
@@ -96,6 +96,21 @@
         </ion-buttons>
       </div>
     </div>
+    <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"
+      (willDismiss)="viewFull(false, undefined)">
+      <ng-template>
+        <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
+          <ion-button>
+            <ion-icon name="close-outline" slot="icon-only" color="light"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="flex items-center justify-center h-screen bg-black">
+          <div class="flex items-center">
+            <img src="{{ urlFullImage }}" />
+          </div>
+        </div>
+      </ng-template>
+    </ion-modal>
     <div class="grid grid-cols-1 space-y-2">
       <label class="text-sm font-bold tracking-wide text-gray-500">Upload Foto (Opsional)</label>
       <div class="flex items-center justify-center w-full" (click)="pickGambar()">

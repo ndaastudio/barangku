@@ -73,9 +73,24 @@
       </div>
     </div>
   </div>
-  <div *ngFor="let image of dataImage;">
+  <div *ngFor="let image of dataImage; let i = index;">
     <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
-      <img src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
+      <img (click)="viewFull(true, i)" src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
     </div>
   </div>
+  <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"
+    (willDismiss)="viewFull(false, undefined)">
+    <ng-template>
+      <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
+        <ion-button>
+          <ion-icon name="close-outline" slot="icon-only" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class="flex items-center justify-center h-screen bg-black">
+        <div class="flex items-center">
+          <img src="{{ urlFullImage }}" />
+        </div>
+      </div>
+    </ng-template>
+  </ion-modal>
 </ion-content>

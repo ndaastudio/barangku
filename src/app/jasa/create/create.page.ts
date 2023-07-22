@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, AnimationController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { NotificationService } from 'src/services/Notification/notification.service';
@@ -23,13 +23,16 @@ export class TambahJasaPage implements OnInit {
   reminder: any;
   pickedPhoto: boolean = false;
   dataImage: any = [];
+  isViewFull: boolean = false;
+  urlFullImage: any;
 
   constructor(private databaseService: DatabaseService,
     private alertCtrl: AlertController,
     private router: Router,
     private dataSharingService: DataSharingService,
     private notificationService: NotificationService,
-    private photoService: PhotoService) {
+    private photoService: PhotoService,
+    private animationCtrl: AnimationController,) {
   }
 
   ngOnInit() {
@@ -143,4 +146,36 @@ export class TambahJasaPage implements OnInit {
       this.letak_jasa = this.letak_jasa.slice(0, maxLength);
     }
   }
+
+  viewFull(isFull: boolean, index: number | undefined) {
+    this.isViewFull = isFull;
+    if (index != undefined) {
+      this.urlFullImage = this.dataImage[index].webPath;
+    }
+  }
+
+  enterAnimation = (baseEl: HTMLElement) => {
+    const root = baseEl.shadowRoot;
+    const backdropAnimation = this.animationCtrl
+      .create()
+      .addElement(root?.querySelector('ion-backdrop')!)
+      .fromTo('opacity', '0.01', 'var(--backdrop-opacity)');
+    const wrapperAnimation = this.animationCtrl
+      .create()
+      .addElement(root?.querySelector('.modal-wrapper')!)
+      .keyframes([
+        { offset: 0, opacity: '0', transform: 'scale(0)' },
+        { offset: 1, opacity: '0.99', transform: 'scale(1)' },
+      ]);
+    return this.animationCtrl
+      .create()
+      .addElement(baseEl)
+      .easing('ease-out')
+      .duration(300)
+      .addAnimation([backdropAnimation, wrapperAnimation]);
+  };
+
+  leaveAnimation = (baseEl: HTMLElement) => {
+    return this.enterAnimation(baseEl).direction('reverse');
+  };
 }
