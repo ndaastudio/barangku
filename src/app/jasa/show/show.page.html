@@ -69,7 +69,7 @@
       </div>
     </div>
   </div>
-  <div *ngFor="let image of dataImage;">
+  <div *ngFor="let image of dataImage; let i = index;">
     <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
       <img (click)="viewFull(true, i)" src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
     </div>
