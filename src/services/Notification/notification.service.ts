@@ -14,18 +14,22 @@ export class NotificationService {
 
     async init() {
         if (this.platform.is("android")) {
-            const list = await LocalNotifications.listChannels();
-            if (list.channels.length < 2) {
-                await LocalNotifications.createChannel({
-                    id: '1',
-                    name: 'Barang',
-                    importance: 4,
-                });
-                await LocalNotifications.createChannel({
-                    id: '2',
-                    name: 'Jasa',
-                    importance: 4,
-                });
+            if ((await LocalNotifications.checkPermissions()).display == "granted") {
+                const list = await LocalNotifications.listChannels();
+                if (list.channels.length < 2) {
+                    await LocalNotifications.createChannel({
+                        id: '1',
+                        name: 'Barang',
+                        importance: 4,
+                    });
+                    await LocalNotifications.createChannel({
+                        id: '2',
+                        name: 'Jasa',
+                        importance: 4,
+                    });
+                }
+            } else {
+                await LocalNotifications.requestPermissions();
             }
         }
     }
