@@ -3,6 +3,8 @@ import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Platform } from "@ionic/angular";
 
+const IMAGE_DIR = 'Barangku/Images';
+
 @Injectable({
     providedIn: 'root'
 })
@@ -10,6 +12,7 @@ export class PhotoService {
 
     constructor(private platform: Platform) {
         this.initPermissions();
+        this.initDirectory();
     }
 
     async initPermissions() {
@@ -21,11 +24,24 @@ export class PhotoService {
         }
     }
 
+    async initDirectory() {
+        Filesystem.stat({
+            path: IMAGE_DIR,
+            directory: Directory.ExternalStorage
+        }).catch(async () => {
+            await Filesystem.mkdir({
+                path: IMAGE_DIR,
+                directory: Directory.ExternalStorage,
+                recursive: true
+            });
+        });
+    }
+
     public async addNewToGallery() {
         const capturedPhoto = await Camera.getPhoto({
             resultType: CameraResultType.Uri,
             source: CameraSource.Photos,
-            quality: 100
+            quality: 50
         });
         return capturedPhoto;
     }
@@ -33,9 +49,9 @@ export class PhotoService {
     public async savePicture(cameraPhoto: Photo, fileName: string) {
         const base64Data = await this.readAsBase64(cameraPhoto);
         await Filesystem.writeFile({
-            path: fileName,
+            path: `${IMAGE_DIR}/${fileName}`,
             data: base64Data,
-            directory: Directory.Data
+            directory: Directory.ExternalStorage
         });
         return fileName;
     }
@@ -59,8 +75,8 @@ export class PhotoService {
 
     public async loadPicture(fileName: string) {
         const photo = await Filesystem.readFile({
-            path: fileName,
-            directory: Directory.Data
+            path: `${IMAGE_DIR}/${fileName}`,
+            directory: Directory.ExternalStorage
         });
         return {
             fileName: fileName,
@@ -70,8 +86,8 @@ export class PhotoService {
 
     public async deletePicture(fileName: string) {
         await Filesystem.deleteFile({
-            path: fileName,
-            directory: Directory.Data
+            path: `${IMAGE_DIR}/${fileName}`,
+            directory: Directory.ExternalStorage
         });
     }
 }
