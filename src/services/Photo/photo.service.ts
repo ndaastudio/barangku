@@ -3,7 +3,7 @@ import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera
 import { Filesystem, Directory } from "@capacitor/filesystem";
 import { Platform } from "@ionic/angular";
 
-const IMAGE_DIR = 'Barangku/Images';
+const IMAGE_DIR = '.Barangku/Images';
 
 @Injectable({
     providedIn: 'root'
