@@ -18,6 +18,7 @@ export class ShowJasaPage implements OnInit {
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
+  formatTanggal: Function = formatDate;
 
   constructor(private databaseService: DatabaseService,
     private route: ActivatedRoute,
@@ -30,7 +31,6 @@ export class ShowJasaPage implements OnInit {
     private animationCtrl: AnimationController,) {
     this.databaseService.getJasaById(this.id).then((data) => {
       this.dataJasa = data;
-      this.dataJasa.jadwal_rencana = formatDate(data.jadwal_rencana);
       this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
         resultGambar.forEach((data: any) => {
           this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
@@ -45,7 +45,6 @@ export class ShowJasaPage implements OnInit {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getJasaById(this.id).then((data) => {
         this.dataJasa = data;
-        this.dataJasa.jadwal_rencana = formatDate(data.jadwal_rencana);
         this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
           resultGambar.forEach((data: any) => {
             this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
@@ -145,10 +144,6 @@ export class ShowJasaPage implements OnInit {
   goToEditJasa() {
     this.popoverCtrl.dismiss();
     this.router.navigateByUrl(`/jasa/edit/${this.id}`);
-  }
-
-  deleteGambar() {
-    this.showAlert('Error!', 'Fitur ini belum tersedia');
   }
 
   viewFull(isFull: boolean, index: number | undefined) {

@@ -12,6 +12,7 @@ import { formatDate } from '../helpers/functions';
 })
 export class Tab1Page {
   dataBarang: any = [];
+  formatTanggal: Function = formatDate;
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -19,9 +20,6 @@ export class Tab1Page {
     private dataSharingService: DataSharingService) {
     this.databaseService.getAllBarang().then((data) => {
       this.dataBarang = data;
-      this.dataBarang.forEach((barang: any) => {
-        barang.jadwal_rencana = formatDate(barang.jadwal_rencana);
-      });
     });
   }
 
@@ -29,9 +27,6 @@ export class Tab1Page {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getAllBarang().then((data) => {
         this.dataBarang = data;
-        this.dataBarang.forEach((barang: any) => {
-          barang.jadwal_rencana = formatDate(barang.jadwal_rencana);
-        });
       });
     });
   }
@@ -85,17 +80,11 @@ export class Tab1Page {
                   this.showAlert('Error!', `Tidak ada barang dengan kategori "${dataOpsi}"`);
                 } else {
                   this.dataBarang = data;
-                  this.dataBarang.forEach((barang: any) => {
-                    barang.jadwal_rencana = formatDate(barang.jadwal_rencana);
-                  });
                 }
               });
             } else {
               this.databaseService.getAllBarang().then((data) => {
                 this.dataBarang = data;
-                this.dataBarang.forEach((barang: any) => {
-                  barang.jadwal_rencana = formatDate(barang.jadwal_rencana);
-                });
               });
             }
           }

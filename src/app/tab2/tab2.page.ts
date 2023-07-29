@@ -12,6 +12,7 @@ import { formatDate } from '../helpers/functions';
 })
 export class Tab2Page {
   dataJasa: any = [];
+  formatTanggal: Function = formatDate;
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -19,9 +20,6 @@ export class Tab2Page {
     private dataSharingService: DataSharingService) {
     this.databaseService.getAllJasa().then((data) => {
       this.dataJasa = data;
-      this.dataJasa.forEach((jasa: any) => {
-        jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
-      });
     });
   }
 
@@ -29,9 +27,6 @@ export class Tab2Page {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getAllJasa().then((data) => {
         this.dataJasa = data;
-        this.dataJasa.forEach((jasa: any) => {
-          jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
-        });
       });
     });
   }
@@ -85,17 +80,11 @@ export class Tab2Page {
                   this.showAlert('Error!', `Tidak ada jasa dengan kategori "${dataOpsi}"`);
                 } else {
                   this.dataJasa = data;
-                  this.dataJasa.forEach((jasa: any) => {
-                    jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
-                  });
                 }
               });
             } else {
               this.databaseService.getAllJasa().then((data) => {
                 this.dataJasa = data;
-                this.dataJasa.forEach((jasa: any) => {
-                  jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
-                });
               });
             }
           }

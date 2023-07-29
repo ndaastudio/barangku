@@ -18,6 +18,7 @@ export class ShowBarangPage implements OnInit {
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
+  formatTanggal: Function = formatDate;
 
   constructor(private databaseService: DatabaseService,
     private route: ActivatedRoute,
@@ -30,7 +31,6 @@ export class ShowBarangPage implements OnInit {
     private animationCtrl: AnimationController,) {
     this.databaseService.getBarangById(this.id).then((data) => {
       this.dataBarang = data;
-      this.dataBarang.jadwal_rencana = formatDate(data.jadwal_rencana);
       this.databaseService.getGambarBarangById(this.id).then((resultGambar: any) => {
         resultGambar.forEach((data: any) => {
           this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
@@ -45,7 +45,6 @@ export class ShowBarangPage implements OnInit {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getBarangById(this.id).then((data) => {
         this.dataBarang = data;
-        this.dataBarang.jadwal_rencana = formatDate(data.jadwal_rencana);
         this.databaseService.getGambarBarangById(this.id).then((resultGambar: any) => {
           resultGambar.forEach((data: any) => {
             this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
