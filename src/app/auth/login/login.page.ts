@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { Device } from '@capacitor/device';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { APIService } from 'src/services/API/api.service';
 import { StorageService } from 'src/services/LocalStorage/storage.service';
@@ -56,12 +57,13 @@ export class LoginPage implements OnInit {
     this.checkLoggedIn();
   }
 
-  submitLogin() {
+  async submitLogin() {
     if (this.nomor_telepon && this.password) {
       this.showLoading('Loading...');
       const data = {
         nomor_telepon: `0${this.nomor_telepon}`,
-        password: this.password
+        password: this.password,
+        device_login: (await Device.getId()).identifier
       };
       this.apiService.loginAkun(data).then((result: any) => {
         this.storageService.set('access_token', result.access_token);

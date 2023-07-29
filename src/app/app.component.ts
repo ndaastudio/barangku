@@ -15,7 +15,7 @@ export class AppComponent {
     private platform: Platform,
     private router: Router) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.router.url === '/' || this.router.url === '/tabs/tab1' || this.router.url === '/tabs/tab2' || this.router.url === '/tabs/tab3') {
+      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/tab1' || this.router.url === '/tabs/tab2' || this.router.url === '/tabs/tab3') {
         App.exitApp();
       }
     });
