@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
+import { formatDate } from '../helpers/functions';
 
 @Component({
   selector: 'app-tab2',
@@ -19,7 +20,7 @@ export class Tab2Page {
     this.databaseService.getAllJasa().then((data) => {
       this.dataJasa = data;
       this.dataJasa.forEach((jasa: any) => {
-        jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+        jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
       });
     });
   }
@@ -29,7 +30,7 @@ export class Tab2Page {
       this.databaseService.getAllJasa().then((data) => {
         this.dataJasa = data;
         this.dataJasa.forEach((jasa: any) => {
-          jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+          jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
         });
       });
     });
@@ -85,7 +86,7 @@ export class Tab2Page {
                 } else {
                   this.dataJasa = data;
                   this.dataJasa.forEach((jasa: any) => {
-                    jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+                    jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
                   });
                 }
               });
@@ -93,7 +94,7 @@ export class Tab2Page {
               this.databaseService.getAllJasa().then((data) => {
                 this.dataJasa = data;
                 this.dataJasa.forEach((jasa: any) => {
-                  jasa.jadwal_rencana = this.formatDate(jasa.jadwal_rencana);
+                  jasa.jadwal_rencana = formatDate(jasa.jadwal_rencana);
                 });
               });
             }
@@ -123,13 +124,5 @@ export class Tab2Page {
 
   goToShowJasa(id: number) {
     this.router.navigateByUrl(`/jasa/show/${id}`);
-  }
-
-  formatDate(date: string) {
-    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const year = date.substring(0, 4);
-    const month = monthNames[parseInt(date.substring(5, 7)) - 1];
-    const day = date.substring(8, 10);
-    return `${day} ${month} ${year}`;
   }
 }

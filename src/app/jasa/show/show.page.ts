@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, AnimationController, PopoverController } from '@ionic/angular';
+import { formatDate } from 'src/app/helpers/functions';
 import { DataSharingService } from 'src/services/Database/data-sharing.service';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { NotificationService } from 'src/services/Notification/notification.service';
@@ -29,7 +30,7 @@ export class ShowJasaPage implements OnInit {
     private animationCtrl: AnimationController,) {
     this.databaseService.getJasaById(this.id).then((data) => {
       this.dataJasa = data;
-      this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
+      this.dataJasa.jadwal_rencana = formatDate(data.jadwal_rencana);
       this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
         resultGambar.forEach((data: any) => {
           this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
@@ -44,7 +45,7 @@ export class ShowJasaPage implements OnInit {
     this.dataSharingService.refreshedData.subscribe(() => {
       this.databaseService.getJasaById(this.id).then((data) => {
         this.dataJasa = data;
-        this.dataJasa.jadwal_rencana = this.formatDate(data.jadwal_rencana);
+        this.dataJasa.jadwal_rencana = formatDate(data.jadwal_rencana);
         this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
           resultGambar.forEach((data: any) => {
             this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
@@ -148,14 +149,6 @@ export class ShowJasaPage implements OnInit {
 
   deleteGambar() {
     this.showAlert('Error!', 'Fitur ini belum tersedia');
-  }
-
-  formatDate(date: string) {
-    const monthNames = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
-    const year = date.substring(0, 4);
-    const month = monthNames[parseInt(date.substring(5, 7)) - 1];
-    const day = date.substring(8, 10);
-    return `${day} ${month} ${year}`;
   }
 
   viewFull(isFull: boolean, index: number | undefined) {
