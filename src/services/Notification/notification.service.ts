@@ -51,4 +51,12 @@ export class NotificationService {
     async cancelNotification(id: number) {
         await LocalNotifications.cancel({ notifications: [{ id: id }] });
     }
+
+    async cancelAllNotifications() {
+        await LocalNotifications.getPending().then((pending) => {
+            pending.notifications.forEach((notification) => {
+                this.cancelNotification(notification.id);
+            });
+        });
+    }
 }
