@@ -198,8 +198,8 @@ export class DatabaseService {
 
     public async createJasaWithCustomId(data: any) {
         try {
-            const sql = `INSERT INTO jasa (id, nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
-            const result = await this.db.executeSql(sql, [data.id_jasa, data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
+            const sql = `INSERT INTO jasa (id, nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+            const result = await this.db.executeSql(sql, [data.id_jasa, data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress]);
             return result;
         } catch (error) {
             console.log(error);
