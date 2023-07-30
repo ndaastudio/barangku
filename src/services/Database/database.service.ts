@@ -174,11 +174,33 @@ export class DatabaseService {
         }
     }
 
+    public async createBarangWithCustomId(data: any) {
+        try {
+            const sql = `INSERT INTO barang (id, nama_barang, kategori, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+            const result = await this.db.executeSql(sql, [data.id_barang, data.nama_barang, data.kategori, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress]);
+            return result;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     public async createJasa(data: any) {
         try {
             const sql = `INSERT INTO jasa (nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?);`;
             const result = await this.db.executeSql(sql, [data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
             return result.insertId;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async createJasaWithCustomId(data: any) {
+        try {
+            const sql = `INSERT INTO jasa (id, nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?, ?);`;
+            const result = await this.db.executeSql(sql, [data.id_jasa, data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
+            return result;
         } catch (error) {
             console.log(error);
             return false;
@@ -200,9 +222,39 @@ export class DatabaseService {
         }
     }
 
+    public async getAllGambarBarang() {
+        try {
+            const sql = `SELECT * FROM gambar_barang;`;
+            const result = await this.db.executeSql(sql, []);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
     public async getAllJasa() {
         try {
             const sql = `SELECT * FROM jasa;`;
+            const result = await this.db.executeSql(sql, []);
+            let data = [];
+            for (let i = 0; i < result.rows.length; i++) {
+                data.push(result.rows.item(i));
+            }
+            return data;
+        } catch (error) {
+            console.log(error);
+            return [];
+        }
+    }
+
+    public async getAllGambarJasa() {
+        try {
+            const sql = `SELECT * FROM gambar_jasa;`;
             const result = await this.db.executeSql(sql, []);
             let data = [];
             for (let i = 0; i < result.rows.length; i++) {
@@ -300,6 +352,17 @@ export class DatabaseService {
         }
     }
 
+    public async deleteGambarBarangById(id: number) {
+        try {
+            const sql = `DELETE FROM gambar_barang WHERE id = ?;`;
+            await this.db.executeSql(sql, [id]);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     public async deleteAllBarang() {
         try {
             const sql = `DELETE FROM barang;`;
@@ -311,9 +374,53 @@ export class DatabaseService {
         }
     }
 
+    public async deleteAllJasa() {
+        try {
+            const sql = `DELETE FROM jasa;`;
+            await this.db.executeSql(sql, []);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async deleteAllGambarBarang() {
+        try {
+            const sql = `DELETE FROM gambar_barang;`;
+            await this.db.executeSql(sql, []);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async deleteAllGambarJasa() {
+        try {
+            const sql = `DELETE FROM gambar_jasa;`;
+            await this.db.executeSql(sql, []);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
     public async deleteJasaById(id: number) {
         try {
             const sql = `DELETE FROM jasa WHERE id = ?;`;
+            await this.db.executeSql(sql, [id]);
+            return true;
+        } catch (error) {
+            console.log(error);
+            return false;
+        }
+    }
+
+    public async deleteGambarJasaById(id: number) {
+        try {
+            const sql = `DELETE FROM gambar_jasa WHERE id = ?;`;
             await this.db.executeSql(sql, [id]);
             return true;
         } catch (error) {
