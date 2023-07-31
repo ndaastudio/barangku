@@ -4,6 +4,7 @@ import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
 import { DatabaseService } from 'src/services/Database/database.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
+import { LocalNotifications } from '@capacitor/local-notifications';
 
 @Component({
   selector: 'app-root',
@@ -27,6 +28,12 @@ export class AppComponent {
       await StatusBar.setBackgroundColor({ color: '#30a2ff' });
     }
     setBackgroundColor();
+    const notifListener = async () => {
+      await LocalNotifications.addListener("localNotificationActionPerformed", async (payload) => {
+        await this.router.navigateByUrl(payload.notification.extra.url);
+      });
+    }
+    notifListener();
   }
 
   ngOnInit() {

@@ -34,7 +34,7 @@ export class NotificationService {
         }
     }
 
-    async scheduleNotification(channel: string, title: string, body: string, id: number, time: Date) {
+    async scheduleNotification(channel: string, title: string, body: string, id: number, time: Date, url: string) {
         await LocalNotifications.schedule({
             notifications: [
                 {
@@ -43,6 +43,9 @@ export class NotificationService {
                     id: id,
                     schedule: { at: time },
                     channelId: channel,
+                    extra: {
+                        url: url
+                    }
                 }
             ]
         });

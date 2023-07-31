@@ -128,7 +128,7 @@ export class ShowJasaPage implements OnInit {
             this.databaseService.updateJasa(this.dataJasa).then(() => {
               if (dataOpsi == 0) {
                 let date = new Date(this.dataJasa.jadwal_notifikasi);
-                this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.dataJasa.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()))
+                this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.dataJasa.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()), `/jasa/show/${this.id}`)
               } else if (dataOpsi == 1) {
                 this.notificationService.cancelNotification(this.id);
               }

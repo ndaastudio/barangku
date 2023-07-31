@@ -68,7 +68,7 @@ export class TambahJasaPage implements OnInit {
           });
         }
         let date = new Date(data.jadwal_notifikasi);
-        this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, id, new Date(date.getTime()));
+        this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, id, new Date(date.getTime()), `/jasa/show/${id}`);
         this.nama_jasa = '';
         this.kategori = '';
         this.jumlah_jasa = '';

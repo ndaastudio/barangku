@@ -48,7 +48,7 @@ export class SinkronService {
                 await this.notificationService.cancelNotification(barang.id_barang);
                 await this.databaseService.createBarangWithCustomId(barang);
                 const date = new Date(barang.jadwal_notifikasi);
-                await this.notificationService.scheduleNotification('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id_barang, new Date(date.getTime()));
+                await this.notificationService.scheduleNotification('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id_barang, new Date(date.getTime()), `/barang/show/${barang.id_barang}`);
             } catch (error) {
                 alert(error);
             }
@@ -58,7 +58,7 @@ export class SinkronService {
             await this.notificationService.cancelNotification(jasa.id_jasa);
             await this.databaseService.createJasaWithCustomId(jasa);
             const date = new Date(jasa.jadwal_notifikasi);
-            this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${jasa.nama_jasa.toLowerCase()}`, jasa.id_jasa, new Date(date.getTime()));
+            this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${jasa.nama_jasa.toLowerCase()}`, jasa.id_jasa, new Date(date.getTime()), `/jasa/show/${jasa.id_jasa}`);
         });
         await this.databaseService.deleteAllGambarBarang();
         dataServer.gambarBarang.forEach(async (gambarBarang: any) => {

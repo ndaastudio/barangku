@@ -73,7 +73,7 @@ export class EditPage implements OnInit {
     if (this.jadwal_notifikasi !== this.dataJasa.jadwal_notifikasi) {
       const jadwalNotifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
       let date = new Date(jadwalNotifikasi);
-      this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()));
+      this.notificationService.scheduleNotification('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()), `/jasa/show/${this.id}`);
     }
     this.dataJasa.nama_jasa = this.nama_jasa;
     this.dataJasa.kategori = this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori;
