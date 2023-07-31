@@ -163,4 +163,8 @@ export class APIService {
         };
         return await this.http.get<any>(`${environment.apiURL}/profile`, httpHeaders).toPromise();
     }
+
+    public async getLatestVersion(): Promise<any> {
+        return await this.http.get<any>(`${environment.apiURL}/cek-update-app`, this.httpHeader).toPromise();
+    }
 }
