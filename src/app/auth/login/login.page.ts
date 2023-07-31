@@ -46,15 +46,7 @@ export class LoginPage implements OnInit {
     await loading.present();
   }
 
-  async checkLoggedIn() {
-    const token = await this.storageService.get('access_token');
-    if (token) {
-      this.router.navigateByUrl('/tabs/tab1');
-    }
-  }
-
   ngOnInit() {
-    this.checkLoggedIn();
   }
 
   async submitLogin() {
