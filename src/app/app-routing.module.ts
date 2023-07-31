@@ -1,6 +1,7 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { UpdateGuard } from './guards/update.guard';
 
 const routes: Routes = [
   {
@@ -10,7 +11,8 @@ const routes: Routes = [
   },
   {
     path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule)
+    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
+    canActivate: [UpdateGuard]
   },
   {
     path: 'login',
@@ -51,7 +53,11 @@ const routes: Routes = [
   {
     path: 'jasa/edit/:id',
     loadChildren: () => import('./jasa/edit/edit.module').then(m => m.EditPageModule)
+  },  {
+    path: 'update',
+    loadChildren: () => import('./update/update.module').then( m => m.UpdatePageModule)
   }
+
 ];
 @NgModule({
   imports: [
