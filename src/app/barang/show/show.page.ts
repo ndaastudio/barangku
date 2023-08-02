@@ -32,6 +32,7 @@ export class ShowBarangPage implements OnInit {
     this.databaseService.getBarangById(this.id).then((data) => {
       this.dataBarang = data;
       this.databaseService.getGambarBarangById(this.id).then((resultGambar: any) => {
+        this.dataImage = [];
         resultGambar.forEach((data: any) => {
           this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
             this.dataImage.push(loadedGambar);
@@ -46,6 +47,7 @@ export class ShowBarangPage implements OnInit {
       this.databaseService.getBarangById(this.id).then((data) => {
         this.dataBarang = data;
         this.databaseService.getGambarBarangById(this.id).then((resultGambar: any) => {
+          this.dataImage = [];
           resultGambar.forEach((data: any) => {
             this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
               this.dataImage.push(loadedGambar);

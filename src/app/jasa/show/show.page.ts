@@ -32,6 +32,7 @@ export class ShowJasaPage implements OnInit {
     this.databaseService.getJasaById(this.id).then((data) => {
       this.dataJasa = data;
       this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
+        this.dataImage = [];
         resultGambar.forEach((data: any) => {
           this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
             this.dataImage.push(loadedGambar);
@@ -46,6 +47,7 @@ export class ShowJasaPage implements OnInit {
       this.databaseService.getJasaById(this.id).then((data) => {
         this.dataJasa = data;
         this.databaseService.getGambarJasaById(this.id).then((resultGambar: any) => {
+          this.dataImage = [];
           resultGambar.forEach((data: any) => {
             this.photoService.loadPicture(data.gambar).then((loadedGambar) => {
               this.dataImage.push(loadedGambar);
