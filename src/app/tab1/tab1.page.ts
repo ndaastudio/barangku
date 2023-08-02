@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { DataSharingService } from 'src/services/Database/data-sharing.service';
+import { DatabaseService } from 'src/services/Database/database.service';
+import { formatDate } from '../helpers/functions';
 
 @Component({
   selector: 'app-tab1',
@@ -8,9 +11,34 @@ import { AlertController } from '@ionic/angular';
   styleUrls: ['tab1.page.scss']
 })
 export class Tab1Page {
+  dataBarang: any = [];
+  formatTanggal: Function = formatDate;
 
   constructor(private alertCtrl: AlertController,
-    private router: Router) { }
+    private router: Router,
+    private databaseService: DatabaseService,
+    private dataSharingService: DataSharingService) {
+    this.databaseService.getAllBarang().then((data) => {
+      this.dataBarang = data;
+    });
+  }
+
+  ngOnInit() {
+    this.dataSharingService.refreshedData.subscribe(() => {
+      this.databaseService.getAllBarang().then((data) => {
+        this.dataBarang = data;
+      });
+    });
+  }
+
+  async showAlert(header: string, message: string) {
+    const alert = await this.alertCtrl.create({
+      header: header,
+      message: message,
+      buttons: ['OK']
+    })
+    alert.present();
+  }
 
   async showKategori() {
     const alert = await this.alertCtrl.create({
@@ -26,15 +54,15 @@ export class Tab1Page {
         {
           name: 'kategori',
           type: 'radio',
-          label: 'Kebutuhan Jasa',
-          value: 'Kebutuhan Jasa',
+          label: 'Kebutuhan Anak',
+          value: 'Kebutuhan Anak',
           checked: false
         },
         {
           name: 'kategori',
           type: 'radio',
-          label: 'Kebutuhan Pribadi',
-          value: 'Kebutuhan Pribadi',
+          label: 'Kebutuhan Istri',
+          value: 'Kebutuhan Istri',
           checked: false
         },
       ],
@@ -45,8 +73,20 @@ export class Tab1Page {
         },
         {
           text: 'Pilih',
-          handler: (data) => {
-            console.log(data);
+          handler: (dataOpsi) => {
+            if (dataOpsi) {
+              this.databaseService.getBarangByKategori(dataOpsi).then((data) => {
+                if (data?.length == 0) {
+                  this.showAlert('Error!', `Tidak ada barang dengan kategori "${dataOpsi}"`);
+                } else {
+                  this.dataBarang = data;
+                }
+              });
+            } else {
+              this.databaseService.getAllBarang().then((data) => {
+                this.dataBarang = data;
+              });
+            }
           }
         }
       ]
@@ -55,10 +95,23 @@ export class Tab1Page {
   }
 
   goToTambahBarang() {
-    this.router.navigateByUrl('/tambah-barang');
+    this.router.navigateByUrl('/barang/create');
   }
 
-  goToShowBarang() {
-    this.router.navigateByUrl('/show-barang');
+  goToShowBarang(id: number) {
+    this.router.navigateByUrl(`/barang/show/${id}`);
+  }
+
+  onSearchBarang(event: any) {
+    const keyword = event.target.value;
+    if (keyword.length == 0) {
+      this.databaseService.getAllBarang().then((data) => {
+        this.dataBarang = data;
+      });
+      return;
+    }
+    this.databaseService.searchBarang(keyword).then((data) => {
+      this.dataBarang = data;
+    });
   }
 }

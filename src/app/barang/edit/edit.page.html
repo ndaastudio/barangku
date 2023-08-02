@@ -1,0 +1,149 @@
+<div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/barang/show', id]">
+    <ion-button>
+      <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <h5 class="text-xl font-bold text-white">Edit Barang</h5>
+</div>
+
+<ion-content class="ion-padding">
+  <div class="space-y-4">
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+      <ion-label position="floating">Nama Barang</ion-label>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Baju)" type="text" [(ngModel)]="nama_barang"
+        (input)="countInputNama()"></ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --">
+        <ion-select-option value="Kebutuhan Dapur">Kebutuhan Dapur</ion-select-option>
+        <ion-select-option value="Kebutuhan Anak">Kebutuhan Anak</ion-select-option>
+        <ion-select-option value="Kebutuhan Istri">Kebutuhan Istri</ion-select-option>
+        <ion-select-option value="Opsi Lainnya">Opsi Lainnya</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter"
+      *ngIf="kategori == 'Opsi Lainnya'">
+      <ion-label position="floating">Kategori Lainnya</ion-label>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Kebutuhan Suami)" type="text"
+        [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-select [(ngModel)]="status" label="Status" placeholder="-- Pilih Status --">
+        <ion-select-option value="Dibeli">Dibeli</ion-select-option>
+        <ion-select-option value="Dijual">Dijual</ion-select-option>
+        <ion-select-option value="Disedekahkan">Disedekahkan</ion-select-option>
+        <ion-select-option value="Diberikan">Diberikan</ion-select-option>
+        <ion-select-option value="Dihadiahkan">Dihadiahkan</ion-select-option>
+        <ion-select-option value="Dibuang">Dibuang</ion-select-option>
+        <ion-select-option value="Dipinjamkan">Dipinjamkan</ion-select-option>
+        <ion-select-option value="Diperbaiki">Diperbaiki</ion-select-option>
+      </ion-select>
+    </ion-item>
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
+      <ion-label position="floating">{{ dataBarang.status }} {{ dataBarang.status == 'Dibuang' ? 'kemana' :
+        (dataBarang.status == 'Dibeli' ? 'dimana' :
+        'kepada siapa') }}</ion-label>
+      <ion-input maxlength="15" autocapitalize="on"
+        placeholder="{{ dataBarang.status }} {{ dataBarang.status == 'Dibuang' ? 'kemana' : (dataBarang.status == 'Dibeli' ? 'dimana' : 'kepada siapa') }}"
+        type="text" [(ngModel)]="extend_status" (input)="countInputStatus()">
+      </ion-input>
+    </ion-item>
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+      <ion-label position="floating">Jumlah</ion-label>
+      <ion-input maxlength="10" autocapitalize="on" placeholder="(contoh: 1 pcs)" type="text"
+        [(ngModel)]="jumlah_barang" (input)="countInputJumlah()"></ion-input>
+    </ion-item>
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+      <ion-label position="floating">Letak Barang</ion-label>
+      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Dibawah kasur)" type="text"
+        [(ngModel)]="letak_barang" (input)="countInputLetak()"></ion-input>
+    </ion-item>
+    <ion-item fill="outline">
+      <ion-label position="floating">Keterangan</ion-label>
+      <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
+        [(ngModel)]="keterangan"></ion-textarea>
+    </ion-item>
+    <div class="flex justify-center">
+      <ion-datetime presentation="date-time" [(ngModel)]="jadwal_rencana">
+        <span slot="title">Jadwal Rencana</span>
+        <span slot="time-label">Pukul</span>
+      </ion-datetime>
+    </div>
+    <div>
+      <ion-item fill="outline">
+        <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --">
+          <ion-select-option value="Jadwal Rencana">Jadwal Rencana</ion-select-option>
+          <ion-select-option value="Isi Sendiri">Isi Sendiri</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <p class="p-0 mt-2 text-xs italic text-justify text-gray-500">*silahkan pilih jadwal notifikasi: sesuai "Jadwal
+        Rencana" atau
+        "Isi
+        Sendiri"</p>
+    </div>
+    <div class="flex justify-center" *ngIf="reminder == 'Isi Sendiri'">
+      <ion-datetime presentation="date-time" [(ngModel)]="jadwal_notifikasi">
+        <span slot="title">Jadwal Notifikasi</span>
+        <span slot="time-label">Pukul</span>
+      </ion-datetime>
+    </div>
+    <div *ngFor="let image of dataImage; let i = index;">
+      <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+        <img (click)="viewFull(true, i, 'webviewPath')" src="{{ image.webviewPath }}"
+          class="object-cover w-full h-full" />
+        <ion-buttons slot="primary" (click)="deleteImageFromDatabase(i)">
+          <ion-button class="absolute bg-white rounded-full top-2 right-2">
+            <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+      </div>
+    </div>
+    <div *ngIf="pickedPhoto" class="space-y-4">
+      <div *ngFor="let image of otherImage; let i = index;">
+        <div class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+          <img (click)="viewFull(true, i, 'webPath')" src="{{ image.webPath }}" class="object-cover w-full h-full" />
+          <ion-buttons slot="primary" (click)="deleteImageFromArray(i)">
+            <ion-button class="absolute bg-white rounded-full top-2 right-2">
+              <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </div>
+    </div>
+    <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"
+      (willDismiss)="viewFull(false, undefined, undefined)">
+      <ng-template>
+        <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
+          <ion-button>
+            <ion-icon name="close-outline" slot="icon-only" color="light"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <div class="flex items-center justify-center h-screen bg-black">
+          <div class="flex items-center">
+            <img src="{{ urlFullImage }}" />
+          </div>
+        </div>
+      </ng-template>
+    </ion-modal>
+    <div class="grid grid-cols-1 space-y-2">
+      <label class="text-sm font-bold tracking-wide text-gray-500">Upload Foto (Opsional)</label>
+      <div class="flex items-center justify-center w-full" (click)="pickGambar()">
+        <label class="flex flex-col w-full p-10 text-center border-4 border-dashed rounded-lg h-60 group">
+          <div class="flex flex-col items-center justify-center w-full h-full text-center">
+            <div class="flex flex-auto w-2/5 mx-auto -mt-10 max-h-48">
+              <img class="object-center has-mask h-36" src="../../../assets/images/upload.png">
+            </div>
+            <p class="text-gray-700 pointer-none"><span class="text-sm">Silahkan </span><a class="text-[#30a2ff]">pilih
+                file</a> foto yang ingin anda upload</p>
+          </div>
+        </label>
+      </div>
+    </div>
+  </div>
+</ion-content>
+<ion-fab slot="fixed" horizontal="end" vertical="bottom" class="m-4" (click)="saveToDatabase()">
+  <ion-fab-button>
+    <ion-icon name="save-outline" color="light"></ion-icon>
+  </ion-fab-button>
+</ion-fab>
