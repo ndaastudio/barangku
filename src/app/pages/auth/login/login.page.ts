@@ -18,6 +18,8 @@ export class LoginPage implements OnInit {
   nomor_telepon: any;
   password: any;
   registered_email: any;
+  isShowPw: boolean = false;
+  inputTypePw: string = 'password';
 
   constructor(private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
@@ -91,5 +93,15 @@ export class LoginPage implements OnInit {
   goToVerifLupaPw() {
     this.modalCtrl.dismiss();
     this.router.navigateByUrl('/verif-lupa-pw');
+  }
+
+  showHidePw() {
+    if (this.isShowPw) {
+      this.inputTypePw = 'password';
+      this.isShowPw = false;
+    } else {
+      this.inputTypePw = 'text';
+      this.isShowPw = true;
+    }
   }
 }

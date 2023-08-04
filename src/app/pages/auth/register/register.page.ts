@@ -19,6 +19,10 @@ export class RegisterPage implements OnInit {
   kode_daftar: any;
   setuju: any;
   isValidKodeDaftar: boolean = false;
+  isShowPw: boolean = false;
+  inputTypePw: string = 'password';
+  isShowConfirmPw: boolean = false;
+  inputTypeConfirmPw: string = 'password';
 
   constructor(private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -90,4 +94,27 @@ export class RegisterPage implements OnInit {
     await Browser.open({ url: url });
   }
 
+  syaratDanKetentuan() {
+    this.openBrowser('https://www.google.com');
+  }
+
+  showHidePw() {
+    if (this.isShowPw) {
+      this.inputTypePw = 'password';
+      this.isShowPw = false;
+    } else {
+      this.inputTypePw = 'text';
+      this.isShowPw = true;
+    }
+  }
+
+  showHideConfirmPw() {
+    if (this.isShowConfirmPw) {
+      this.inputTypeConfirmPw = 'password';
+      this.isShowConfirmPw = false;
+    } else {
+      this.inputTypeConfirmPw = 'text';
+      this.isShowConfirmPw = true;
+    }
+  }
 }

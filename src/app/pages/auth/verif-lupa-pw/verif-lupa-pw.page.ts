@@ -13,6 +13,10 @@ export class VerifLupaPwPage implements OnInit {
   kode_lupa_password: any;
   password_baru: any;
   konfirmasi_password_baru: any;
+  isShowPw: boolean = false;
+  inputTypePw: string = 'password';
+  isShowConfirmPw: boolean = false;
+  inputTypeConfirmPw: string = 'password';
 
   constructor(private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
@@ -51,4 +55,23 @@ export class VerifLupaPwPage implements OnInit {
     }
   }
 
+  showHidePw() {
+    if (this.isShowPw) {
+      this.inputTypePw = 'password';
+      this.isShowPw = false;
+    } else {
+      this.inputTypePw = 'text';
+      this.isShowPw = true;
+    }
+  }
+
+  showHideConfirmPw() {
+    if (this.isShowConfirmPw) {
+      this.inputTypeConfirmPw = 'password';
+      this.isShowConfirmPw = false;
+    } else {
+      this.inputTypeConfirmPw = 'text';
+      this.isShowConfirmPw = true;
+    }
+  }
 }

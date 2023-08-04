@@ -15,12 +15,32 @@
     </ion-item>
     <ion-item fill="outline">
       <ion-label position="floating">Password Baru</ion-label>
-      <ion-input placeholder="Password Baru" type="password" [(ngModel)]="password_baru"></ion-input>
+      <ion-input placeholder="Password Baru" type="{{ inputTypePw }}" [(ngModel)]="password_baru"></ion-input>
+      <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
+        <ion-button class="text-gray-500">
+          <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end" *ngIf="isShowPw" (click)="showHidePw()">
+        <ion-button class="text-gray-500">
+          <ion-icon name="eye-off-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-item>
     <ion-item fill="outline">
       <ion-label position="floating">Konfirmasi Password Baru</ion-label>
-      <ion-input placeholder="Konfirmasi Password Baru" type="password"
+      <ion-input placeholder="Konfirmasi Password Baru" type="{{ inputTypeConfirmPw }}"
         [(ngModel)]="konfirmasi_password_baru"></ion-input>
+      <ion-buttons slot="end" *ngIf="!isShowConfirmPw" (click)="showHideConfirmPw()">
+        <ion-button class="text-gray-500">
+          <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <ion-buttons slot="end" *ngIf="isShowConfirmPw" (click)="showHideConfirmPw()">
+        <ion-button class="text-gray-500">
+          <ion-icon name="eye-off-outline" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-buttons>
     </ion-item>
     <ion-button (click)="submitResetPassword()" expand="block" class="text-white">Reset Password</ion-button>
   </div>

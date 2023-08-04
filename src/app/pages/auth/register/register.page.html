@@ -12,10 +12,10 @@
       <ion-item fill="outline">
         <ion-label position="floating">Kode Daftar</ion-label>
         <ion-input placeholder="Kode Daftar" type="text" [(ngModel)]="kode_daftar"></ion-input>
-        <ion-button class="text-white ms-4" slot="end" (click)="cekKodeDaftar()">Verifikasi</ion-button>
       </ion-item>
-      <p class="text-sm text-gray-500">Belum punya kode daftar? <span (click)="hubungiAdmin()"
-          class="font-semibold text-[#30a2ff]">Hubungi admin</span></p>
+      <p class="text-sm text-gray-500 whitespace-normal">Dengan mendaftar, Anda menyetujui <span
+          (click)="syaratDanKetentuan()" class="font-semibold text-[#30a2ff]">syarat & ketentuan</span> yang berlaku</p>
+      <ion-button class="text-white" expand="block" (click)="cekKodeDaftar()">Verifikasi</ion-button>
     </div>
     <div class="space-y-4" *ngIf="isValidKodeDaftar">
       <ion-item fill="outline">
@@ -32,11 +32,32 @@
       </ion-item>
       <ion-item fill="outline">
         <ion-label position="floating">Password</ion-label>
-        <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+        <ion-input placeholder="Password" type="{{ inputTypePw }}" [(ngModel)]="password"></ion-input>
+        <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
+          <ion-button class="text-gray-500">
+            <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="isShowPw" (click)="showHidePw()">
+          <ion-button class="text-gray-500">
+            <ion-icon name="eye-off-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-item>
       <ion-item fill="outline">
         <ion-label position="floating">Konfirmasi Password</ion-label>
-        <ion-input placeholder="Konfirmasi Password" type="password" [(ngModel)]="konfirmasi_password"></ion-input>
+        <ion-input placeholder="Konfirmasi Password" type="{{ inputTypeConfirmPw }}"
+          [(ngModel)]="konfirmasi_password"></ion-input>
+        <ion-buttons slot="end" *ngIf="!isShowConfirmPw" (click)="showHideConfirmPw()">
+          <ion-button class="text-gray-500">
+            <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
+        <ion-buttons slot="end" *ngIf="isShowConfirmPw" (click)="showHideConfirmPw()">
+          <ion-button class="text-gray-500">
+            <ion-icon name="eye-off-outline" slot="icon-only"></ion-icon>
+          </ion-button>
+        </ion-buttons>
       </ion-item>
       <ion-checkbox labelPlacement="end" [(ngModel)]="setuju">
         <p class="text-gray-500 whitespace-normal">Saya setuju dengan syarat & kebijakan privasi <span
@@ -46,3 +67,10 @@
     </div>
   </div>
 </ion-content>
+<ion-footer class="ion-no-border ion-padding" *ngIf="!isValidKodeDaftar">
+  <div class="flex justify-center font-semibold">
+    <p class="text-gray-500">Belum punya kode daftar? <span (click)="hubungiAdmin()" class="text-[#30a2ff]">Hubungi
+        admin</span>
+    </p>
+  </div>
+</ion-footer>

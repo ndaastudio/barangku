@@ -9,7 +9,17 @@
         </ion-item>
         <ion-item fill="outline">
             <ion-label position="floating">Password</ion-label>
-            <ion-input placeholder="Password" type="password" [(ngModel)]="password"></ion-input>
+            <ion-input placeholder="Password" type="{{ inputTypePw }}" [(ngModel)]="password"></ion-input>
+            <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
+                <ion-button class="text-gray-500">
+                    <ion-icon name="eye-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+            </ion-buttons>
+            <ion-buttons slot="end" *ngIf="isShowPw" (click)="showHidePw()">
+                <ion-button class="text-gray-500">
+                    <ion-icon name="eye-off-outline" slot="icon-only"></ion-icon>
+                </ion-button>
+            </ion-buttons>
         </ion-item>
         <div class="flex justify-end">
             <p id="lupa-pw" class="font-semibold text-[#30a2ff]">Lupa password?</p>
