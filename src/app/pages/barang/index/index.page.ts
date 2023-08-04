@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
-import { formatDate, showAlert } from '../../../helpers/functions';
+import { formatDate, showAlert, truncateString } from '../../../helpers/functions';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/
 export class Tab1Page {
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
+  limitText: Function = truncateString;
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -62,6 +63,7 @@ export class Tab1Page {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Pilih',

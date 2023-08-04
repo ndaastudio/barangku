@@ -58,6 +58,7 @@ export class ShowBarangPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Ya',
@@ -70,7 +71,8 @@ export class ShowBarangPage implements OnInit {
             await this.notif.delete(this.id);
             await this.router.navigateByUrl('/tabs/barang');
             this.dataRefresh.refresh();
-          }
+          },
+          cssClass: '!text-red-500'
         }
       ]
     });
@@ -101,6 +103,7 @@ export class ShowBarangPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Pilih',

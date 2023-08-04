@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, AnimationController } from '@ionic/angular';
-import { showAlert } from 'src/app/helpers/functions';
+import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
 import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
@@ -29,6 +29,7 @@ export class TambahBarangPage implements OnInit {
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
+  getToday: string = getCurrentDateTime();
 
   constructor(private sqliteBarang: SQLiteBarang,
     private alertCtrl: AlertController,
@@ -44,7 +45,7 @@ export class TambahBarangPage implements OnInit {
   }
 
   async saveToDatabase() {
-    if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.keterangan && this.jadwal_rencana && this.reminder) {
+    if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.jadwal_rencana && this.reminder) {
       try {
         const isUpdate = await this.checkUpdate.isUpdate();
         const data = {
@@ -108,12 +109,14 @@ export class TambahBarangPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Ya',
           handler: () => {
             this.dataImage.splice(index, 1);
-          }
+          },
+          cssClass: '!text-red-500'
         }
       ]
     });
@@ -125,35 +128,35 @@ export class TambahBarangPage implements OnInit {
   }
 
   countInputNama() {
-    const maxLength = 15 - 1;
+    const maxLength = 50 - 1;
     const inputLength = this.nama_barang.length;
     if (inputLength > maxLength) {
       this.nama_barang = this.nama_barang.slice(0, maxLength);
     }
   }
   countInputKategori() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.kategori_lainnya.length;
     if (inputLength > maxLength) {
       this.kategori_lainnya = this.kategori_lainnya.slice(0, maxLength);
     }
   }
   countInputStatus() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.extend_status.length;
     if (inputLength > maxLength) {
       this.extend_status = this.extend_status.slice(0, maxLength);
     }
   }
   countInputJumlah() {
-    const maxLength = 10 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.jumlah_barang.length;
     if (inputLength > maxLength) {
       this.jumlah_barang = this.jumlah_barang.slice(0, maxLength);
     }
   }
   countInputLetak() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.letak_barang.length;
     if (inputLength > maxLength) {
       this.letak_barang = this.letak_barang.slice(0, maxLength);

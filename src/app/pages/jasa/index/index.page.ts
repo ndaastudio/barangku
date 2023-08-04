@@ -2,7 +2,7 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
-import { formatDate, showAlert } from '../../../helpers/functions';
+import { formatDate, showAlert, truncateString } from '../../../helpers/functions';
 import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa.service';
 
 @Component({
@@ -13,6 +13,7 @@ import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa
 export class Tab2Page {
   dataJasa: any = [];
   formatTanggal: Function = formatDate;
+  limitText: Function = truncateString;
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -62,6 +63,7 @@ export class Tab2Page {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Pilih',

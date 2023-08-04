@@ -94,7 +94,12 @@ export class Tab3Page {
       header: 'Keluar',
       message: 'Anda yakin ingin keluar?',
       buttons: [{
-        text: 'OK',
+        text: 'Batal',
+        role: 'cancel',
+        cssClass: '!text-gray-500'
+      },
+      {
+        text: 'Ya',
         handler: async () => {
           await alertKeluar.dismiss();
           try {
@@ -110,10 +115,6 @@ export class Tab3Page {
             await showAlert(this.alertCtrl, 'Error!', error.error.message);
           }
         }
-      },
-      {
-        text: 'Batal',
-        role: 'cancel',
       }]
     });
     await alertKeluar.present();

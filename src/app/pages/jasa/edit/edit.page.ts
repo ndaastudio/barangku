@@ -42,14 +42,6 @@ export class EditPage implements OnInit {
   async ngOnInit() {
     const data = await this.sqliteJasa.getById(this.id);
     this.dataJasa = data;
-    this.nama_jasa = data.nama_jasa;
-    this.kategori = data.kategori !== 'Opsi Lainnya' ? data.kategori : '';
-    this.kategori_lainnya = data.kategori;
-    this.jumlah_jasa = data.jumlah_jasa;
-    this.letak_jasa = data.letak_jasa;
-    this.keterangan = data.keterangan;
-    this.jadwal_rencana = data.jadwal_rencana;
-    this.jadwal_notifikasi = data.jadwal_notifikasi;
     const resultGambar = await this.sqliteJasa.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
       const loadedGambar = await this.photo.load(data.gambar);
@@ -97,6 +89,7 @@ export class EditPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Ya',
@@ -104,7 +97,8 @@ export class EditPage implements OnInit {
             await this.sqliteJasa.deleteGambarByName(this.dataImage[index].fileName);
             await this.photo.delete(this.dataImage[index].fileName);
             await this.dataImage.splice(index, 1);
-          }
+          },
+          cssClass: '!text-red-500'
         }
       ]
     });
@@ -119,12 +113,14 @@ export class EditPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Ya',
           handler: () => {
             this.otherImage.splice(index, 1);
-          }
+          },
+          cssClass: '!text-red-500'
         }
       ]
     });
@@ -136,28 +132,28 @@ export class EditPage implements OnInit {
   }
 
   countInputNama() {
-    const maxLength = 15 - 1;
+    const maxLength = 50 - 1;
     const inputLength = this.nama_jasa.length;
     if (inputLength > maxLength) {
       this.nama_jasa = this.nama_jasa.slice(0, maxLength);
     }
   }
   countInputKategori() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.kategori_lainnya.length;
     if (inputLength > maxLength) {
       this.kategori_lainnya = this.kategori_lainnya.slice(0, maxLength);
     }
   }
   countInputJumlah() {
-    const maxLength = 10 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.jumlah_jasa.length;
     if (inputLength > maxLength) {
       this.jumlah_jasa = this.jumlah_jasa.slice(0, maxLength);
     }
   }
   countInputLetak() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.letak_jasa.length;
     if (inputLength > maxLength) {
       this.letak_jasa = this.letak_jasa.slice(0, maxLength);

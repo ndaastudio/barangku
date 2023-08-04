@@ -85,9 +85,25 @@ export class RegisterPage implements OnInit {
     }
   }
 
-  hubungiAdmin() {
-    const waAdmin = `https://wa.me/6285214283748/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
-    this.openBrowser(waAdmin);
+  async hubungiAdmin() {
+    const alertHubungiAdmin = await this.alertCtrl.create({
+      header: 'Hubungi Admin',
+      message: 'Lanjutkan untuk menghubungi admin?',
+      buttons: [
+        {
+          text: 'Batal',
+          role: 'cancel',
+          cssClass: '!text-gray-500',
+        }, {
+          text: 'Ya',
+          handler: () => {
+            const waAdmin = `https://wa.me/6285214283748/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
+            this.openBrowser(waAdmin);
+          }
+        }
+      ]
+    });
+    await alertHubungiAdmin.present();
   }
 
   async openBrowser(url: string) {

@@ -11,11 +11,12 @@
   <div class="space-y-4">
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Nama Jasa</ion-label>
-      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Pijat Refleksi)" type="text"
+      <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Pijat Refleksi)" type="text"
         [(ngModel)]="nama_jasa" (input)="countInputNama()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
-      <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --">
+      <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --" okText="Pilih"
+        cancelText="Batal">
         <ion-select-option value="Jasa Pendidikan">Jasa Pendidikan</ion-select-option>
         <ion-select-option value="Jasa Kesehatan">Jasa Kesehatan</ion-select-option>
         <ion-select-option value="Jasa Kebersihan">Jasa Kebersihan</ion-select-option>
@@ -25,33 +26,34 @@
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter"
       *ngIf="kategori == 'Opsi Lainnya'">
       <ion-label position="floating">Kategori Lainnya</ion-label>
-      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Jasa Service)" type="text"
+      <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Jasa Service)" type="text"
         [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
-      <ion-input maxlength="10" autocapitalize="on" placeholder="(contoh: 1 kali)" type="text" [(ngModel)]="jumlah_jasa"
+      <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: 1 kali)" type="text" [(ngModel)]="jumlah_jasa"
         (input)="countInputJumlah()"></ion-input>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Letak Jasa</ion-label>
-      <ion-input maxlength="15" autocapitalize="on" placeholder="(contoh: Di kantor)" type="text"
+      <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Di kantor)" type="text"
         [(ngModel)]="letak_jasa" (input)="countInputLetak()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
-      <ion-label position="floating">Keterangan</ion-label>
+      <ion-label position="floating">Keterangan (Opsional)</ion-label>
       <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
         [(ngModel)]="keterangan"></ion-textarea>
     </ion-item>
     <div class="flex justify-center">
-      <ion-datetime presentation="date-time" [(ngModel)]="jadwal_rencana">
+      <ion-datetime hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_rencana">
         <span slot="title">Jadwal Rencana</span>
         <span slot="time-label">Pukul</span>
       </ion-datetime>
     </div>
     <div>
       <ion-item fill="outline">
-        <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --">
+        <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --" okText="Pilih"
+          cancelText="Batal">
           <ion-select-option value="Jadwal Rencana">Jadwal Rencana</ion-select-option>
           <ion-select-option value="Isi Sendiri">Isi Sendiri</ion-select-option>
         </ion-select>
@@ -62,13 +64,13 @@
         Sendiri"</p>
     </div>
     <div class="flex justify-center" *ngIf="reminder == 'Isi Sendiri'">
-      <ion-datetime presentation="date-time" [(ngModel)]="jadwal_notifikasi">
+      <ion-datetime hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_notifikasi">
         <span slot="title">Jadwal Notifikasi</span>
         <span slot="time-label">Pukul</span>
       </ion-datetime>
     </div>
     <div *ngFor="let image of dataImage; let i = index;">
-      <div *ngIf="pickedPhoto" class="flex overflow-hidden text-gray-700 bg-white h-52 rounded-xl bg-clip-border">
+      <div *ngIf="pickedPhoto" class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
         <img (click)="viewFull(true, i)" src="{{ image.webPath }}" class="object-cover w-full h-full" />
         <ion-buttons slot="primary" (click)="deleteImage(i)">
           <ion-button class="absolute bg-white rounded-full top-2 right-2">

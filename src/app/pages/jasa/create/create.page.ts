@@ -5,7 +5,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
-import { showAlert } from 'src/app/helpers/functions';
+import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
 import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 
 @Component({
@@ -27,6 +27,7 @@ export class TambahJasaPage implements OnInit {
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
+  getToday: string = getCurrentDateTime();
 
   constructor(private sqliteJasa: SQLiteJasa,
     private alertCtrl: AlertController,
@@ -42,7 +43,7 @@ export class TambahJasaPage implements OnInit {
   }
 
   async saveToDatabase() {
-    if (this.nama_jasa && this.kategori && this.jumlah_jasa && this.letak_jasa && this.keterangan && this.jadwal_rencana && this.reminder) {
+    if (this.nama_jasa && this.kategori && this.jumlah_jasa && this.letak_jasa && this.jadwal_rencana && this.reminder) {
       try {
         const isUpdate = await this.checkUpdate.isUpdate();
         const data = {
@@ -102,12 +103,14 @@ export class TambahJasaPage implements OnInit {
         {
           text: 'Batal',
           role: 'cancel',
+          cssClass: '!text-gray-500'
         },
         {
           text: 'Ya',
           handler: () => {
             this.dataImage.splice(index, 1);
-          }
+          },
+          cssClass: '!text-red-500'
         }
       ]
     });
@@ -119,28 +122,28 @@ export class TambahJasaPage implements OnInit {
   }
 
   countInputNama() {
-    const maxLength = 15 - 1;
+    const maxLength = 50 - 1;
     const inputLength = this.nama_jasa.length;
     if (inputLength > maxLength) {
       this.nama_jasa = this.nama_jasa.slice(0, maxLength);
     }
   }
   countInputKategori() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.kategori_lainnya.length;
     if (inputLength > maxLength) {
       this.kategori_lainnya = this.kategori_lainnya.slice(0, maxLength);
     }
   }
   countInputJumlah() {
-    const maxLength = 10 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.jumlah_jasa.length;
     if (inputLength > maxLength) {
       this.jumlah_jasa = this.jumlah_jasa.slice(0, maxLength);
     }
   }
   countInputLetak() {
-    const maxLength = 15 - 1;
+    const maxLength = 30 - 1;
     const inputLength = this.letak_jasa.length;
     if (inputLength > maxLength) {
       this.letak_jasa = this.letak_jasa.slice(0, maxLength);
