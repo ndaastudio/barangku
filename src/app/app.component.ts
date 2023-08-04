@@ -2,9 +2,9 @@ import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { Platform } from '@ionic/angular';
 import { App } from '@capacitor/app';
-import { DatabaseService } from 'src/services/Database/database.service';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { LocalNotifications } from '@capacitor/local-notifications';
+import { InitDbService } from './services/Database/SQLite/init-db.service';
 
 @Component({
   selector: 'app-root',
@@ -12,12 +12,12 @@ import { LocalNotifications } from '@capacitor/local-notifications';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private database: DatabaseService,
+  constructor(private sqlite: InitDbService,
     private platform: Platform,
     private router: Router) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/tab1' || this.router.url === '/tabs/tab2' || this.router.url === '/tabs/tab3' || this.router.url === '/update') {
-        App.exitApp();
+      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/barang' || this.router.url === '/tabs/jasa' || this.router.url === '/tabs/profil' || this.router.url === '/update') {
+        App.minimizeApp();
       }
     });
     const setStatusBarStyleDark = async () => {
@@ -37,6 +37,6 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    this.database.init();
+    this.sqlite.init();
   }
 }

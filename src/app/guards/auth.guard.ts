@@ -1,13 +1,13 @@
 import { Injectable } from '@angular/core';
 import { CanActivate, Router } from '@angular/router';
-import { StorageService } from 'src/services/LocalStorage/storage.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthGuard implements CanActivate {
 
-  constructor(private storageService: StorageService,
+  constructor(private localStorage: LocalStorageService,
     private router: Router) { }
 
   canActivate(): Promise<boolean> {
@@ -15,9 +15,9 @@ export class AuthGuard implements CanActivate {
   }
 
   async isLoggedIn(): Promise<boolean> {
-    const token = await this.storageService.get('access_token');
+    const token = await this.localStorage.get('access_token');
     if (token) {
-      this.router.navigateByUrl('/tabs/tab1');
+      this.router.navigateByUrl('/tabs/barang');
       return false;
     }
     return true;
