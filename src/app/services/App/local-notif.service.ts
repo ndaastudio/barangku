@@ -15,6 +15,7 @@ export class LocalNotifService {
     if (this.platform.is("android")) {
       if ((await LocalNotifications.checkPermissions()).display !== "granted") {
         await LocalNotifications.requestPermissions();
+        await this.init();
       }
       const list = await LocalNotifications.listChannels();
       if (list.channels.length < 2) {
