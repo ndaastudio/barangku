@@ -29,3 +29,22 @@ export async function showLoading(loadingCtrl: LoadingController, message: strin
     });
     await loading.present();
 }
+
+export function truncateString(str: string, maxLength: number): string {
+    if (str.length <= maxLength) {
+        return str;
+    } else {
+        return `${str.substring(0, maxLength)}...`;
+    }
+}
+
+export function getCurrentDateTime(): string {
+    const today = new Date();
+    const year = today.getFullYear();
+    const month = String(today.getMonth() + 1).padStart(2, '0');
+    const day = String(today.getDate()).padStart(2, '0');
+    const hours = String(today.getHours()).padStart(2, '0');
+    const minutes = String(today.getMinutes()).padStart(2, '0');
+    const seconds = String(today.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
