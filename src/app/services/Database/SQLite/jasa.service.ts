@@ -106,7 +106,7 @@ export class JasaService {
 
   public async getAll() {
     try {
-      const sql = `SELECT * FROM jasa;`;
+      const sql = `SELECT * FROM jasa ORDER BY id DESC;`;
       const results = await this.db.executeSql(sql, []);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
