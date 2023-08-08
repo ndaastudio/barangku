@@ -12,15 +12,18 @@ export class PhotoService {
 
   constructor(private platform: Platform) {
     this.initPermissions();
-    this.initDirectory();
   }
 
   async initPermissions() {
     if (this.platform.is('android')) {
       const cameraPermission = await Camera.checkPermissions();
-      if (!cameraPermission.camera || !cameraPermission.photos) {
+      const storagePermission = await Filesystem.checkPermissions();
+      if (!cameraPermission.camera || !cameraPermission.photos || !storagePermission.publicStorage) {
         await Camera.requestPermissions();
+        await Filesystem.requestPermissions();
+        await this.initPermissions();
       }
+      await this.initDirectory();
     }
   }
 
