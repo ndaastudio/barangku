@@ -20,6 +20,7 @@ export class BarangService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             nama_barang TEXT,
             kategori TEXT,
+            kategori_lainnya TEXT DEFAULT NULL,
             status TEXT,
             extend_status TEXT,
             jumlah_barang TEXT,
@@ -27,6 +28,7 @@ export class BarangService {
             keterangan TEXT,
             jadwal_rencana DATETIME,
             jadwal_notifikasi DATETIME,
+            reminder TEXT,
             progress INTEGER DEFAULT 0
         );`, []);
     } catch (error) {
@@ -86,8 +88,8 @@ export class BarangService {
 
   public async create(data: any) {
     try {
-      const sql = `INSERT INTO barang (nama_barang, kategori, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi]);
+      const sql = `INSERT INTO barang (nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder]);
       return results.insertId;
     } catch (error) {
       alert(error);
@@ -97,8 +99,8 @@ export class BarangService {
 
   public async createWithCustomId(data: any) {
     try {
-      const sql = `INSERT INTO barang (id, nama_barang, kategori, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.id_barang, data.nama_barang, data.kategori, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress]);
+      const sql = `INSERT INTO barang (id, nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, reminder, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id_barang, data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress]);
       return results;
     } catch (error) {
       alert(error);
@@ -164,8 +166,8 @@ export class BarangService {
 
   public async update(data: any) {
     try {
-      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, progress = ? WHERE id = ?;`;
-      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress, data.id]);
+      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, reminder = ?, progress = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress, data.id]);
       return true;
     } catch (error) {
       alert(error);

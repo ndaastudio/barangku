@@ -95,8 +95,8 @@ export class JasaService {
 
   public async createWithCustomId(data: any) {
     try {
-      const sql = `INSERT INTO jasa (id, nama_jasa, kategori, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.id_jasa, data.nama_jasa, data.kategori, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.progress]);
+      const sql = `INSERT INTO jasa (id, nama_jasa, kategori, kategori_lainnya, jumlah_jasa, letak_jasa, keterangan, jadwal_rencana, jadwal_notifikasi, reminder, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id_jasa, data.nama_jasa, data.kategori, data.kategori_lainnya, data.jumlah_jasa, data.letak_jasa, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress]);
       return results;
     } catch (error) {
       alert(error);

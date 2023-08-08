@@ -98,6 +98,7 @@ export class SyncDataService {
         akun_id: profile.id,
         nama_barang: barang.nama_barang,
         kategori: barang.kategori,
+        kategori_lainnya: barang.kategori_lainnya,
         status: barang.status,
         extend_status: barang.extend_status,
         jumlah_barang: barang.jumlah_barang,
@@ -105,6 +106,7 @@ export class SyncDataService {
         keterangan: barang.keterangan,
         jadwal_rencana: barang.jadwal_rencana,
         jadwal_notifikasi: barang.jadwal_notifikasi,
+        reminder: barang.reminder,
         progress: barang.progress,
       };
       await this.apiBarang.upData(data, token);
@@ -116,11 +118,13 @@ export class SyncDataService {
         akun_id: profile.id,
         nama_jasa: jasa.nama_jasa,
         kategori: jasa.kategori,
+        kategori_lainnya: jasa.kategori_lainnya,
         jumlah_jasa: jasa.jumlah_jasa,
         letak_jasa: jasa.letak_jasa,
         keterangan: jasa.keterangan,
         jadwal_rencana: jasa.jadwal_rencana,
         jadwal_notifikasi: jasa.jadwal_notifikasi,
+        reminder: jasa.reminder,
         progress: jasa.progress,
       };
       await this.apiJasa.upData(data, token);
