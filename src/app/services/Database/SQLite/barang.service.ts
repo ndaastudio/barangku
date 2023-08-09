@@ -197,28 +197,6 @@ export class BarangService {
     }
   }
 
-  public async deleteAll() {
-    try {
-      const sql = `DELETE FROM barang;`;
-      await this.db.executeSql(sql, []);
-      return true;
-    } catch (error) {
-      alert(error);
-      return false;
-    }
-  }
-
-  public async deleteAllGambar() {
-    try {
-      const sql = `DELETE FROM gambar_barang;`;
-      await this.db.executeSql(sql, []);
-      return true;
-    } catch (error) {
-      alert(error);
-      return false;
-    }
-  }
-
   public async search(keyword: string) {
     try {
       const sql = `SELECT * FROM barang WHERE nama_barang LIKE ? OR kategori LIKE ?;`;

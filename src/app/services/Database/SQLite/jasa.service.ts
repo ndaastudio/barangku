@@ -171,28 +171,6 @@ export class JasaService {
     }
   }
 
-  public async deleteAll() {
-    try {
-      const sql = `DELETE FROM jasa;`;
-      await this.db.executeSql(sql, []);
-      return true;
-    } catch (error) {
-      alert(error);
-      return false;
-    }
-  }
-
-  public async deleteAllGambar() {
-    try {
-      const sql = `DELETE FROM gambar_jasa;`;
-      await this.db.executeSql(sql, []);
-      return true;
-    } catch (error) {
-      alert(error);
-      return false;
-    }
-  }
-
   public async deleteById(id: number) {
     try {
       const sql = `DELETE FROM jasa WHERE id = ?;`;
