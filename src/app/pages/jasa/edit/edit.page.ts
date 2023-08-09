@@ -5,6 +5,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa.service';
+import { getCurrentDateTime } from 'src/app/helpers/functions';
 
 @Component({
   selector: 'app-edit',
@@ -14,20 +15,21 @@ import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa
 export class EditPage implements OnInit {
   id: any = this.route.snapshot.paramMap.get('id');
   dataJasa: any = [];
-  nama_jasa: any;
-  kategori: any;
-  kategori_lainnya: any;
-  jumlah_jasa: any;
-  letak_jasa: any;
-  keterangan: any;
-  jadwal_rencana: any;
-  jadwal_notifikasi: any;
-  reminder: any;
+  nama_jasa: any = null;
+  kategori: any = null;
+  kategori_lainnya: any = null;
+  jumlah_jasa: any = null;
+  letak_jasa: any = null;
+  keterangan: any = null;
+  jadwal_rencana: any = null;
+  jadwal_notifikasi: any = null;
+  reminder: any = null;
   pickedPhoto: boolean = false;
   dataImage: any = [];
   otherImage: any = [];
   isViewFull: boolean = false;
-  urlFullImage: any;
+  urlFullImage: any = null;
+  getToday: string = getCurrentDateTime();
 
   constructor(private sqliteJasa: SQLiteJasa,
     private dataRefresh: DataRefreshService,
@@ -42,6 +44,15 @@ export class EditPage implements OnInit {
   async ngOnInit() {
     const data = await this.sqliteJasa.getById(this.id);
     this.dataJasa = data;
+    this.nama_jasa = data.nama_jasa;
+    this.kategori = data.kategori;
+    this.kategori_lainnya = data.kategori_lainnya;
+    this.jumlah_jasa = data.jumlah_jasa;
+    this.letak_jasa = data.letak_jasa;
+    this.keterangan = data.keterangan;
+    this.jadwal_rencana = data.jadwal_rencana;
+    this.jadwal_notifikasi = data.jadwal_notifikasi;
+    this.reminder = data.reminder;
     const resultGambar = await this.sqliteJasa.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
       const loadedGambar = await this.photo.load(data.gambar);
@@ -57,12 +68,14 @@ export class EditPage implements OnInit {
       await this.notif.create('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, this.id, new Date(date.getTime()), `/jasa/show/${this.id}`);
     }
     this.dataJasa.nama_jasa = this.nama_jasa;
-    this.dataJasa.kategori = this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori;
+    this.dataJasa.kategori = this.kategori;
+    this.dataJasa.kategori_lainnya = this.kategori_lainnya;
     this.dataJasa.jumlah_jasa = this.jumlah_jasa;
     this.dataJasa.letak_jasa = this.letak_jasa;
     this.dataJasa.keterangan = this.keterangan;
     this.dataJasa.jadwal_rencana = this.jadwal_rencana;
     this.dataJasa.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
+    this.dataJasa.reminder = this.reminder;
     await this.sqliteJasa.update(this.dataJasa);
     if (this.pickedPhoto) {
       this.otherImage.forEach(async (dataGambar: any) => {

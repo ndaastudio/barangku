@@ -12,11 +12,11 @@
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Nama Jasa</ion-label>
       <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Pijat Refleksi)" type="text"
-        [(ngModel)]="nama_jasa" (input)="countInputNama()" [value]="dataJasa.nama_jasa"></ion-input>
+        [(ngModel)]="nama_jasa" (input)="countInputNama()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
       <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --" okText="Pilih"
-        cancelText="Batal" [value]="dataJasa.kategori">
+        cancelText="Batal">
         <ion-select-option value="Jasa Pendidikan">Jasa Pendidikan</ion-select-option>
         <ion-select-option value="Jasa Kesehatan">Jasa Kesehatan</ion-select-option>
         <ion-select-option value="Jasa Kebersihan">Jasa Kebersihan</ion-select-option>
@@ -27,26 +27,25 @@
       *ngIf="kategori == 'Opsi Lainnya'">
       <ion-label position="floating">Kategori Lainnya</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Jasa Service)" type="text"
-        [(ngModel)]="kategori_lainnya" (input)="countInputKategori()" [value]="dataJasa.kategori_lainnya"></ion-input>
+        [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: 1 kali)" type="text" [(ngModel)]="jumlah_jasa"
-        (input)="countInputJumlah()" [value]="dataJasa.jumlah_jasa"></ion-input>
+        (input)="countInputJumlah()"></ion-input>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Letak Jasa</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Di kantor)" type="text"
-        [(ngModel)]="letak_jasa" (input)="countInputLetak()" [value]="dataJasa.letak_jasa"></ion-input>
+        [(ngModel)]="letak_jasa" (input)="countInputLetak()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
       <ion-label position="floating">Keterangan (Opsional)</ion-label>
-      <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text" [(ngModel)]="keterangan"
-        [value]="dataJasa.keterangan"></ion-textarea>
+      <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
+        [(ngModel)]="keterangan"></ion-textarea>
     </ion-item>
     <div class="flex justify-center">
-      <ion-datetime hourCycle="h24" [min]="dataJasa.jadwal_rencana" presentation="date-time"
-        [(ngModel)]="jadwal_rencana" [value]="dataJasa.jadwal_rencana">
+      <ion-datetime hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_rencana">
         <span slot="title">Jadwal Rencana</span>
         <span slot="time-label">Pukul</span>
       </ion-datetime>
@@ -65,8 +64,7 @@
         Sendiri"</p>
     </div>
     <div class="flex justify-center" *ngIf="reminder == 'Isi Sendiri'">
-      <ion-datetime hourCycle="h24" [min]="dataJasa.jadwal_notifikasi" presentation="date-time"
-        [(ngModel)]="jadwal_notifikasi" [value]="dataJasa.jadwal_notifikasi">
+      <ion-datetime hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_notifikasi">
         <span slot="title">Jadwal Notifikasi</span>
         <span slot="time-label">Pukul</span>
       </ion-datetime>

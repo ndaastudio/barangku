@@ -10,13 +10,13 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
   styleUrls: ['./edit.page.scss'],
 })
 export class EditProfilPage implements OnInit {
-  nama: any;
-  email: any;
-  nomor_telepon: any;
-  jenis_akun: any;
-  password_lama: any;
-  password_baru: any;
-  konfirmasi_password_baru: any;
+  nama: any = null;
+  email: any = null;
+  nomor_telepon: any = null;
+  jenis_akun: any = null;
+  password_lama: any = null;
+  password_baru: any = null;
+  konfirmasi_password_baru: any = null;
 
   constructor(private modalCtrl: ModalController,
     private localStorage: LocalStorageService,
@@ -47,9 +47,9 @@ export class EditProfilPage implements OnInit {
           konfirmasi_password_baru: this.konfirmasi_password_baru,
         }
         const results = await this.auth.gantiPw(data, token);
-        this.password_lama = '';
-        this.password_baru = '';
-        this.konfirmasi_password_baru = '';
+        this.password_lama = null;
+        this.password_baru = null;
+        this.konfirmasi_password_baru = null;
         await this.loadingCtrl.dismiss();
         await this.modalCtrl.dismiss();
         await showAlert(this.alertCtrl, 'Berhasil!', results.message);

@@ -1,12 +1,12 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { formatDate, showAlert, showLoading } from '../../../helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
 import { SyncDataService } from 'src/app/services/App/sync-data.service';
+import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 
 @Component({
   selector: 'app-index',
@@ -26,18 +26,11 @@ export class Tab3Page {
     private localStorage: LocalStorageService,
     private auth: AuthService,
     private notif: LocalNotifService,
-    private dataRefresh: DataRefreshService,
-    private sync: SyncDataService,) {
+    private sync: SyncDataService,
+    private dataRefresh: DataRefreshService,) {
   }
 
   async ngOnInit() {
-    this.initGetData();
-    this.dataRefresh.refreshedData.subscribe(() => {
-      this.initGetData();
-    });
-  }
-
-  async initGetData() {
     const profile = await this.localStorage.get('profile');
     this.nama = profile.nama;
     this.email = profile.email;
@@ -62,6 +55,7 @@ export class Tab3Page {
             await showLoading(this.loadingCtrl, 'Loading...');
             await this.sync.updateDataLocal();
             await this.loadingCtrl.dismiss();
+            await this.ngOnInit();
             await showAlert(this.alertCtrl, 'Berhasil!', 'Data di aplikasi sudah sinkron dengan data di server');
             this.dataRefresh.refresh();
           } catch (error: any) {
