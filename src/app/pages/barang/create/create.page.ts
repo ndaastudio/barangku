@@ -14,22 +14,32 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
   styleUrls: ['./create.page.scss'],
 })
 export class TambahBarangPage implements OnInit {
-  nama_barang: any;
-  kategori: any;
-  kategori_lainnya: any;
-  status: any;
-  extend_status: any;
-  jumlah_barang: any;
-  letak_barang: any;
-  keterangan: any;
-  jadwal_rencana: any;
-  jadwal_notifikasi: any;
-  reminder: any;
+  nama_barang: any = null;
+  kategori: any = null;
+  kategori_lainnya: any = null;
+  status: any = null;
+  extend_status: any = null;
+  jumlah_barang: any = null;
+  letak_barang: any = null;
+  keterangan: any = null;
+  jadwal_rencana: any = null;
+  jadwal_notifikasi: any = null;
+  reminder: any = null;
   pickedPhoto: boolean = false;
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
   getToday: string = getCurrentDateTime();
+  optionsStatus: any = {
+    Dibeli: 'dimana',
+    Dijual: 'kepada siapa',
+    Disedekahkan: 'kepada siapa',
+    Diberikan: 'kepada siapa',
+    Dihadiahkan: 'kepada siapa',
+    Dibuang: 'kemana',
+    Dipinjamkan: 'kepada siapa',
+    Diperbaiki: 'dimana',
+  }
 
   constructor(private sqliteBarang: SQLiteBarang,
     private alertCtrl: AlertController,
@@ -50,14 +60,16 @@ export class TambahBarangPage implements OnInit {
         const isUpdate = await this.checkUpdate.isUpdate();
         const data = {
           nama_barang: this.nama_barang,
-          kategori: this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori,
+          kategori: this.kategori,
+          kategori_lainnya: this.kategori_lainnya,
           status: this.status,
-          extend_status: this.status == 'Dibuang' ? 'ke ' : (this.status == 'Dibeli' ? 'di ' : 'kepada ') + this.extend_status,
+          extend_status: this.extend_status,
           jumlah_barang: this.jumlah_barang,
           letak_barang: this.letak_barang,
           keterangan: this.keterangan,
           jadwal_rencana: this.jadwal_rencana,
           jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
+          reminder: this.reminder
         };
         const idBarang = await this.sqliteBarang.create(data);
         if (this.pickedPhoto) {
@@ -68,19 +80,21 @@ export class TambahBarangPage implements OnInit {
           });
         }
         const date = new Date(data.jadwal_notifikasi);
-        await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, idBarang, new Date(date.getTime()), `/barang/show/${idBarang}`);
-        this.nama_barang = '';
-        this.kategori = '';
-        this.status = '';
-        this.extend_status = '';
-        this.jumlah_barang = '';
-        this.letak_barang = '';
-        this.keterangan = '';
-        this.jadwal_rencana = '';
-        this.reminder = '';
-        this.jadwal_notifikasi = '';
-        this.pickedPhoto = false;
-        this.dataImage = [];
+        await this.notif.create('1', 'Pengingat!', `Jangan lupa ${data.nama_barang.toLowerCase()} ${data.status.toLowerCase()}`, idBarang, new Date(date.getTime()), `/barang/show/${idBarang}`).then(() => {
+          this.nama_barang = null;
+          this.kategori = null;
+          this.kategori_lainnya = null;
+          this.status = null;
+          this.extend_status = null;
+          this.jumlah_barang = null;
+          this.letak_barang = null;
+          this.keterangan = null;
+          this.jadwal_rencana = null;
+          this.jadwal_notifikasi = null;
+          this.reminder = null;
+          this.pickedPhoto = false;
+          this.dataImage = [];
+        });
         if (isUpdate) {
           await this.router.navigateByUrl('/update');
         } else {
