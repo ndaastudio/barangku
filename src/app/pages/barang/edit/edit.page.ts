@@ -5,6 +5,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
+import { getCurrentDateTime } from 'src/app/helpers/functions';
 
 @Component({
   selector: 'app-edit',
@@ -14,22 +15,33 @@ import { PhotoService } from 'src/app/services/App/photo.service';
 export class EditPage implements OnInit {
   id: any = this.route.snapshot.paramMap.get('id');
   dataBarang: any = [];
-  nama_barang: any;
-  kategori: any;
-  kategori_lainnya: any;
-  status: any;
-  extend_status: any;
-  jumlah_barang: any;
-  letak_barang: any;
-  keterangan: any;
-  jadwal_rencana: any;
-  jadwal_notifikasi: any;
-  reminder: any;
+  nama_barang: any = null;
+  kategori: any = null;
+  kategori_lainnya: any = null;
+  status: any = null;
+  extend_status: any = null;
+  jumlah_barang: any = null;
+  letak_barang: any = null;
+  keterangan: any = null;
+  jadwal_rencana: any = null;
+  jadwal_notifikasi: any = null;
+  reminder: any = null;
   pickedPhoto: boolean = false;
   dataImage: any = [];
   otherImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
+  getToday: string = getCurrentDateTime();
+  optionsStatus: any = {
+    Dibeli: 'dimana',
+    Dijual: 'kepada siapa',
+    Disedekahkan: 'kepada siapa',
+    Diberikan: 'kepada siapa',
+    Dihadiahkan: 'kepada siapa',
+    Dibuang: 'kemana',
+    Dipinjamkan: 'kepada siapa',
+    Diperbaiki: 'dimana',
+  }
 
   constructor(private sqliteBarang: SQLiteBarang,
     private dataRefresh: DataRefreshService,
@@ -44,6 +56,17 @@ export class EditPage implements OnInit {
   async ngOnInit() {
     const data = await this.sqliteBarang.getById(this.id);
     this.dataBarang = data;
+    this.nama_barang = data.nama_barang;
+    this.kategori = data.kategori;
+    this.kategori_lainnya = data.kategori_lainnya;
+    this.status = data.status;
+    this.extend_status = data.extend_status;
+    this.jumlah_barang = data.jumlah_barang;
+    this.letak_barang = data.letak_barang;
+    this.keterangan = data.keterangan;
+    this.jadwal_rencana = data.jadwal_rencana;
+    this.jadwal_notifikasi = data.jadwal_notifikasi;
+    this.reminder = data.reminder;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
       const loadedGambar = await this.photo.load(data.gambar);
@@ -59,14 +82,16 @@ export class EditPage implements OnInit {
       await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
     }
     this.dataBarang.nama_barang = this.nama_barang;
-    this.dataBarang.kategori = this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori;
+    this.dataBarang.kategori = this.kategori;
+    this.dataBarang.kategori_lainnya = this.kategori_lainnya;
     this.dataBarang.status = this.status;
-    this.dataBarang.extend_status = this.status == 'Dibuang' ? 'ke ' : (this.status == 'Dibeli' ? 'di ' : 'kepada ') + this.extend_status;
+    this.dataBarang.extend_status = this.extend_status;
     this.dataBarang.jumlah_barang = this.jumlah_barang;
     this.dataBarang.letak_barang = this.letak_barang;
     this.dataBarang.keterangan = this.keterangan;
     this.dataBarang.jadwal_rencana = this.jadwal_rencana;
     this.dataBarang.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
+    this.dataBarang.reminder = this.reminder;
     await this.sqliteBarang.update(this.dataBarang);
     if (this.pickedPhoto) {
       this.otherImage.forEach(async (dataGambar: any) => {
