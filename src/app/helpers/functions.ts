@@ -12,15 +12,20 @@ export function formatDate(date: string) {
     }
 }
 
-export async function showAlert(alertCtrl: AlertController, header: string, message: string) {
-    const alert = await alertCtrl.create({
-        header: header,
-        message: message,
-        buttons: [{
-            text: 'OK',
-        }]
+export async function showAlert(alertCtrl: AlertController, header: string, message: string): Promise<void> {
+    return new Promise<void>(async (resolve) => {
+        const alert = await alertCtrl.create({
+            header: header,
+            message: message,
+            buttons: [{
+                text: 'OK',
+                handler: () => {
+                    resolve();
+                }
+            }]
+        });
+        await alert.present();
     });
-    await alert.present();
 }
 
 export async function showLoading(loadingCtrl: LoadingController, message: string) {
