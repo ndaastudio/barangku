@@ -48,16 +48,12 @@ export class SyncDataService {
       gambarJasa: server.data.gambar_jasa,
     }
     dataServer.barang.forEach(async (barang: any) => {
-      try {
-        await this.sqliteBarang.deleteById(barang.id_barang);
-        await this.notif.delete(barang.id_barang);
-        await this.sqliteBarang.createWithCustomId(barang);
-        const date = new Date(barang.jadwal_notifikasi);
-        await this.notif.delete(barang.id_barang);
-        await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id_barang, new Date(date.getTime()), `/barang/show/${barang.id_barang}`);
-      } catch (error) {
-        alert(error);
-      }
+      await this.sqliteBarang.deleteById(barang.id_barang);
+      await this.notif.delete(barang.id_barang);
+      await this.sqliteBarang.createWithCustomId(barang);
+      const date = new Date(barang.jadwal_notifikasi);
+      await this.notif.delete(barang.id_barang);
+      await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id_barang, new Date(date.getTime()), `/barang/show/${barang.id_barang}`);
     });
     dataServer.jasa.forEach(async (jasa: any) => {
       await this.sqliteJasa.deleteById(jasa.id_jasa);
@@ -66,12 +62,10 @@ export class SyncDataService {
       const date = new Date(jasa.jadwal_notifikasi);
       this.notif.create('2', 'Pengingat!', `Jangan lupa ${jasa.nama_jasa.toLowerCase()}`, jasa.id_jasa, new Date(date.getTime()), `/jasa/show/${jasa.id_jasa}`);
     });
-    await this.sqliteBarang.deleteAllGambar();
     dataServer.gambarBarang.forEach(async (gambarBarang: any) => {
       await this.sqliteBarang.deleteGambarById(gambarBarang.id_gambar_barang);
       await this.sqliteBarang.createGambar(gambarBarang.barang_id, gambarBarang.gambar);
     });
-    await this.sqliteJasa.deleteAllGambar();
     dataServer.gambarJasa.forEach(async (gambarJasa: any) => {
       await this.sqliteJasa.deleteGambarById(gambarJasa.id_gambar_jasa);
       await this.sqliteJasa.createGambar(gambarJasa.jasa_id, gambarJasa.gambar);
