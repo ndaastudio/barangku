@@ -11,13 +11,13 @@ import { showAlert, showLoading } from 'src/app/helpers/functions';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
-  nama: any;
-  email: any;
-  nomor_telepon: any;
-  password: any;
-  konfirmasi_password: any;
-  kode_daftar: any;
-  setuju: any;
+  nama: any = null;
+  email: any = null;
+  nomor_telepon: any = null;
+  password: any = null;
+  konfirmasi_password: any = null;
+  kode_daftar: any = null;
+  setuju: any = null;
   isValidKodeDaftar: boolean = false;
   isShowPw: boolean = false;
   inputTypePw: string = 'password';
@@ -46,13 +46,14 @@ export class RegisterPage implements OnInit {
               password: this.password,
             };
             const results = await this.auth.register(data);
-            this.nama = '';
-            this.password = '';
-            this.konfirmasi_password = '';
+            this.nama = null;
+            this.password = null;
+            this.konfirmasi_password = null;
             this.setuju = false;
             await this.loadingCtrl.dismiss();
-            await showAlert(this.alertCtrl, 'Berhasil!', results.message);
-            await this.router.navigateByUrl('/login');
+            await showAlert(this.alertCtrl, 'Berhasil!', results.message).then(() => {
+              this.router.navigateByUrl('/login');
+            });
           } catch (error: any) {
             await this.loadingCtrl.dismiss();
             await showAlert(this.alertCtrl, 'Error!', error.error.message);

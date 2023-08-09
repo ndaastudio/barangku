@@ -10,9 +10,9 @@ import { AuthService } from 'src/app/services/API/auth.service';
   styleUrls: ['./verif-lupa-pw.page.scss'],
 })
 export class VerifLupaPwPage implements OnInit {
-  kode_lupa_password: any;
-  password_baru: any;
-  konfirmasi_password_baru: any;
+  kode_lupa_password: any = null;
+  password_baru: any = null;
+  konfirmasi_password_baru: any = null;
   isShowPw: boolean = false;
   inputTypePw: string = 'password';
   isShowConfirmPw: boolean = false;
@@ -37,12 +37,13 @@ export class VerifLupaPwPage implements OnInit {
             password_baru: this.password_baru,
           };
           const results = await this.auth.verifKodeLupaPw(data);
-          this.kode_lupa_password = '';
-          this.password_baru = '';
-          this.konfirmasi_password_baru = '';
+          this.kode_lupa_password = null;
+          this.password_baru = null;
+          this.konfirmasi_password_baru = null;
           await this.loadingCtrl.dismiss();
-          await showAlert(this.alertCtrl, 'Berhasil!', results.message);
-          await this.router.navigateByUrl('/login');
+          await showAlert(this.alertCtrl, 'Berhasil!', results.message).then(() => {
+            this.router.navigateByUrl('/login');
+          });
         } catch (error: any) {
           await this.loadingCtrl.dismiss();
           await showAlert(this.alertCtrl, 'Error!', error.error.message);

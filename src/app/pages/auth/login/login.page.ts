@@ -15,9 +15,9 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
-  nomor_telepon: any;
-  password: any;
-  registered_email: any;
+  nomor_telepon: any = null;
+  password: any = null;
+  registered_email: any = null;
   isShowPw: boolean = false;
   inputTypePw: string = 'password';
 
@@ -55,8 +55,8 @@ export class LoginPage implements OnInit {
         });
         this.localStorage.set('access_token', results.access_token);
         this.localStorage.set('profile', results.data);
-        this.nomor_telepon = '';
-        this.password = '';
+        this.nomor_telepon = null;
+        this.password = null;
         await this.loadingCtrl.dismiss();
         await this.router.navigateByUrl('/tabs/barang');
       } catch (error: any) {
@@ -76,11 +76,12 @@ export class LoginPage implements OnInit {
           email: this.registered_email
         };
         const results = await this.auth.sendKodeLupaPw(data);
-        this.registered_email = '';
+        this.registered_email = null;
         await this.loadingCtrl.dismiss();
         await this.modalCtrl.dismiss();
-        await showAlert(this.alertCtrl, 'Berhasil!', results.message);
-        await this.router.navigateByUrl('/verif-lupa-pw');
+        await showAlert(this.alertCtrl, 'Berhasil!', results.message).then(() => {
+          this.router.navigateByUrl('/verif-lupa-pw');
+        });
       } catch (error: any) {
         await this.loadingCtrl.dismiss();
         await showAlert(this.alertCtrl, 'Error!', error.error.message);
