@@ -43,11 +43,9 @@
       </ion-select>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
-      <ion-label position="floating">{{ status }} {{ status == 'Dibuang' ? 'kemana' : (status == 'Dibeli' ? 'dimana' :
-        'kepada siapa') }}</ion-label>
-      <ion-input maxlength="30"
-        placeholder="{{ status }} {{ status == 'Dibuang' ? 'kemana' : (status == 'Dibeli' ? 'dimana' : 'kepada siapa') }}"
-        type="text" [(ngModel)]="extend_status" (input)="countInputStatus()"></ion-input>
+      <ion-label position="floating">{{ status }} {{ optionsStatus[status] }}</ion-label>
+      <ion-input autocapitalize="on" maxlength="30" placeholder="{{ status }} {{ optionsStatus[status] }}" type="text"
+        [(ngModel)]="extend_status" (input)="countInputStatus()"></ion-input>
     </ion-item>
     <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
