@@ -14,15 +14,15 @@ import { CheckUpdateService } from 'src/app/services/App/check-update.service';
   styleUrls: ['./create.page.scss'],
 })
 export class TambahJasaPage implements OnInit {
-  nama_jasa: any;
-  kategori: any;
-  kategori_lainnya: any;
-  jumlah_jasa: any;
-  letak_jasa: any;
-  keterangan: any;
-  jadwal_rencana: any;
-  jadwal_notifikasi: any;
-  reminder: any;
+  nama_jasa: any = null;
+  kategori: any = null;
+  kategori_lainnya: any = null;
+  jumlah_jasa: any = null;
+  letak_jasa: any = null;
+  keterangan: any = null;
+  jadwal_rencana: any = null;
+  jadwal_notifikasi: any = null;
+  reminder: any = null;
   pickedPhoto: boolean = false;
   dataImage: any = [];
   isViewFull: boolean = false;
@@ -48,12 +48,14 @@ export class TambahJasaPage implements OnInit {
         const isUpdate = await this.checkUpdate.isUpdate();
         const data = {
           nama_jasa: this.nama_jasa,
-          kategori: this.kategori == 'Opsi Lainnya' ? this.kategori_lainnya : this.kategori,
+          kategori: this.kategori,
+          kategori_lainnya: this.kategori_lainnya,
           jumlah_jasa: this.jumlah_jasa,
           letak_jasa: this.letak_jasa,
           keterangan: this.keterangan,
           jadwal_rencana: this.jadwal_rencana,
           jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
+          reminder: this.reminder,
         };
         const idJasa = await this.sqliteJasa.create(data);
         if (this.pickedPhoto) {
@@ -64,17 +66,18 @@ export class TambahJasaPage implements OnInit {
           });
         }
         const date = new Date(data.jadwal_notifikasi);
-        await this.notif.create('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, idJasa, new Date(date.getTime()), `/jasa/show/${idJasa}`);
-        this.nama_jasa = '';
-        this.kategori = '';
-        this.jumlah_jasa = '';
-        this.letak_jasa = '';
-        this.keterangan = '';
-        this.jadwal_rencana = '';
-        this.reminder = '';
-        this.jadwal_notifikasi = '';
-        this.pickedPhoto = false;
-        this.dataImage = [];
+        await this.notif.create('2', 'Pengingat!', `Jangan lupa ${this.nama_jasa.toLowerCase()}`, idJasa, new Date(date.getTime()), `/jasa/show/${idJasa}`).then(() => {
+          this.nama_jasa = null;
+          this.kategori = null;
+          this.jumlah_jasa = null;
+          this.letak_jasa = null;
+          this.keterangan = null;
+          this.jadwal_rencana = null;
+          this.reminder = null;
+          this.jadwal_notifikasi = null;
+          this.pickedPhoto = false;
+          this.dataImage = [];
+        });
         if (isUpdate) {
           await this.router.navigateByUrl('/update');
         } else {
