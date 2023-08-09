@@ -20,6 +20,7 @@ export class LoginPage implements OnInit {
   registered_email: any;
   isShowPw: boolean = false;
   inputTypePw: string = 'password';
+  isModalOpen = false;
 
   constructor(private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
@@ -33,6 +34,14 @@ export class LoginPage implements OnInit {
   }
 
   ngOnInit() {
+  }
+
+  setOpen(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  onWillDismiss(event: Event) {
+    this.isModalOpen = false;
   }
 
   async submitLogin() {

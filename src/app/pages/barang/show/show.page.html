@@ -38,26 +38,69 @@
 
 <ion-content class="space-y-4 ion-padding">
   <div class="space-y-2">
-    <div class="flex justify-center">
-      <p class="font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</p>
-    </div>
     <div class="flex justify-between">
-      <p class="text-sm text-[#30a2ff]">{{ dataBarang.letak_barang }}</p>
-      <p class="text-sm ml-auto text-[#30a2ff]">{{ dataBarang.jumlah_barang }}</p>
+      <div class="mr-2" style="display: flex; align-items: end;">
+        <p class="text-sm text-gray-500">
+          <b>Dibeli</b> - <span class="text-sm text-sm text-[#30a2ff]"> Kebutuhan Bulanan</span> 
+          <!-- <b>Dihadiahkan</b> - <span class="text-sm text-sm text-[#30a2ff]"> Kebutuhan Adik</span> -->
+        </p>
+      </div>
+      <div class="ml-2">
+        <div class="px-2 py-1 font-bold text-xs text-yellow-800 bg-yellow-200 rounded">Belum</div>
+        <!-- <div class="px-2 py-1 font-bold text-xs text-green-800 bg-green-200 rounded">Selesai</div> -->
+      </div>
     </div>
-    <div class="flex justify-between">
-      <p class="text-sm text-gray-500">{{ dataBarang.status }} {{ dataBarang.extend_status }}</p>
-      <p
-        class="inline-block px-2 py-1 text-xs {{ dataBarang.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
-        {{ dataBarang.progress == 0 ? 'Belum' : 'Selesai' }}
+    <hr style="margin: 0.5rem 0; border-top-width: 2px; border-color: #e7e7e7;">
+    <div>
+      <p class="font-bold text-gray-700 text-md mx-1">Susu UHT Rasa Coklat ukuran 1 Ltr</p>
+      <!-- <p class="font-bold text-gray-700 text-md mx-1">Buku Sifat Shalat Nabi</p> -->
+      <p class="text-sm text-gray-500 mx-1">
+        <b>Lokasi</b> Riemart Demang Lebar Daun
+        <!-- <b>Letak</b> Di Lemari Buku -->
       </p>
     </div>
-    <p class="text-sm text-gray-500">{{ dataBarang.kategori }}</p>
-    <div class="flex justify-between">
-      <p class="text-sm font-bold text-gray-500 uppercase">{{ dataBarang.status }}</p>
-      <p class="text-sm font-bold text-gray-500">{{ formatTanggal(dataBarang.jadwal_rencana) }}</p>
+
+    <div style="margin-top: 16px; align-items: end;" class="flex justify-between">
+      <div>
+        <p class="ml-1 text-xs text-gray-500">Sebanyak</p>
+        <p class="ml-1 text-sm font-bold text-gray-500" style="margin-top: 0;">1 Buku</p>
+      </div>
+      <div style="display: flex; align-items: end;">
+        <ion-button color="secondary" style="text-transform: none; font-size: 14px;">Ubah Progress</ion-button>
+      </div>
     </div>
   </div>
+
+  <div class="border border-gray-200 rounded-lg" style="margin: 16px 0;">
+    <div style="padding: 10px 10px 0;">
+      <span class="px-2 py-1 font-bold text-gray-800 bg-gray-200 rounded" style="font-size: 1rem;">Info Rencana</span>
+    </div>
+    <div style="padding: 4px 16px 16px;">
+      <p style="margin-top: 8px;">
+        <b class="text-sm text-gray-500">Letak</b>
+        <span class="ml-auto text-sm text-gray-500"> Di Kulkas
+        </span>
+      </p>
+      <!-- <p style="margin-top: 8px;">
+        <b class="text-sm text-gray-500">Kepada</b>
+        <span class="ml-auto text-sm text-gray-500"> Egga Priska Lidya
+        </span>
+      </p> -->
+      <p style="margin-top: 8px; line-height: 1.2;">
+        <b class="text-sm text-gray-500">Jadwal</b><br>
+        <span class="ml-auto text-xs text-gray-500">06 Agustus
+          2023, 13:30
+        </span>
+      </p>
+      <p style="margin-top: 8px; line-height: 1.2;">
+        <b class="text-sm text-gray-500">Notifikasi</b><br>
+        <span class="ml-auto text-xs text-gray-500">06 Agustus
+          2023, 13:30
+        </span>
+      </p>
+    </div>
+  </div>
+
   <div *ngIf="dataBarang.keterangan !== ''"
     class="flex flex-col w-full p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
     <div class="items-center justify-between">

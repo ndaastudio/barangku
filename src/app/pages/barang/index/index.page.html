@@ -13,7 +13,39 @@
         </ion-buttons>
     </div>
 </div>
-<ion-content class="space-y-4 ion-padding">
+<ion-content class="space-y-4">
+
+    <div class="w-full p-4 space-y-2 rounded-lg bg-gray-50"
+        style="position: relative; box-shadow: rgba(0, 0, 0, 0.15) 0px 2px 8px">
+        <div class="flex justify-between">
+            <div class="mr-2">
+                <p class="text-sm text-gray-500"><b>Dibeli</b> <span class="ml-auto text-xs text-gray-500"> - 06 Agustus
+                        2023</span></p>
+            </div>
+            <div class="ml-2">
+                <div class="text-xs text-gray-500" style="text-align: right; display: flex; align-items: center;">
+                    <ion-icon name="time-outline" style="margin-right: 2px; font-size: 14px;"></ion-icon>13:30
+                </div>
+            </div>
+        </div>
+        <p class="font-bold text-gray-700 text-md" style="margin-top: 8px;">Susu UHT Rasa Coklat ukuran 1 Ltr</p>
+        <p class="text-sm text-gray-500" style="margin-bottom: 0.5rem; margin-top: 0;">2 kotak</p>
+        <div class="flex justify-between" style="margin-top: 16px;">
+            <div style="display: flex; align-items: end;" class="mr-2">
+                <p class="text-sm text-sm text-[#30a2ff]" style="text-align: center;"><i>Kebutuhan Bulanan</i></p>
+            </div>
+            <div class="ml-2" style="display: flex; align-items: end;">
+                <div class="px-2 py-1 font-bold text-xs text-yellow-800 bg-yellow-200 rounded">Belum</div>
+                <!-- <div class="px-2 py-1 font-bold text-xs text-green-800 bg-green-200 rounded">Selesai</div> -->
+            </div>
+        </div>
+        <hr style="margin: 0.5rem 0; border-top-width: 2px; border-color: #e7e7e7;">
+        <p class="text-sm font-bold text-gray-500" style="text-align: right;">
+            <!-- <ion-icon name="person-sharp"></ion-icon> Nama Penerima -->
+            <ion-icon name="location-sharp"></ion-icon> Riemart Demang Lebar Daun
+        </p>
+    </div>
+
     <div (click)="goToShowBarang(data.id)" *ngFor="let data of dataBarang"
         class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
         <div class="flex justify-between">
