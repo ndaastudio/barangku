@@ -4,17 +4,17 @@ import { FormsModule } from '@angular/forms';
 
 import { IonicModule } from '@ionic/angular';
 
-import { ShowBarangPageRoutingModule } from './show-routing.module';
+import { ShowPageRoutingModule } from './show-routing.module';
 
-import { ShowBarangPage } from './show.page';
+import { ShowPage } from './show.page';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ShowBarangPageRoutingModule
+    ShowPageRoutingModule
   ],
-  declarations: [ShowBarangPage]
+  declarations: [ShowPage]
 })
-export class ShowBarangPageModule { }
+export class ShowPageModule { }
