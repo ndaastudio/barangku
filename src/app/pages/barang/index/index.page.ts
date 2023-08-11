@@ -1,24 +1,29 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
-import { formatDate, showAlert, truncateString } from '../../../helpers/functions';
+import { formatDate, formatTime, showAlert } from '../../../helpers/functions';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
+import { CheckDeviceLoginService } from 'src/app/services/App/check-device-login.service';
+import { PhotoService } from 'src/app/services/App/photo.service';
 
 @Component({
   selector: 'app-index',
-  templateUrl: 'index.page.html',
-  styleUrls: ['index.page.scss']
+  templateUrl: './index.page.html',
+  styleUrls: ['./index.page.scss'],
 })
-export class Tab1Page {
+export class IndexPage implements OnInit {
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
-  limitText: Function = truncateString;
+  formatJam: Function = formatTime;
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
     private sqliteBarang: SQLiteBarang,
-    private dataRefresh: DataRefreshService) {
+    private dataRefresh: DataRefreshService,
+    private checkDeviceLogin: CheckDeviceLoginService,
+    public photo: PhotoService) {
+    this.checkDeviceLogin.initCheckDeviceLogin();
   }
 
   ngOnInit() {
