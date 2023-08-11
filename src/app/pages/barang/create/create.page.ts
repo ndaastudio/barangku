@@ -13,7 +13,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
   templateUrl: './create.page.html',
   styleUrls: ['./create.page.scss'],
 })
-export class TambahBarangPage implements OnInit {
+export class CreatePage implements OnInit {
   nama_barang: any = null;
   kategori: any = null;
   kategori_lainnya: any = null;
@@ -39,6 +39,16 @@ export class TambahBarangPage implements OnInit {
     Dibuang: 'kemana',
     Dipinjamkan: 'kepada siapa',
     Diperbaiki: 'dimana',
+  }
+  optionsLetak: any = {
+    Dibeli: 'Akan diletakkan dimana',
+    Dijual: 'Letak barang saat ini',
+    Disedekahkan: 'Letak barang saat ini',
+    Diberikan: 'Letak barang saat ini',
+    Dihadiahkan: 'Letak barang saat ini',
+    Dibuang: 'Letak barang saat ini',
+    Dipinjamkan: 'Letak barang saat ini',
+    Diperbaiki: 'Letak barang saat ini',
   }
 
   constructor(private sqliteBarang: SQLiteBarang,
@@ -98,7 +108,7 @@ export class TambahBarangPage implements OnInit {
         if (isUpdate) {
           await this.router.navigateByUrl('/update');
         } else {
-          await this.router.navigateByUrl('/tabs/barang');
+          await this.router.navigateByUrl('/barang');
         }
         this.dataRefresh.refresh();
       } catch (error: any) {

@@ -1,5 +1,5 @@
 <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
-  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/tabs/barang']">
+  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/barang']">
     <ion-button>
       <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
     </ion-button>
@@ -52,9 +52,9 @@
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: 1 pcs)" type="text"
         [(ngModel)]="jumlah_barang" (input)="countInputJumlah()"></ion-input>
     </ion-item>
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
-      <ion-label position="floating">Letak Barang</ion-label>
-      <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Dibawah kasur)" type="text"
+    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
+      <ion-label position="floating">{{ optionsLetak[status] }}</ion-label>
+      <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Dibawah meja)" type="text"
         [(ngModel)]="letak_barang" (input)="countInputLetak()"></ion-input>
     </ion-item>
     <ion-item fill="outline">
