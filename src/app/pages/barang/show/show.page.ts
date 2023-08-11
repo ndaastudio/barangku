@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, AnimationController, PopoverController } from '@ionic/angular';
-import { formatDate } from 'src/app/helpers/functions';
+import { formatDate, formatTime } from 'src/app/helpers/functions';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
@@ -12,13 +12,24 @@ import { PhotoService } from 'src/app/services/App/photo.service';
   templateUrl: './show.page.html',
   styleUrls: ['./show.page.scss'],
 })
-export class ShowBarangPage implements OnInit {
+export class ShowPage implements OnInit {
   id: any = this.route.snapshot.paramMap.get('id');
   dataBarang: any = [];
   dataImage: any = [];
   isViewFull: boolean = false;
   urlFullImage: any;
   formatTanggal: Function = formatDate;
+  formatJam: Function = formatTime;
+  optionsStatus: any = {
+    Dibeli: 'Dimana',
+    Dijual: 'Kepada',
+    Disedekahkan: 'Kepada',
+    Diberikan: 'Kepada',
+    Dihadiahkan: 'Kepada',
+    Dibuang: 'Kemana',
+    Dipinjamkan: 'Kepada',
+    Diperbaiki: 'Dimana',
+  }
 
   constructor(private sqliteBarang: SQLiteBarang,
     private route: ActivatedRoute,
@@ -69,7 +80,7 @@ export class ShowBarangPage implements OnInit {
               await this.sqliteBarang.deleteGambarByName(dataGambar.fileName);
             });
             await this.notif.delete(this.id);
-            await this.router.navigateByUrl('/tabs/barang');
+            await this.router.navigateByUrl('/barang');
             this.dataRefresh.refresh();
           },
           cssClass: '!text-red-500'
