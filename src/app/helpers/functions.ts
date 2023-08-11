@@ -53,3 +53,14 @@ export function getCurrentDateTime(): string {
     const seconds = String(today.getSeconds()).padStart(2, '0');
     return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
 }
+
+export function formatTime(time: string): string {
+    try {
+        const date = new Date(time);
+        const hours = date.getHours().toString().padStart(2, '0');
+        const minutes = date.getMinutes().toString().padStart(2, '0');
+        return `${hours}:${minutes}`;
+    } catch (error) {
+        return time;
+    }
+}
