@@ -9,7 +9,7 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
   templateUrl: './edit.page.html',
   styleUrls: ['./edit.page.scss'],
 })
-export class EditProfilPage implements OnInit {
+export class EditPage implements OnInit {
   nama: any = null;
   email: any = null;
   nomor_telepon: any = null;
