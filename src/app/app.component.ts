@@ -16,7 +16,7 @@ export class AppComponent {
     private platform: Platform,
     private router: Router) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/barang' || this.router.url === '/tabs/jasa' || this.router.url === '/tabs/profil' || this.router.url === '/update') {
+      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/barang' || this.router.url === '/update') {
         App.minimizeApp();
       }
     });
