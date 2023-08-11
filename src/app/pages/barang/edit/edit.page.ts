@@ -5,7 +5,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
-import { getCurrentDateTime } from 'src/app/helpers/functions';
+import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
 
 @Component({
   selector: 'app-edit',
@@ -42,6 +42,16 @@ export class EditPage implements OnInit {
     Dipinjamkan: 'kepada siapa',
     Diperbaiki: 'dimana',
   }
+  optionsLetak: any = {
+    Dibeli: 'Akan diletakkan dimana',
+    Dijual: 'Letak barang saat ini',
+    Disedekahkan: 'Letak barang saat ini',
+    Diberikan: 'Letak barang saat ini',
+    Dihadiahkan: 'Letak barang saat ini',
+    Dibuang: 'Letak barang saat ini',
+    Dipinjamkan: 'Letak barang saat ini',
+    Diperbaiki: 'Letak barang saat ini',
+  }
 
   constructor(private sqliteBarang: SQLiteBarang,
     private dataRefresh: DataRefreshService,
@@ -75,33 +85,35 @@ export class EditPage implements OnInit {
   }
 
   async saveToDatabase() {
-    if (this.jadwal_notifikasi !== this.dataBarang.jadwal_notifikasi) {
+    if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.jadwal_rencana && this.reminder) {
+      this.dataBarang.nama_barang = this.nama_barang;
+      this.dataBarang.kategori = this.kategori;
+      this.dataBarang.kategori_lainnya = this.kategori_lainnya;
+      this.dataBarang.status = this.status;
+      this.dataBarang.extend_status = this.extend_status;
+      this.dataBarang.jumlah_barang = this.jumlah_barang;
+      this.dataBarang.letak_barang = this.letak_barang;
+      this.dataBarang.keterangan = this.keterangan;
+      this.dataBarang.jadwal_rencana = this.jadwal_rencana;
+      this.dataBarang.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
+      this.dataBarang.reminder = this.reminder;
       const jadwalNotifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
       const date = new Date(jadwalNotifikasi);
       await this.notif.delete(this.id);
       await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
+      await this.sqliteBarang.update(this.dataBarang);
+      if (this.pickedPhoto) {
+        this.otherImage.forEach(async (dataGambar: any) => {
+          const date = new Date().getTime();
+          const dataSave = await this.photo.save(dataGambar, `${this.nama_barang}-${date}.jpeg`);
+          await this.sqliteBarang.createGambar(this.id, dataSave);
+        });
+      }
+      await this.router.navigateByUrl(`/barang/show/${this.id}`);
+      this.dataRefresh.refresh();
+    } else {
+      showAlert(this.alertCtrl, 'Error!', 'Tidak boleh ada yang kosong');
     }
-    this.dataBarang.nama_barang = this.nama_barang;
-    this.dataBarang.kategori = this.kategori;
-    this.dataBarang.kategori_lainnya = this.kategori_lainnya;
-    this.dataBarang.status = this.status;
-    this.dataBarang.extend_status = this.extend_status;
-    this.dataBarang.jumlah_barang = this.jumlah_barang;
-    this.dataBarang.letak_barang = this.letak_barang;
-    this.dataBarang.keterangan = this.keterangan;
-    this.dataBarang.jadwal_rencana = this.jadwal_rencana;
-    this.dataBarang.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
-    this.dataBarang.reminder = this.reminder;
-    await this.sqliteBarang.update(this.dataBarang);
-    if (this.pickedPhoto) {
-      this.otherImage.forEach(async (dataGambar: any) => {
-        const date = new Date().getTime();
-        const dataSave = await this.photo.save(dataGambar, `${this.nama_barang}-${date}.jpeg`);
-        await this.sqliteBarang.createGambar(this.id, dataSave);
-      });
-    }
-    await this.router.navigateByUrl(`/barang/show/${this.id}`);
-    this.dataRefresh.refresh();
   }
 
   async pickGambar() {
