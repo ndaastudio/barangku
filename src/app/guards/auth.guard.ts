@@ -8,7 +8,8 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
 export class AuthGuard implements CanActivate {
 
   constructor(private localStorage: LocalStorageService,
-    private router: Router) { }
+    private router: Router) {
+  }
 
   canActivate(): Promise<boolean> {
     return this.isLoggedIn();
@@ -17,7 +18,7 @@ export class AuthGuard implements CanActivate {
   async isLoggedIn(): Promise<boolean> {
     const token = await this.localStorage.get('access_token');
     if (token) {
-      this.router.navigateByUrl('/tabs/barang');
+      this.router.navigateByUrl('/barang');
       return false;
     }
     return true;
