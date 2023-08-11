@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
@@ -10,10 +10,10 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 
 @Component({
   selector: 'app-index',
-  templateUrl: 'index.page.html',
-  styleUrls: ['index.page.scss']
+  templateUrl: './index.page.html',
+  styleUrls: ['./index.page.scss'],
 })
-export class Tab3Page {
+export class IndexPage implements OnInit {
   nama: any;
   email: any;
   nomor_telepon: any;
@@ -40,7 +40,7 @@ export class Tab3Page {
   }
 
   goToEditProfil() {
-    this.router.navigateByUrl('/edit-profil');
+    this.router.navigateByUrl('/profil/edit');
   }
 
   async submitSinkronisasi() {
