@@ -6,7 +6,6 @@ import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
-import { JasaService as SQLiteJasa } from 'src/app/services/Database/SQLite/jasa.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
@@ -28,7 +27,6 @@ export class LoginPage implements OnInit {
     private localStorage: LocalStorageService,
     private modalCtrl: ModalController,
     private sqliteBarang: SQLiteBarang,
-    private sqliteJasa: SQLiteJasa,
     private notif: LocalNotifService) {
   }
 
@@ -49,16 +47,12 @@ export class LoginPage implements OnInit {
         dataBarang.forEach(async (barang) => {
           await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id, new Date(barang.jadwal_notifikasi), `/barang/show/${barang.id}`);
         });
-        const dataJasa = await this.sqliteJasa.getAll();
-        dataJasa.forEach(async (jasa) => {
-          await this.notif.create('2', 'Pengingat!', `Jangan lupa ${jasa.nama_jasa.toLowerCase()}`, jasa.id, new Date(jasa.jadwal_notifikasi), `/jasa/show/${jasa.id}`);
-        });
         this.localStorage.set('access_token', results.access_token);
         this.localStorage.set('profile', results.data);
         this.nomor_telepon = null;
         this.password = null;
         await this.loadingCtrl.dismiss();
-        await this.router.navigateByUrl('/tabs/barang');
+        await this.router.navigateByUrl('/barang');
       } catch (error: any) {
         await this.loadingCtrl.dismiss();
         await showAlert(this.alertCtrl, 'Error!', error.error.message);
