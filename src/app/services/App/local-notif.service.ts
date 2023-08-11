@@ -24,11 +24,6 @@ export class LocalNotifService {
           name: 'Barang',
           importance: 4,
         });
-        await LocalNotifications.createChannel({
-          id: '2',
-          name: 'Jasa',
-          importance: 4,
-        });
       }
     }
   }
