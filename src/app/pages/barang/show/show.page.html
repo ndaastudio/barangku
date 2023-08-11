@@ -1,5 +1,5 @@
 <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
-  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/tabs/barang']">
+  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/barang']">
     <ion-button>
       <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
     </ion-button>
@@ -31,7 +31,7 @@
 </div>
 
 <ion-content class="space-y-4 ion-padding">
-  <div class="space-y-2">
+  <!-- <div class="space-y-2">
     <div class="flex justify-center">
       <p class="font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</p>
     </div>
@@ -52,17 +52,54 @@
       <p class="text-sm font-bold text-gray-500 uppercase">{{ dataBarang.status }}</p>
       <p class="text-sm font-bold text-gray-500">{{ formatTanggal(dataBarang.jadwal_rencana) }}</p>
     </div>
-  </div>
-  <div *ngIf="dataBarang.keterangan"
-    class="flex flex-col w-full p-4 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
-    <div class="items-center justify-between">
-      <div class="flex items-center space-x-4">
-        <div class="flex flex-col space-y-2">
-          <div class="text-sm font-bold text-gray-700">Keterangan</div>
-          <div class="text-sm text-justify text-gray-500">{{ dataBarang.keterangan }}</div>
-        </div>
+  </div> -->
+
+  <div class="space-y-2">
+    <div class="flex justify-between">
+      <div class="text-sm text-gray-500">
+        <strong>{{ dataBarang.status }}</strong> - <span class="text-[#30a2ff]">{{ dataBarang.kategori == 'Opsi Lainnya'
+          ? dataBarang.kategori_lainnya : dataBarang.kategori }}</span>
+      </div>
+      <div
+        class="px-2 py-1 text-xs font-bold {{ dataBarang.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
+        {{ dataBarang.progress == 0 ? 'Belum' : 'Selesai' }}
       </div>
     </div>
+    <div class="border-t-2 border-gray-300"></div>
+    <div class="font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</div>
+    <div class="text-sm text-gray-500">
+      <strong>{{ dataBarang.status == 'Dibeli' ? 'Lokasi' : 'Letak' }}</strong> {{ dataBarang.status == 'Dibeli' ?
+      dataBarang.extend_status : dataBarang.letak_barang }}
+    </div>
+    <div class="flex justify-between">
+      <div class="text-sm text-gray-500">
+        <strong>Sebanyak</strong> {{ dataBarang.jumlah_barang }}
+      </div>
+      <ion-buttons slot="primary" (click)="ubahProgress()">
+        <ion-button class="bg-[#30a2ff] rounded-full">
+          <ion-icon name="options-outline" slot="icon-only" class="text-white"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+    </div>
+  </div>
+  <div class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
+    <span class="px-2 py-1 text-sm font-bold text-gray-700 bg-gray-200 rounded">Informasi Rencana</span>
+    <div class="text-sm text-gray-500">
+      <strong>{{ dataBarang.status == 'Dibeli' ? 'Letak' : optionsStatus[dataBarang.status] }}</strong> {{
+      dataBarang.status == 'Dibeli' ? dataBarang.letak_barang : dataBarang.extend_status }}
+    </div>
+    <div class="text-sm text-gray-500">
+      <strong>Jadwal</strong> {{ formatTanggal(dataBarang.jadwal_rencana) }}, {{ formatJam(dataBarang.jadwal_rencana) }}
+    </div>
+    <div class="text-sm text-gray-500">
+      <strong>Notifikasi</strong> {{ formatTanggal(dataBarang.jadwal_notifikasi) }}, {{
+      formatJam(dataBarang.jadwal_notifikasi) }}
+    </div>
+  </div>
+  <div *ngIf="dataBarang.keterangan"
+    class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
+    <span class="px-2 py-1 text-sm font-bold text-gray-700 bg-gray-200 rounded">Keterangan</span>
+    <div class="text-sm text-justify text-gray-500">{{ dataBarang.keterangan }}</div>
   </div>
   <div *ngFor="let image of dataImage; let i = index;">
     <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
@@ -85,8 +122,3 @@
     </ng-template>
   </ion-modal>
 </ion-content>
-<ion-fab vertical="bottom" horizontal="end" slot="fixed" class="m-4" (click)="ubahProgress()">
-  <ion-fab-button>
-    <ion-icon name="options-outline" color="light"></ion-icon>
-  </ion-fab-button>
-</ion-fab>
