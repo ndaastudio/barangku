@@ -18,8 +18,11 @@ export class PhotoService {
     if (this.platform.is('android')) {
       const cameraPermission = await Camera.checkPermissions();
       const storagePermission = await Filesystem.checkPermissions();
-      if (!cameraPermission.camera || !cameraPermission.photos || !storagePermission.publicStorage) {
+      if (!cameraPermission.camera || !cameraPermission.photos) {
         await Camera.requestPermissions();
+        await this.initPermissions();
+      }
+      if (!storagePermission.publicStorage) {
         await Filesystem.requestPermissions();
         await this.initPermissions();
       }
