@@ -33,11 +33,11 @@ export class PhotoService {
   async initDirectory() {
     Filesystem.stat({
       path: IMAGE_DIR,
-      directory: Directory.ExternalStorage
+      directory: Directory.Documents
     }).catch(async () => {
       await Filesystem.mkdir({
         path: IMAGE_DIR,
-        directory: Directory.ExternalStorage,
+        directory: Directory.Documents,
         recursive: true
       });
     });
@@ -57,7 +57,7 @@ export class PhotoService {
     await Filesystem.writeFile({
       path: `${IMAGE_DIR}/${fileName}`,
       data: base64Data,
-      directory: Directory.ExternalStorage
+      directory: Directory.Documents
     });
     return fileName;
   }
@@ -82,7 +82,7 @@ export class PhotoService {
   public async load(fileName: string) {
     const photo = await Filesystem.readFile({
       path: `${IMAGE_DIR}/${fileName}`,
-      directory: Directory.ExternalStorage
+      directory: Directory.Documents
     });
     return {
       fileName: fileName,
@@ -93,7 +93,7 @@ export class PhotoService {
   public async delete(fileName: string) {
     await Filesystem.deleteFile({
       path: `${IMAGE_DIR}/${fileName}`,
-      directory: Directory.ExternalStorage
+      directory: Directory.Documents
     });
   }
 }
