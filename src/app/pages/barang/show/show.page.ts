@@ -20,15 +20,17 @@ export class ShowPage implements OnInit {
   urlFullImage: any;
   formatTanggal: Function = formatDate;
   formatJam: Function = formatTime;
-  optionsStatus: any = {
-    Dibeli: 'Dimana',
-    Dijual: 'Kepada',
-    Disedekahkan: 'Kepada',
-    Diberikan: 'Kepada',
-    Dihadiahkan: 'Kepada',
-    Dibuang: 'Kemana',
-    Dipinjamkan: 'Kepada',
-    Diperbaiki: 'Dimana',
+  optionsExtendStatus: any = {
+    Dibeli: 'dimana',
+    Dijual: 'kepada siapa',
+    Disedekahkan: 'kepada siapa',
+    Diberikan: 'kepada siapa',
+    Dihadiahkan: 'kepada siapa',
+    Dibuang: 'kemana',
+    Dipinjamkan: 'kepada siapa',
+    Diperbaiki: 'dimana',
+    Dipindahkan: 'kemana',
+    Dikembalikan: 'kepada siapa'
   }
 
   constructor(private sqliteBarang: SQLiteBarang,
