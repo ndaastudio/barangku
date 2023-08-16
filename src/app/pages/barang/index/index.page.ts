@@ -27,6 +27,7 @@ export class IndexPage implements OnInit {
   }
 
   ngOnInit() {
+    this.photo.initPermissions();
     this.initGetData();
     this.dataRefresh.refreshedData.subscribe(() => {
       this.initGetData();
