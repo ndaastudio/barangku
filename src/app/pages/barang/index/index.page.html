@@ -27,36 +27,34 @@
   <div (click)="goToShowBarang(data.id)" *ngFor="let data of dataBarang"
     class="relative w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
     <div class="flex justify-between">
-      <div class="text-sm text-gray-500">
-        <strong>{{ data.status }}</strong>
-        <span class="ml-auto text-xs">
-          - {{ formatTanggal(data.jadwal_rencana) }}
-        </span>
+      <div class="mr-2">
+        <p class="text-sm text-gray-500"><b>{{ data.status }}</b> <span class="ml-auto text-xs text-gray-500"> - {{
+            formatTanggal(data.jadwal_rencana) }}</span></p>
       </div>
-      <div class="flex items-center text-xs text-gray-500">
-        <ion-icon class="mr-1 text-sm" name="time-outline"></ion-icon>{{ formatJam(data.jadwal_rencana) }}
-      </div>
-    </div>
-    <div class="font-bold text-gray-700 text-md">
-      {{ data.nama_barang }}
-    </div>
-    <div class="text-sm text-gray-500">
-      {{ data.jumlah_barang }}
-    </div>
-    <div class="flex justify-between">
-      <div class="text-sm text-[#30a2ff] italic">
-        {{ data.kategori == 'Opsi Lainnya' ? data.kategori_lainnya : data.kategori }}
-      </div>
-      <div
-        class="px-2 py-1 text-xs font-bold {{ data.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
-        {{ data.progress == 0 ? 'Belum' : 'Selesai' }}
+      <div class="ml-2">
+        <div class="flex items-center text-xs text-right text-gray-500">
+          <ion-icon name="time-outline" class="mr-[2px] text-[14px]"></ion-icon>{{
+          formatJam(data.jadwal_rencana) }}
+        </div>
       </div>
     </div>
-    <div class="border-t-2 border-gray-300"></div>
-    <div class="flex items-center text-sm text-gray-500">
-      <ion-icon class="mr-1" name="location-sharp"></ion-icon>
-      <strong>{{ data.letak_barang }}</strong>
+    <p class="mt-2 font-bold text-gray-700 text-md">{{ data.nama_barang }}</p>
+    <p class="mt-0 mb-2 text-sm text-gray-500">{{ data.jumlah_barang }}</p>
+    <div class="flex justify-between mt-4">
+      <div class="flex items-end mr-2">
+        <p class="text-sm text-[#30a2ff] text-center"><i>{{ data.kategori == 'Opsi Lainnya' ?
+            data.kategori_lainnya : data.kategori }}</i></p>
+      </div>
+      <div class="ml-2" style="display: flex; align-items: end;">
+        <div
+          class="px-2 py-1 text-xs font-bold {{ data.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
+          {{ data.progress == 0 ? 'Belum' : 'Selesai' }}</div>
+      </div>
     </div>
+    <div class="border-t-2 border-[#e7e7e7]"></div>
+    <p class="text-sm font-bold text-right text-gray-500">
+      <ion-icon name="location-sharp"></ion-icon> {{ data.letak_barang }}
+    </p>
   </div>
 </ion-content>
 <ion-fab (click)="goToTambahBarang()" slot="fixed" vertical="bottom" horizontal="end" class="m-4">

@@ -31,74 +31,71 @@
 </div>
 
 <ion-content class="space-y-4 ion-padding">
-  <!-- <div class="space-y-2">
-    <div class="flex justify-center">
-      <p class="font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</p>
-    </div>
-    <div class="flex justify-between">
-      <p class="text-sm text-[#30a2ff]">{{ dataBarang.letak_barang }}</p>
-      <p class="text-sm ml-auto text-[#30a2ff]">{{ dataBarang.jumlah_barang }}</p>
-    </div>
-    <div class="flex justify-between">
-      <p class="text-sm text-gray-500">{{ dataBarang.status }} {{ dataBarang.extend_status }}</p>
-      <p
-        class="inline-block px-2 py-1 text-xs {{ dataBarang.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
-        {{ dataBarang.progress == 0 ? 'Belum' : 'Selesai' }}
-      </p>
-    </div>
-    <p class="text-sm text-gray-500">{{ dataBarang.kategori == 'Opsi Lainnya' ? dataBarang.kategori_lainnya :
-      dataBarang.kategori }}</p>
-    <div class="flex justify-between">
-      <p class="text-sm font-bold text-gray-500 uppercase">{{ dataBarang.status }}</p>
-      <p class="text-sm font-bold text-gray-500">{{ formatTanggal(dataBarang.jadwal_rencana) }}</p>
-    </div>
-  </div> -->
-
   <div class="space-y-2">
     <div class="flex justify-between">
-      <div class="text-sm text-gray-500">
-        <strong>{{ dataBarang.status }}</strong> - <span class="text-[#30a2ff]">{{ dataBarang.kategori == 'Opsi Lainnya'
-          ? dataBarang.kategori_lainnya : dataBarang.kategori }}</span>
+      <div class="flex items-end mr-2">
+        <p class="text-sm text-gray-500">
+          <b>{{ dataBarang.status }}</b> - <span class="text-sm text-[#30a2ff]">{{ dataBarang.kategori == 'Opsi Lainnya'
+            ? dataBarang.kategori_lainnya : dataBarang.kategori }}</span>
+        </p>
       </div>
-      <div
-        class="px-2 py-1 text-xs font-bold {{ dataBarang.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
-        {{ dataBarang.progress == 0 ? 'Belum' : 'Selesai' }}
+      <div class="ml-2">
+        <div
+          class="px-2 py-1 text-xs font-bold {{ dataBarang.progress == 0 ? 'text-yellow-800 bg-yellow-200' : 'text-green-800 bg-green-200' }} rounded">
+          {{ dataBarang.progress == 0 ? 'Belum' : 'Selesai' }}</div>
       </div>
     </div>
-    <div class="border-t-2 border-gray-300"></div>
-    <div class="font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</div>
-    <div class="text-sm text-gray-500">
-      <strong>{{ dataBarang.status == 'Dibeli' ? 'Lokasi' : 'Letak' }}</strong> {{ dataBarang.status == 'Dibeli' ?
-      dataBarang.extend_status : dataBarang.letak_barang }}
+    <hr class="border-t-2 border-[#e7e7e7]">
+    <div>
+      <p class="mx-1 font-bold text-gray-700 text-md">{{ dataBarang.nama_barang }}</p>
+      <p class="mx-1 text-sm text-gray-500">
+        <b>{{ dataBarang.status == 'Dibeli' ? 'Lokasi' : 'Letak' }}</b> {{ dataBarang.status == 'Dibeli' ?
+        dataBarang.extend_status : dataBarang.letak_barang }}
+      </p>
     </div>
-    <div class="flex justify-between">
-      <div class="text-sm text-gray-500">
-        <strong>Sebanyak</strong> {{ dataBarang.jumlah_barang }}
+
+    <div class="flex items-end justify-between mt-4">
+      <div>
+        <p class="ml-1 text-xs text-gray-500">Sebanyak</p>
+        <p class="ml-1 text-sm font-bold text-gray-500">{{ dataBarang.jumlah_barang }}</p>
       </div>
-      <ion-buttons slot="primary" (click)="ubahProgress()">
-        <ion-button class="bg-[#30a2ff] rounded-full">
-          <ion-icon name="options-outline" slot="icon-only" class="text-white"></ion-icon>
-        </ion-button>
-      </ion-buttons>
+      <div class="flex items-end">
+        <ion-button (click)="ubahProgress()" color="secondary" class="transform-none text-[14px] capitalize">Ubah
+          Progress</ion-button>
+      </div>
     </div>
   </div>
-  <div class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
-    <span class="px-2 py-1 text-sm font-bold text-gray-700 bg-gray-200 rounded">Informasi Rencana</span>
-    <div class="text-sm text-gray-500">
-      <strong>{{ dataBarang.status == 'Dibeli' ? 'Letak' : optionsStatus[dataBarang.status] }}</strong> {{
-      dataBarang.status == 'Dibeli' ? dataBarang.letak_barang : dataBarang.extend_status }}
+
+  <div class="border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
+    <div class="pl-[10px] pt-[10px]">
+      <span class="px-2 py-1 font-bold text-gray-800 bg-gray-200 rounded text-[1rem]">Informasi Rencana</span>
     </div>
-    <div class="text-sm text-gray-500">
-      <strong>Jadwal</strong> {{ formatTanggal(dataBarang.jadwal_rencana) }}, {{ formatJam(dataBarang.jadwal_rencana) }}
-    </div>
-    <div class="text-sm text-gray-500">
-      <strong>Notifikasi</strong> {{ formatTanggal(dataBarang.jadwal_notifikasi) }}, {{
-      formatJam(dataBarang.jadwal_notifikasi) }}
+    <div class="px-4 pt-1 pb-4">
+      <p class="mt-2 text-sm">
+        <b class="text-sm text-gray-500 capitalize">{{ dataBarang.status == 'Dibeli' ? 'Letak' :
+          optionsExtendStatus[dataBarang.status]
+          }}</b><br>
+        <span class="ml-auto text-sm text-gray-500"> {{
+          dataBarang.status == 'Dibeli' ? dataBarang.letak_barang : dataBarang.extend_status }}
+        </span>
+      </p>
+      <p class="mt-2 text-sm">
+        <b class="text-sm text-gray-500">Jadwal</b><br>
+        <span class="ml-auto text-xs text-gray-500">{{ formatTanggal(dataBarang.jadwal_rencana) }}, {{
+          formatJam(dataBarang.jadwal_rencana) }}
+        </span>
+      </p>
+      <p class="mt-2 text-sm">
+        <b class="text-sm text-gray-500">Notifikasi</b><br>
+        <span class="ml-auto text-xs text-gray-500">{{ formatTanggal(dataBarang.jadwal_notifikasi) }}, {{
+          formatJam(dataBarang.jadwal_notifikasi) }}
+        </span>
+      </p>
     </div>
   </div>
   <div *ngIf="dataBarang.keterangan"
     class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
-    <span class="px-2 py-1 text-sm font-bold text-gray-700 bg-gray-200 rounded">Keterangan</span>
+    <div class="text-sm font-bold text-gray-700">Keterangan</div>
     <div class="text-sm text-justify text-gray-500">{{ dataBarang.keterangan }}</div>
   </div>
   <div *ngFor="let image of dataImage; let i = index;">
