@@ -16,6 +16,18 @@ export class IndexPage implements OnInit {
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
   formatJam: Function = formatTime;
+  optionsKategori: any = [
+    'Fashion',
+    'Kuliner',
+    'Elektronik',
+    'Kesehatan',
+    'Olahraga',
+    'Otomotif',
+    'Kecantikan',
+    'Pendidikan',
+    'Peralatan',
+    'Office',
+  ].sort();
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -42,29 +54,14 @@ export class IndexPage implements OnInit {
   async showKategori() {
     const alertShowKategori = await this.alertCtrl.create({
       header: 'Pilih Kategori',
-      inputs: [
-        {
+      inputs: this.optionsKategori.map((kategori: any) => {
+        return {
           name: 'kategori',
           type: 'radio',
-          label: 'Kebutuhan Dapur',
-          value: 'Kebutuhan Dapur',
-          checked: false
-        },
-        {
-          name: 'kategori',
-          type: 'radio',
-          label: 'Kebutuhan Anak',
-          value: 'Kebutuhan Anak',
-          checked: false
-        },
-        {
-          name: 'kategori',
-          type: 'radio',
-          label: 'Kebutuhan Istri',
-          value: 'Kebutuhan Istri',
-          checked: false
-        },
-      ],
+          label: kategori,
+          value: kategori
+        }
+      }),
       buttons: [
         {
           text: 'Batal',
