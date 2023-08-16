@@ -30,7 +30,31 @@ export class CreatePage implements OnInit {
   isViewFull: boolean = false;
   urlFullImage: any;
   getToday: string = getCurrentDateTime();
-  optionsStatus: any = {
+  optionsKategori: any = [
+    'Fashion',
+    'Kuliner',
+    'Elektronik',
+    'Kesehatan',
+    'Olahraga',
+    'Otomotif',
+    'Kecantikan',
+    'Pendidikan',
+    'Peralatan',
+    'Office',
+  ].sort();
+  optionsStatus: any = [
+    'Dibeli',
+    'Dijual',
+    'Disedekahkan',
+    'Diberikan',
+    'Dihadiahkan',
+    'Dibuang',
+    'Dipinjamkan',
+    'Diperbaiki',
+    'Dipindahkan',
+    'Dikembalikan'
+  ].sort();
+  optionsExtendStatus: any = {
     Dibeli: 'dimana',
     Dijual: 'kepada siapa',
     Disedekahkan: 'kepada siapa',
@@ -39,6 +63,8 @@ export class CreatePage implements OnInit {
     Dibuang: 'kemana',
     Dipinjamkan: 'kepada siapa',
     Diperbaiki: 'dimana',
+    Dipindahkan: 'kemana',
+    Dikembalikan: 'kepada siapa'
   }
   optionsLetak: any = {
     Dibeli: 'Akan diletakkan dimana',
@@ -49,6 +75,8 @@ export class CreatePage implements OnInit {
     Dibuang: 'Letak barang saat ini',
     Dipinjamkan: 'Letak barang saat ini',
     Diperbaiki: 'Letak barang saat ini',
+    Dipindahkan: 'Letak barang saat ini',
+    Dikembalikan: 'Letak barang saat ini'
   }
 
   constructor(private sqliteBarang: SQLiteBarang,
@@ -166,7 +194,7 @@ export class CreatePage implements OnInit {
     }
   }
   countInputStatus() {
-    const maxLength = 30 - 1;
+    const maxLength = 50 - 1;
     const inputLength = this.extend_status.length;
     if (inputLength > maxLength) {
       this.extend_status = this.extend_status.slice(0, maxLength);
@@ -180,7 +208,7 @@ export class CreatePage implements OnInit {
     }
   }
   countInputLetak() {
-    const maxLength = 30 - 1;
+    const maxLength = 50 - 1;
     const inputLength = this.letak_barang.length;
     if (inputLength > maxLength) {
       this.letak_barang = this.letak_barang.slice(0, maxLength);
