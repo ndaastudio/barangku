@@ -98,7 +98,7 @@ export class RegisterPage implements OnInit {
         }, {
           text: 'Ya',
           handler: () => {
-            const waAdmin = `https://wa.me/6285214283748/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
+            const waAdmin = `https://wa.me/6281367676651/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
             this.openBrowser(waAdmin);
           }
         }
@@ -112,7 +112,7 @@ export class RegisterPage implements OnInit {
   }
 
   syaratDanKetentuan() {
-    this.openBrowser('https://www.google.com');
+    this.openBrowser('https://barangku.web.id/syarat-dan-ketentuan');
   }
 
   showHidePw() {
