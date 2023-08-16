@@ -17,6 +17,7 @@ export class EditPage implements OnInit {
   password_lama: any = null;
   password_baru: any = null;
   konfirmasi_password_baru: any = null;
+  isModalOpen: boolean = false;
 
   constructor(private modalCtrl: ModalController,
     private localStorage: LocalStorageService,
@@ -61,5 +62,13 @@ export class EditPage implements OnInit {
     } else {
       showAlert(this.alertCtrl, 'Error!', 'Tidak boleh ada data yang kosong');
     }
+  }
+
+  setOpenModal(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  onWillDismissModal(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 }

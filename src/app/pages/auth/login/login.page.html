@@ -22,11 +22,12 @@
             </ion-buttons>
         </ion-item>
         <div class="flex justify-end">
-            <p id="lupa-pw" class="font-semibold text-[#30a2ff]">Lupa password?</p>
+            <p (click)="setOpenModal(true)" class="font-semibold text-[#30a2ff]">Lupa password?</p>
         </div>
         <ion-button (click)="submitLogin()" expand="block" class="text-white">Masuk</ion-button>
     </div>
-    <ion-modal #modal trigger="lupa-pw" [initialBreakpoint]="0.40" [breakpoints]="[0, 0.40, 0.45, 0.75]">
+    <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismissModal(false)" [initialBreakpoint]="0.40"
+        [breakpoints]="[0, 0.40, 0.45, 0.75]">
         <ng-template>
             <ion-content class="ion-padding">
                 <div class="space-y-2">

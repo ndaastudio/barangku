@@ -40,14 +40,15 @@
       <p>{{ jenis_akun == 0 ? 'Trial 7 hari' : 'Aktif 1 tahun' }}</p>
     </ion-label>
   </ion-item>
-  <ion-item button detail="true" detail-icon="create" id="ganti-pw">
+  <ion-item button detail="true" detail-icon="create" (click)="setOpenModal(true)">
     <ion-icon name="finger-print-outline" slot="start" class="m-0 mr-4"></ion-icon>
     <ion-label>
       <h2>Password</h2>
       <p>********</p>
     </ion-label>
   </ion-item>
-  <ion-modal #modal trigger="ganti-pw" [initialBreakpoint]="0.5" [breakpoints]="[0, 0.5, 0.75, 0.8]">
+  <ion-modal [isOpen]="isModalOpen" (willDismiss)="onWillDismissModal(false)" [initialBreakpoint]="0.5"
+    [breakpoints]="[0, 0.5, 0.75, 0.8]">
     <ng-template>
       <ion-content class="ion-padding">
         <div class="space-y-2">

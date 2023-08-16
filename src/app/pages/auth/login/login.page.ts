@@ -19,6 +19,7 @@ export class LoginPage implements OnInit {
   registered_email: any = null;
   isShowPw: boolean = false;
   inputTypePw: string = 'password';
+  isModalOpen: boolean = false;
 
   constructor(private alertCtrl: AlertController,
     private loadingCtrl: LoadingController,
@@ -98,5 +99,13 @@ export class LoginPage implements OnInit {
       this.inputTypePw = 'text';
       this.isShowPw = true;
     }
+  }
+
+  setOpenModal(isOpen: boolean) {
+    this.isModalOpen = isOpen;
+  }
+
+  onWillDismissModal(isOpen: boolean) {
+    this.isModalOpen = isOpen;
   }
 }
