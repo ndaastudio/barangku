@@ -47,11 +47,14 @@ const routes: Routes = [
     loadChildren: () => import('./pages/update/update.module').then(m => m.UpdatePageModule)
   },
   {
+    path: 'pindah-perangkat',
+    loadChildren: () => import('./pages/pindah-perangkat/pindah-perangkat.module').then(m => m.PindahPerangkatPageModule)
+  },
+  {
     path: '',
     redirectTo: '/login',
     pathMatch: 'full'
   },
-
 ];
 @NgModule({
   imports: [

@@ -1,0 +1,35 @@
+<div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/profil']">
+    <ion-button>
+      <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
+    </ion-button>
+  </ion-buttons>
+  <h5 class="text-xl font-bold text-white">Pindah Perangkat</h5>
+</div>
+<ion-content class="space-y-2 ion-padding">
+  <h5 class="text-lg font-semibold text-gray-700">Langkah - Langkah Pindah Perangkat:</h5>
+  <div class="space-y-1 text-justify text-gray-500">
+    <p>1. Klik tombol <span class="text-[#30a2ff]">UPLOAD</span> di halaman ini</p>
+    <p>2. Tunggu proses upload data ke server</p>
+    <p>3. Logout akun <span class="text-[#30a2ff]">Barangku</span> di perangkat ini</p>
+    <p>4. Login akun <span class="text-[#30a2ff]">Barangku</span> di perangkat baru</p>
+    <p>5. Masuk ke halaman <span class="text-[#30a2ff]">Pindah Perangkat</span></p>
+    <p>6. Klik tombol <span class="text-[#30a2ff]">DOWNLOAD</span> di halaman ini</p>
+    <p>7. Tunggu proses download data dari server</p>
+    <p>8. Data di perangkat lama berhasil dipindahkan</p>
+  </div>
+  <p class="text-sm italic text-justify text-red-500">*data yang telah diupload ke server hanya bertahan selama 2 x 24
+    jam. Pastikan anda download data tersebut di perangkat baru sebelum terhapus secara otomatis.</p>
+</ion-content>
+<ion-footer class="ion-no-border ion-padding">
+  <div class="flex justify-center">
+    <ion-button (click)="uploadData()" class="text-white">
+      <ion-icon name="cloud-upload-outline" class="mr-2"></ion-icon>
+      UPLOAD
+    </ion-button>
+    <ion-button (click)="downloadData()" class="text-white" color="secondary">
+      <ion-icon name="cloud-download-outline" class="mr-2"></ion-icon>
+      DOWNLOAD
+    </ion-button>
+  </div>
+</ion-footer>
