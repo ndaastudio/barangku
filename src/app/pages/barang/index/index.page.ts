@@ -4,8 +4,8 @@ import { AlertController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { formatDate, formatTime, showAlert } from '../../../helpers/functions';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
-import { CheckDeviceLoginService } from 'src/app/services/App/check-device-login.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
+import { CheckAkunService } from 'src/app/services/App/check-akun.service';
 
 @Component({
   selector: 'app-index',
@@ -33,9 +33,11 @@ export class IndexPage implements OnInit {
     private router: Router,
     private sqliteBarang: SQLiteBarang,
     private dataRefresh: DataRefreshService,
-    private checkDeviceLogin: CheckDeviceLoginService,
-    public photo: PhotoService) {
-    this.checkDeviceLogin.initCheckDeviceLogin();
+    private photo: PhotoService,
+    private checkAkun: CheckAkunService) {
+    this.checkAkun.initCheckExpiredAkun();
+    this.checkAkun.initCheckDeviceLogin();
+    this.checkAkun.initCheckExpiredDataUpload();
   }
 
   ngOnInit() {
