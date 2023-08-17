@@ -32,8 +32,6 @@ export class SyncDataService {
   }
 
   public async updateDataLocal(): Promise<any> {
-    const token = await this.localStorage.get('access_token');
-    const profile = await this.localStorage.get('profile');
     const server = await this.getDataServer();
     const dataServer = {
       barang: server.data.barang,
@@ -51,9 +49,6 @@ export class SyncDataService {
       await this.sqliteBarang.deleteGambarById(gambarBarang.id_gambar_barang);
       await this.sqliteBarang.createGambar(gambarBarang.barang_id, gambarBarang.gambar);
     });
-    const lastSinkron = await this.apiProfil.upDatetimeSinkron({ akun_id: profile.id }, token);
-    profile.tanggal_sinkron = lastSinkron.tanggal_sinkron;
-    await this.localStorage.set('profile', profile);
   }
 
   public async updateDataServer(): Promise<any> {
@@ -94,8 +89,6 @@ export class SyncDataService {
       };
       await this.apiBarang.upGambar(data, token);
     });
-    const lastSinkron = await this.apiProfil.upDatetimeSinkron({ akun_id: profile.id }, token);
-    profile.tanggal_sinkron = lastSinkron.tanggal_sinkron;
-    await this.localStorage.set('profile', profile);
+    await this.apiProfil.upDatetimeSinkron({ akun_id: profile.id }, token);
   }
 }
