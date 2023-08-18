@@ -12,27 +12,21 @@ import { ProfilService } from '../../services/API/profil.service';
   providedIn: 'root'
 })
 export class CheckAkunService {
-  token: any = null;
-  profile: any = null;
 
   constructor(private auth: AuthService,
-    private profilApi: ProfilService,
+    private apiProfil: ProfilService,
     private localStorage: LocalStorageService,
     private notif: LocalNotifService,
     private router: Router,
     private alertCtrl: AlertController) {
-    this.initApi();
-  }
-
-  private async initApi(): Promise<void> {
-    this.token = await this.localStorage.get('access_token');
-    this.profile = await this.profilApi.getProfile(this.token);
   }
 
   public async initCheckDeviceLogin(): Promise<void> {
+    const token = await this.localStorage.get('access_token');
+    const profile = await this.apiProfil.getProfile(token);
     const deviceId = (await Device.getId()).identifier;
-    if (this.profile.device_login !== deviceId) {
-      await this.auth.logout(this.token);
+    if (profile.device_login !== deviceId) {
+      await this.auth.logout(token);
       await this.localStorage.clear();
       await this.notif.deleteAll();
       await this.router.navigateByUrl('/login');
@@ -41,27 +35,23 @@ export class CheckAkunService {
   }
 
   public async initCheckExpiredDataUpload(): Promise<void> {
-    if (this.profile.tanggal_sinkron) {
-      const currentTime = new Date();
-      const lastUploadTime = this.profile.tanggal_sinkron;
-      const expiredTime = new Date(lastUploadTime);
-      expiredTime.setDate(expiredTime.getDate() + 2);
-      if (currentTime > expiredTime) {
-        await this.profilApi.deleteAllData(this.token, this.profile.id);
-      }
+    const token = await this.localStorage.get('access_token');
+    const profile = await this.apiProfil.getProfile(token);
+    if (profile.tanggal_sinkron) {
+      this.apiProfil.checkExpiredUploadData(token, profile.id);
     }
   }
 
   public async initCheckExpiredAkun(): Promise<void> {
-    const currentDate = new Date();
-    const expiredDate = new Date(this.profile.limit_akun);
-    if (currentDate > expiredDate) {
-      await this.profilApi.deleteAllData(this.token, this.profile.id);
-      await this.auth.logout(this.token);
+    const token = await this.localStorage.get('access_token');
+    const profile = await this.apiProfil.getProfile(token);
+    const result = await this.auth.checkExpiredAkun(token, profile.id);
+    if (result.status_akun == 2) {
+      await this.auth.logout(token);
       await this.localStorage.clear();
       await this.notif.deleteAll();
       await this.router.navigateByUrl('/login');
-      await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah expired, silahkan hubungi admin untuk mengaktifkan kembali akun anda');
+      await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah expired, silahkan hubungi admin');
     }
   }
 }
