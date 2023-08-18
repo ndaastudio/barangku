@@ -35,14 +35,18 @@ export class IndexPage implements OnInit {
     private dataRefresh: DataRefreshService,
     private photo: PhotoService,
     private checkAkun: CheckAkunService) {
-    this.checkAkun.initCheckExpiredAkun();
-    this.checkAkun.initCheckDeviceLogin();
-    this.checkAkun.initCheckExpiredDataUpload();
   }
 
-  ngOnInit() {
-    this.photo.initPermissions();
-    this.initGetData();
+  async ngOnInit() {
+    try {
+      await this.photo.initPermissions();
+      await this.checkAkun.initCheckExpiredAkun();
+      await this.checkAkun.initCheckExpiredDataUpload();
+      await this.checkAkun.initCheckDeviceLogin();
+    } catch (error) {
+      return;
+    }
+    await this.initGetData();
     this.dataRefresh.refreshedData.subscribe(() => {
       this.initGetData();
     });
