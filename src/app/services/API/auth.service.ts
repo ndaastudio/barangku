@@ -54,4 +54,14 @@ export class AuthService {
     };
     return await this.http.post<any>(`${environment.apiURL}/ganti-pw`, data, httpHeaders).toPromise();
   }
+
+  public async checkExpiredAkun(token: string, idAkun: number): Promise<any> {
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+    return await this.http.get<any>(`${environment.apiURL}/akun/cek-expired/${idAkun}`, httpHeaders).toPromise();
+  }
 }
