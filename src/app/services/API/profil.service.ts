@@ -45,13 +45,13 @@ export class ProfilService {
     return await this.http.get<any>(`${environment.apiURL}/profile`, httpHeaders).toPromise();
   }
 
-  public async deleteAllData(token: string, idUser: number): Promise<any> {
+  public async checkExpiredUploadData(token: string, idUser: number): Promise<any> {
     const httpHeaders = {
       headers: new HttpHeaders({
         'Content-Type': 'application/json',
         'Authorization': `Bearer ${token}`
       })
     };
-    return await this.http.delete<any>(`${environment.apiURL}/akun/data/${idUser}`, httpHeaders).toPromise();
+    return await this.http.get<any>(`${environment.apiURL}/akun/data/${idUser}`, httpHeaders).toPromise();
   }
 }
