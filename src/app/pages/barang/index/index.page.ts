@@ -16,6 +16,7 @@ export class IndexPage implements OnInit {
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
   formatJam: Function = formatTime;
+  isSearchBarang: boolean = false;
   optionsKategori: any = [
     'Fashion',
     'Kuliner',
@@ -28,6 +29,18 @@ export class IndexPage implements OnInit {
     'Peralatan',
     'Office',
   ].sort();
+  optionsIconStatus: any = {
+    Dibeli: 'location-sharp',
+    Dijual: 'person-sharp',
+    Disedekahkan: 'person-sharp',
+    Diberikan: 'person-sharp',
+    Dihadiahkan: 'person-sharp',
+    Dibuang: 'location-sharp',
+    Dipinjamkan: 'person-sharp',
+    Diperbaiki: 'location-sharp',
+    Dipindahkan: 'location-sharp',
+    Dikembalikan: 'person-sharp'
+  }
 
   constructor(private alertCtrl: AlertController,
     private router: Router,
@@ -38,6 +51,10 @@ export class IndexPage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.initGetData();
+    this.dataRefresh.refreshedData.subscribe(() => {
+      this.initGetData();
+    });
     try {
       await this.photo.initPermissions();
       await this.checkAkun.initCheckExpiredAkun();
@@ -46,10 +63,6 @@ export class IndexPage implements OnInit {
     } catch (error) {
       return;
     }
-    await this.initGetData();
-    this.dataRefresh.refreshedData.subscribe(() => {
-      this.initGetData();
-    });
   }
 
   async initGetData() {
@@ -106,11 +119,20 @@ export class IndexPage implements OnInit {
   async onSearchBarang(event: any) {
     const keyword = event.target.value;
     if (keyword.length == 0) {
-      const data = await this.sqliteBarang.getAll();
-      this.dataBarang = data;
+      this.initGetData();
+      this.isSearchBarang = false;
       return;
     }
     const data = await this.sqliteBarang.search(keyword);
     this.dataBarang = data;
+    this.isSearchBarang = true;
+  }
+
+  handleRefresh(event: any) {
+    this.dataBarang = [];
+    setTimeout(async () => {
+      await event.target.complete();
+      await this.initGetData();
+    }, 1500);
   }
 }
