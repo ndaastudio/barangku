@@ -166,8 +166,8 @@ export class BarangService {
 
   public async update(data: any) {
     try {
-      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, reminder = ?, progress = ? WHERE id = ?;`;
-      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress, data.id]);
+      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, status = ?, extend_status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, reminder = ?, progress = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress, data.id]);
       return true;
     } catch (error) {
       alert(error);
@@ -199,8 +199,8 @@ export class BarangService {
 
   public async search(keyword: string) {
     try {
-      const sql = `SELECT * FROM barang WHERE nama_barang LIKE ? OR kategori LIKE ?;`;
-      const results = await this.db.executeSql(sql, ['%' + keyword + '%', '%' + keyword + '%']);
+      const sql = `SELECT * FROM barang WHERE nama_barang LIKE ? OR kategori LIKE ? OR kategori_lainnya LIKE ?;`;
+      const results = await this.db.executeSql(sql, ['%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%']);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
         data.push(results.rows.item(i));
