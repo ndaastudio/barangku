@@ -14,7 +14,7 @@
       <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Baju)" type="text" [(ngModel)]="nama_barang"
         (input)="countInputNama()"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item fill="outline" lines="none">
       <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --" okText="Pilih"
         cancelText="Batal">
         <ion-select-option *ngFor="let dataKategori of optionsKategori;" value="{{ dataKategori }}">{{ dataKategori
@@ -28,7 +28,7 @@
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Kebutuhan Suami)" type="text"
         [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item fill="outline" lines="none">
       <ion-select [(ngModel)]="status" label="Status" placeholder="-- Pilih Status --" okText="Pilih"
         cancelText="Batal">
         <ion-select-option *ngFor="let dataStatus of optionsStatus;" value="{{ dataStatus }}">{{ dataStatus
@@ -62,7 +62,7 @@
       </ion-datetime>
     </div>
     <div>
-      <ion-item fill="outline">
+      <ion-item fill="outline" lines="none">
         <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --" okText="Pilih"
           cancelText="Batal">
           <ion-select-option value="Jadwal Rencana">Jadwal Rencana</ion-select-option>
