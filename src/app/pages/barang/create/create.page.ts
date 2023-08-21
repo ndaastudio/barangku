@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, AnimationController } from '@ionic/angular';
 import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
+import { CheckAkunService } from 'src/app/services/App/check-akun.service';
 import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
@@ -86,7 +87,8 @@ export class CreatePage implements OnInit {
     private photo: PhotoService,
     private notif: LocalNotifService,
     private animationCtrl: AnimationController,
-    private checkUpdate: CheckUpdateService) {
+    private checkUpdate: CheckUpdateService,
+    private checkAkun: CheckAkunService) {
   }
 
   ngOnInit() {
@@ -96,6 +98,20 @@ export class CreatePage implements OnInit {
     if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.jadwal_rencana && this.reminder) {
       try {
         const isUpdate = await this.checkUpdate.isUpdate();
+        if (isUpdate) {
+          await this.router.navigateByUrl('/update');
+          return;
+        }
+        const isExpiredAkun = await this.checkAkun.initCheckExpiredAkun();
+        if (isExpiredAkun) {
+          await this.router.navigateByUrl('/login');
+          await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah expired, silahkan hubungi admin');
+          return;
+        }
+      } catch (error) {
+        return showAlert(this.alertCtrl, 'Error!', 'Periksa koneksi internet anda');
+      }
+      try {
         const data = {
           nama_barang: this.nama_barang,
           kategori: this.kategori,
@@ -133,11 +149,7 @@ export class CreatePage implements OnInit {
           this.pickedPhoto = false;
           this.dataImage = [];
         });
-        if (isUpdate) {
-          await this.router.navigateByUrl('/update');
-        } else {
-          await this.router.navigateByUrl('/barang');
-        }
+        await this.router.navigateByUrl('/barang');
         this.dataRefresh.refresh();
       } catch (error: any) {
         showAlert(this.alertCtrl, 'Error!', error);
