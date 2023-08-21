@@ -71,7 +71,8 @@
     </div>
     <div class="border-t-2 border-[#e7e7e7]"></div>
     <p class="text-sm font-bold text-right text-gray-500">
-      <ion-icon name="{{ optionsIconStatus[data.status] }}"></ion-icon> {{ data.letak_barang }}
+      <ion-icon name="{{ optionsIconStatus[data.status] }}"></ion-icon> {{
+      data.status == 'Dibeli' ? data.letak_barang : data.extend_status }}
     </p>
   </div>
 </ion-content>
