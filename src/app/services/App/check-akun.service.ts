@@ -42,7 +42,7 @@ export class CheckAkunService {
     }
   }
 
-  public async initCheckExpiredAkun(): Promise<void> {
+  public async initCheckExpiredAkun(): Promise<boolean> {
     const token = await this.localStorage.get('access_token');
     const profile = await this.apiProfil.getProfile(token);
     const result = await this.auth.checkExpiredAkun(token, profile.id);
@@ -50,8 +50,8 @@ export class CheckAkunService {
       await this.auth.logout(token);
       await this.localStorage.clear();
       await this.notif.deleteAll();
-      await this.router.navigateByUrl('/login');
-      await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah expired, silahkan hubungi admin');
+      return true;
     }
+    return false;
   }
 }
