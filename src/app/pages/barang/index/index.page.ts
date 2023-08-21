@@ -51,18 +51,17 @@ export class IndexPage implements OnInit {
   }
 
   async ngOnInit() {
+    await this.photo.initPermissions();
+    try {
+      await this.checkAkun.initCheckDeviceLogin();
+      await this.checkAkun.initCheckExpiredDataUpload();
+    } catch (error) {
+      return showAlert(this.alertCtrl, 'Error!', 'Periksa koneksi internet anda');
+    }
     await this.initGetData();
     this.dataRefresh.refreshedData.subscribe(() => {
       this.initGetData();
     });
-    try {
-      await this.photo.initPermissions();
-      await this.checkAkun.initCheckExpiredAkun();
-      await this.checkAkun.initCheckExpiredDataUpload();
-      await this.checkAkun.initCheckDeviceLogin();
-    } catch (error) {
-      return;
-    }
   }
 
   async initGetData() {
@@ -132,7 +131,7 @@ export class IndexPage implements OnInit {
     this.dataBarang = [];
     setTimeout(async () => {
       await event.target.complete();
-      await this.initGetData();
+      await this.ngOnInit();
     }, 1500);
   }
 }
