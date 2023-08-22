@@ -29,7 +29,7 @@
         [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
     <ion-item fill="outline" lines="none">
-      <ion-select [(ngModel)]="status" label="Status" placeholder="-- Pilih Status --" okText="Pilih"
+      <ion-select [(ngModel)]="status" label="Rencana" placeholder="-- Pilih Rencana --" okText="Pilih"
         cancelText="Batal">
         <ion-select-option *ngFor="let dataStatus of optionsStatus;" value="{{ dataStatus }}">{{ dataStatus
           }}</ion-select-option>
