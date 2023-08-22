@@ -54,7 +54,8 @@ export class EditPage implements OnInit {
     'Dipinjamkan',
     'Diperbaiki',
     'Dipindahkan',
-    'Dikembalikan'
+    'Dikembalikan',
+    'Diambil'
   ].sort();
   optionsExtendStatus: any = {
     Dibeli: 'dimana',
@@ -66,7 +67,8 @@ export class EditPage implements OnInit {
     Dipinjamkan: 'kepada siapa',
     Diperbaiki: 'dimana',
     Dipindahkan: 'kemana',
-    Dikembalikan: 'kepada siapa'
+    Dikembalikan: 'kepada siapa',
+    Diambil: 'dimana'
   }
   optionsLetak: any = {
     Dibeli: 'Akan diletakkan dimana',
@@ -78,7 +80,8 @@ export class EditPage implements OnInit {
     Dipinjamkan: 'Letak barang saat ini',
     Diperbaiki: 'Letak barang saat ini',
     Dipindahkan: 'Letak barang saat ini',
-    Dikembalikan: 'Letak barang saat ini'
+    Dikembalikan: 'Letak barang saat ini',
+    Diambil: 'Akan diambil dimana'
   }
 
   constructor(private sqliteBarang: SQLiteBarang,

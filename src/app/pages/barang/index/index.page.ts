@@ -39,7 +39,8 @@ export class IndexPage implements OnInit {
     Dipinjamkan: 'person-sharp',
     Diperbaiki: 'location-sharp',
     Dipindahkan: 'location-sharp',
-    Dikembalikan: 'person-sharp'
+    Dikembalikan: 'person-sharp',
+    Diambil: 'location-sharp'
   }
 
   constructor(private alertCtrl: AlertController,

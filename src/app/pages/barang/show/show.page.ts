@@ -30,7 +30,8 @@ export class ShowPage implements OnInit {
     Dipinjamkan: 'kepada siapa',
     Diperbaiki: 'dimana',
     Dipindahkan: 'kemana',
-    Dikembalikan: 'kepada siapa'
+    Dikembalikan: 'kepada siapa',
+    Diambil: 'dimana'
   }
 
   constructor(private sqliteBarang: SQLiteBarang,
