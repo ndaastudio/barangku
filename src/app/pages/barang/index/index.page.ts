@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
-import { formatDate, formatTime, showAlert } from '../../../helpers/functions';
+import { formatDate, formatTime, showAlert, showLoading } from '../../../helpers/functions';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { CheckAkunService } from 'src/app/services/App/check-akun.service';
@@ -17,6 +17,7 @@ export class IndexPage implements OnInit {
   formatTanggal: Function = formatDate;
   formatJam: Function = formatTime;
   isSearchBarang: boolean = false;
+  isLoaded: boolean = false;
   optionsKategori: any = [
     'Fashion',
     'Kuliner',
@@ -48,18 +49,24 @@ export class IndexPage implements OnInit {
     private sqliteBarang: SQLiteBarang,
     private dataRefresh: DataRefreshService,
     private photo: PhotoService,
-    private checkAkun: CheckAkunService) {
+    private checkAkun: CheckAkunService,
+    private loadingCtrl: LoadingController,) {
   }
 
   async ngOnInit() {
     await this.photo.initPermissions();
+    this.isLoaded = false;
+    await showLoading(this.loadingCtrl, 'Memuat data...');
     try {
       await this.checkAkun.initCheckDeviceLogin();
       await this.checkAkun.initCheckExpiredDataUpload();
     } catch (error) {
+      await this.loadingCtrl.dismiss();
       return showAlert(this.alertCtrl, 'Error!', 'Periksa koneksi internet anda');
     }
     await this.initGetData();
+    await this.loadingCtrl.dismiss();
+    this.isLoaded = true;
     this.dataRefresh.refreshedData.subscribe(() => {
       this.initGetData();
     });
@@ -128,7 +135,8 @@ export class IndexPage implements OnInit {
     this.isSearchBarang = true;
   }
 
-  handleRefresh(event: any) {
+  async handleRefresh(event: any) {
+    this.isLoaded = false;
     this.dataBarang = [];
     setTimeout(async () => {
       await event.target.complete();

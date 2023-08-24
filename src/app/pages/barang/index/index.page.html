@@ -27,7 +27,7 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
-  <div *ngIf="dataBarang.length == 0"
+  <div *ngIf="isLoaded && dataBarang.length == 0"
     class="px-4 py-3 text-[#30a2ff] bg-blue-100 border-t-4 border-[#30a2ff] rounded-lg shadow-inherit">
     <div class="flex">
       <div class="py-1"><svg class="w-6 h-6 mr-4 text-[#30a2ff] fill-current" xmlns="http://www.w3.org/2000/svg"

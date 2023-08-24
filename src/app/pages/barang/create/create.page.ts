@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, AnimationController } from '@ionic/angular';
-import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
+import { AlertController, AnimationController, LoadingController } from '@ionic/angular';
+import { getCurrentDateTime, showAlert, showLoading } from 'src/app/helpers/functions';
 import { CheckAkunService } from 'src/app/services/App/check-akun.service';
 import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
@@ -91,7 +91,8 @@ export class CreatePage implements OnInit {
     private notif: LocalNotifService,
     private animationCtrl: AnimationController,
     private checkUpdate: CheckUpdateService,
-    private checkAkun: CheckAkunService) {
+    private checkAkun: CheckAkunService,
+    private loadingCtrl: LoadingController,) {
   }
 
   ngOnInit() {
@@ -99,19 +100,23 @@ export class CreatePage implements OnInit {
 
   async saveToDatabase() {
     if (this.nama_barang && this.kategori && this.status && this.extend_status && this.jumlah_barang && this.letak_barang && this.jadwal_rencana && this.reminder) {
+      await showLoading(this.loadingCtrl, 'Loading...');
       try {
         const isUpdate = await this.checkUpdate.isUpdate();
         if (isUpdate) {
+          await this.loadingCtrl.dismiss();
           await this.router.navigateByUrl('/update');
           return;
         }
         const isExpiredAkun = await this.checkAkun.initCheckExpiredAkun();
         if (isExpiredAkun) {
+          await this.loadingCtrl.dismiss();
           await this.router.navigateByUrl('/login');
           await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah expired, silahkan hubungi admin');
           return;
         }
       } catch (error) {
+        await this.loadingCtrl.dismiss();
         return showAlert(this.alertCtrl, 'Error!', 'Periksa koneksi internet anda');
       }
       try {
@@ -152,9 +157,11 @@ export class CreatePage implements OnInit {
           this.pickedPhoto = false;
           this.dataImage = [];
         });
+        await this.loadingCtrl.dismiss();
         await this.router.navigateByUrl('/barang');
         this.dataRefresh.refresh();
       } catch (error: any) {
+        await this.loadingCtrl.dismiss();
         showAlert(this.alertCtrl, 'Error!', error);
       }
     } else {
