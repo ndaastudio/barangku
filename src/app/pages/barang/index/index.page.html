@@ -46,7 +46,8 @@
     class="relative w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
     <div class="flex justify-between">
       <div class="mr-2">
-        <p class="text-sm text-gray-500"><b>{{ data.status }}</b> <span class="ml-auto text-xs text-gray-500"> - {{
+        <p class="text-sm text-gray-500"><b class="!tracking-[0.5px]">{{ data.status }}</b> <span
+            class="ml-auto text-xs text-gray-500"> - {{
             formatTanggal(data.jadwal_rencana) }}</span></p>
       </div>
       <div class="ml-2">
@@ -57,8 +58,8 @@
       </div>
     </div>
     <p class="mt-2 font-bold text-gray-700 text-md">{{ data.nama_barang }}</p>
-    <p class="mt-0 mb-2 text-sm text-gray-500">{{ data.jumlah_barang }}</p>
-    <div class="flex justify-between mt-4">
+    <p class="!mt-0 mb-2 text-sm text-gray-500">{{ data.jumlah_barang }}</p>
+    <div class="flex justify-between !mt-4">
       <div class="flex items-end mr-2">
         <p class="text-sm text-[#30a2ff] text-center"><i>{{ data.kategori == 'Opsi Lainnya' ?
             data.kategori_lainnya : data.kategori }}</i></p>
@@ -70,9 +71,9 @@
       </div>
     </div>
     <div class="border-t-2 border-[#e7e7e7]"></div>
-    <p class="text-sm font-bold text-right text-gray-500">
-      <ion-icon name="{{ optionsIconStatus[data.status] }}"></ion-icon> {{
-      data.status == 'Dibeli' ? data.letak_barang : data.extend_status }}
+    <p class="text-sm font-bold text-right text-gray-500 !tracking-[0.2px]">
+      <ion-icon name="{{ optionsIconStatus[data.status] }}" class="!mr-[2px]"></ion-icon><span>{{
+        data.status == 'Dibeli' ? data.letak_barang : data.extend_status }}</span>
     </p>
   </div>
 </ion-content>
