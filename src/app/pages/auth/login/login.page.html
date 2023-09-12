@@ -6,11 +6,11 @@
         </div>
     </ion-header>
     <div class="space-y-4 ion-padding">
-        <ion-item fill="outline">
+        <ion-item mode="md" fill="outline">
             <ion-label position="floating">Nomor Telepon</ion-label>
             <ion-input placeholder="Nomor Telepon" type="number" [(ngModel)]="nomor_telepon"></ion-input>
         </ion-item>
-        <ion-item fill="outline">
+        <ion-item mode="md" fill="outline">
             <ion-label position="floating">Password</ion-label>
             <ion-input placeholder="Password" type="{{ inputTypePw }}" [(ngModel)]="password"></ion-input>
             <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
@@ -38,7 +38,7 @@
                         <p class="text-[#30a2ff] font-semibold">Lupa Password?</p>
                         <p class="text-gray-500">Masukkan email Anda</p>
                     </div>
-                    <ion-item fill="outline">
+                    <ion-item mode="md" fill="outline">
                         <ion-label position="floating">Email</ion-label>
                         <ion-input [(ngModel)]="registered_email" placeholder="Email" type="email"></ion-input>
                     </ion-item>

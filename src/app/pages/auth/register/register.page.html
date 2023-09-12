@@ -14,7 +14,7 @@
   </ion-header>
   <div class="mb-4 ion-padding">
     <div class="space-y-4" *ngIf="!isValidKodeDaftar">
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Kode Daftar</ion-label>
         <ion-input placeholder="Kode Daftar" type="text" [(ngModel)]="kode_daftar"></ion-input>
       </ion-item>
@@ -23,19 +23,19 @@
       <ion-button class="text-white" expand="block" (click)="cekKodeDaftar()">Verifikasi</ion-button>
     </div>
     <div class="space-y-4" *ngIf="isValidKodeDaftar">
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Nama</ion-label>
         <ion-input placeholder="Nama" type="text" [(ngModel)]="nama"></ion-input>
       </ion-item>
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Email</ion-label>
         <ion-input placeholder="Email" type="email" [(ngModel)]="email"></ion-input>
       </ion-item>
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Nomor Telepon</ion-label>
         <ion-input placeholder="Nomor Telepon" type="text" [(ngModel)]="nomor_telepon" readonly></ion-input>
       </ion-item>
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Password</ion-label>
         <ion-input placeholder="Password" type="{{ inputTypePw }}" [(ngModel)]="password"></ion-input>
         <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
@@ -49,7 +49,7 @@
           </ion-button>
         </ion-buttons>
       </ion-item>
-      <ion-item fill="outline">
+      <ion-item mode="md" fill="outline">
         <ion-label position="floating">Konfirmasi Password</ion-label>
         <ion-input placeholder="Konfirmasi Password" type="{{ inputTypeConfirmPw }}"
           [(ngModel)]="konfirmasi_password"></ion-input>

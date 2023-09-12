@@ -11,11 +11,11 @@
 
 <ion-content class="ion-padding" scrollY="false">
   <div class="space-y-4">
-    <ion-item fill="outline">
+    <ion-item mode="md" fill="outline">
       <ion-label position="floating">Kode Verifikasi</ion-label>
       <ion-input placeholder="Kode Verifikasi" type="number" [(ngModel)]="kode_lupa_password"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item mode="md" fill="outline">
       <ion-label position="floating">Password Baru</ion-label>
       <ion-input placeholder="Password Baru" type="{{ inputTypePw }}" [(ngModel)]="password_baru"></ion-input>
       <ion-buttons slot="end" *ngIf="!isShowPw" (click)="showHidePw()">
@@ -29,7 +29,7 @@
         </ion-button>
       </ion-buttons>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item mode="md" fill="outline">
       <ion-label position="floating">Konfirmasi Password Baru</ion-label>
       <ion-input placeholder="Konfirmasi Password Baru" type="{{ inputTypeConfirmPw }}"
         [(ngModel)]="konfirmasi_password_baru"></ion-input>

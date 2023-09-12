@@ -11,12 +11,12 @@
 
 <ion-content class="ion-padding">
   <div class="space-y-4">
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Nama Barang</ion-label>
       <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Baju)" type="text" [(ngModel)]="nama_barang"
         (input)="countInputNama()"></ion-input>
     </ion-item>
-    <ion-item fill="outline" lines="none">
+    <ion-item mode="md" fill="outline" lines="none">
       <ion-select [(ngModel)]="kategori" label="Kategori" placeholder="-- Pilih Kategori --" okText="Pilih"
         cancelText="Batal">
         <ion-select-option *ngFor="let dataKategori of optionsKategori;" value="{{ dataKategori }}">{{ dataKategori
@@ -24,35 +24,35 @@
         <ion-select-option value="Opsi Lainnya">Opsi Lainnya</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter"
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter"
       *ngIf="kategori == 'Opsi Lainnya'">
       <ion-label position="floating">Kategori Lainnya</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Kebutuhan Suami)" type="text"
         [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
-    <ion-item fill="outline" lines="none">
+    <ion-item mode="md" fill="outline" lines="none">
       <ion-select [(ngModel)]="status" label="Rencana" placeholder="-- Pilih Rencana --" okText="Pilih"
         cancelText="Batal">
         <ion-select-option *ngFor="let dataStatus of optionsStatus;" value="{{ dataStatus }}">{{ dataStatus
           }}</ion-select-option>
       </ion-select>
     </ion-item>
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
       <ion-label position="floating">{{ status }} {{ optionsExtendStatus[status] }}</ion-label>
       <ion-input autocapitalize="on" maxlength="50" placeholder="{{ status }} {{ optionsExtendStatus[status] }}"
         type="text" [(ngModel)]="extend_status" (input)="countInputStatus()"></ion-input>
     </ion-item>
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: 1 pcs)" type="text"
         [(ngModel)]="jumlah_barang" (input)="countInputJumlah()"></ion-input>
     </ion-item>
-    <ion-item fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
       <ion-label position="floating">{{ optionsLetak[status] }}</ion-label>
       <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Dibawah meja)" type="text"
         [(ngModel)]="letak_barang" (input)="countInputLetak()"></ion-input>
     </ion-item>
-    <ion-item fill="outline">
+    <ion-item mode="md" fill="outline">
       <ion-label position="floating">Keterangan (Opsional)</ion-label>
       <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
         [(ngModel)]="keterangan"></ion-textarea>
@@ -64,7 +64,7 @@
       </ion-datetime>
     </div>
     <div>
-      <ion-item fill="outline" lines="none">
+      <ion-item mode="md" fill="outline" lines="none">
         <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --" okText="Pilih"
           cancelText="Batal">
           <ion-select-option value="Jadwal Rencana">Jadwal Rencana</ion-select-option>
