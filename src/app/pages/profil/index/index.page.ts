@@ -5,6 +5,7 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { showAlert, showLoading } from '../../../helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
+import { Browser } from '@capacitor/browser';
 
 @Component({
   selector: 'app-index',
@@ -48,6 +49,7 @@ export class IndexPage implements OnInit {
       },
       {
         text: 'Ya',
+        cssClass: '!text-red-500',
         handler: async () => {
           await alertKeluar.dismiss();
           try {
@@ -70,5 +72,28 @@ export class IndexPage implements OnInit {
 
   goToPindahPerangkat() {
     this.router.navigateByUrl('/pindah-perangkat');
+  }
+
+  async openBrowser(url: string) {
+    await Browser.open({ url: url });
+  }
+
+  async submitNonaktifkanAkun() {
+    const alertNonaktifkanAkun = await this.alertCtrl.create({
+      header: 'Nonaktifkan Akun',
+      message: 'Anda akan dialihkan ke website Barangku untuk menonaktifkan akun. Lanjutkan?',
+      buttons: [{
+        text: 'Batal',
+        role: 'cancel',
+        cssClass: '!text-gray-500'
+      },
+      {
+        text: 'Ya',
+        handler: async () => {
+          this.openBrowser('https://barangku.web.id/nonaktifkan-akun');
+        }
+      }]
+    });
+    await alertNonaktifkanAkun.present();
   }
 }
