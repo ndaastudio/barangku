@@ -1,26 +1,23 @@
-<div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
-  <ion-buttons class="absolute top-0 left-0" slot="primary" [routerLink]="['/profil']">
-    <ion-button>
-      <ion-icon name="person-circle-outline" slot="icon-only" class="text-white"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-  <h5 class="text-xl font-bold text-white">Barangku</h5>
-  <ion-buttons class="absolute top-0 right-0" slot="primary" (click)="showKategori()">
-    <ion-button>
-      <ion-icon name="filter-outline" slot="icon-only" class="text-white"></ion-icon>
-    </ion-button>
-  </ion-buttons>
-</div>
+<ion-header class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <div>
+    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/profil']">
+      <ion-button>
+        <ion-icon name="person-circle-outline" slot="icon-only" class="text-white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <h5 class="text-xl font-bold text-white">Barangku</h5>
+    <ion-buttons class="absolute top-4 right-4" slot="primary" (click)="showKategori()">
+      <ion-button>
+        <ion-icon name="filter-outline" slot="icon-only" class="text-white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </div>
+</ion-header>
 <div class="ion-padding">
   <div class="relative">
     <input type="search" placeholder="Cari barang..."
       class="w-full h-12 px-5 pr-10 text-sm bg-gray-100 rounded-full focus:outline-none"
       (input)="onSearchBarang($event)">
-    <ion-buttons class="absolute top-0 right-0 mr-4" slot="primary">
-      <ion-button>
-        <ion-icon size="small" name="search-outline" slot="icon-only" class="text-gray-500"></ion-icon>
-      </ion-button>
-    </ion-buttons>
   </div>
 </div>
 <ion-content class="space-y-4 ion-padding">

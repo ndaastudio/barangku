@@ -1,15 +1,17 @@
 <ion-content>
-  <div class="flex justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
-    <ion-buttons class="absolute top-2 left-2" slot="primary" [routerLink]="['/login']">
-      <ion-button>
-        <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
-      </ion-button>
-    </ion-buttons>
-    <div class="space-y-4 text-3xl font-bold text-center text-white">
-      <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
-      <p>Barangku</p>
+  <ion-header class="flex ion-no-border justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+    <div>
+      <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/login']">
+        <ion-button>
+          <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
+        </ion-button>
+      </ion-buttons>
+      <div class="space-y-4 text-3xl font-bold text-center text-white">
+        <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
+        <p>Barangku</p>
+      </div>
     </div>
-  </div>
+  </ion-header>
   <div class="mb-4 ion-padding">
     <div class="space-y-4" *ngIf="!isValidKodeDaftar">
       <ion-item fill="outline">
