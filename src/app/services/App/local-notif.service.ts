@@ -12,7 +12,6 @@ export class LocalNotifService {
   }
 
   async init() {
-    if (this.platform.is("android")) {
       if ((await LocalNotifications.checkPermissions()).display !== "granted") {
         await LocalNotifications.requestPermissions();
         await this.init();
@@ -25,7 +24,6 @@ export class LocalNotifService {
           importance: 4,
         });
       }
-    }
   }
 
   async create(channel: string, title: string, body: string, id: number, time: Date, url: string) {

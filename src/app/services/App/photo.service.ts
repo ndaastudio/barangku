@@ -15,7 +15,6 @@ export class PhotoService {
   }
 
   async initPermissions() {
-    if (this.platform.is('android')) {
       const cameraPermission = await Camera.checkPermissions();
       const storagePermission = await Filesystem.checkPermissions();
       if (!cameraPermission.camera || !cameraPermission.photos) {
@@ -27,7 +26,6 @@ export class PhotoService {
         await this.initPermissions();
       }
       await this.initDirectory();
-    }
   }
 
   async initDirectory() {
