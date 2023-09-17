@@ -36,7 +36,7 @@ export class AppComponent {
     notifListener();
   }
 
-  ngOnInit() {
-    this.sqlite.init();
-  }
+  // ngOnInit() {
+  //   this.sqlite.init();
+  // }
 }
