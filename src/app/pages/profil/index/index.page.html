@@ -1,13 +1,12 @@
-<ion-header class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
-  <div>
-    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/barang']">
-      <ion-button>
-        <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
-      </ion-button>
+<ion-header class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <ion-toolbar color="primary" class="text-white">
+    <ion-buttons slot="start">
+      <ion-back-button default-href="/barang"></ion-back-button>
     </ion-buttons>
-    <h5 class="text-xl font-bold text-white">Profil</h5>
-  </div>
+    <ion-title>Profil</ion-title>
+  </ion-toolbar>
 </ion-header>
+
 <ion-content class="ion-padding">
   <div class="block p-4 mb-4 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
     <div class="flex items-center">

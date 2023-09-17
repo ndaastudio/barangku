@@ -1,18 +1,19 @@
-<ion-header class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
-  <div>
-    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/profil']">
+<ion-header class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <ion-toolbar color="primary" class="text-white">
+    <ion-buttons slot="start" [routerLink]="['/profil']">
       <ion-button>
-        <ion-icon name="person-circle-outline" slot="icon-only" class="text-white"></ion-icon>
+        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <h5 class="text-xl font-bold text-white">Barangku</h5>
-    <ion-buttons class="absolute top-4 right-4" slot="primary" (click)="showKategori()">
+    <ion-title>Barangku</ion-title>
+    <ion-buttons slot="end" (click)="showKategori()">
       <ion-button>
-        <ion-icon name="filter-outline" slot="icon-only" class="text-white"></ion-icon>
+        <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
-  </div>
+  </ion-toolbar>
 </ion-header>
+
 <div class="ion-padding">
   <div class="relative">
     <input type="search" placeholder="Cari barang..."
