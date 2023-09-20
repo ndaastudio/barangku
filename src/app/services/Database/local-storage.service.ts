@@ -26,7 +26,16 @@ export class LocalStorageService {
     return this.storage?.remove(key);
   }
 
-  public clear() {
-    return this.storage?.clear();
+  public async clear() {
+    const isPlatform = await this.storage?.get('os');
+    if (isPlatform) {
+      this.storage.forEach((value, key) => {
+        if (key !== 'os') {
+          this.storage?.remove(key);
+        }
+      });
+    } else {
+      this.storage?.clear();
+    }
   }
 }
