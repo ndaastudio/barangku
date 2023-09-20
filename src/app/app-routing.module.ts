@@ -5,59 +5,56 @@ import { UpdateGuard } from './guards/update.guard';
 
 const routes: Routes = [
   {
-    path: '',
-    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule),
+    path: 'login',
+    loadChildren: () => import('./pages/auth/login/login.module').then(m => m.LoginPageModule),
     canActivate: [AuthGuard]
   },
   {
-    path: '',
-    loadChildren: () => import('./tabs/tabs.module').then(m => m.TabsPageModule),
-    canActivate: [UpdateGuard]
-  },
-  {
-    path: 'login',
-    loadChildren: () => import('./auth/login/login.module').then(m => m.LoginPageModule)
-  },
-  {
     path: 'register',
-    loadChildren: () => import('./auth/register/register.module').then(m => m.RegisterPageModule)
-  },
-  {
-    path: 'edit-profil',
-    loadChildren: () => import('./edit-profil/edit-profil.module').then(m => m.EditProfilPageModule)
-  },
-  {
-    path: 'barang/create',
-    loadChildren: () => import('./barang/create/create.module').then(m => m.TambahBarangPageModule)
-  },
-  {
-    path: 'jasa/create',
-    loadChildren: () => import('./jasa/create/create.module').then(m => m.TambahJasaPageModule)
-  },
-  {
-    path: 'barang/show/:id',
-    loadChildren: () => import('./barang/show/show.module').then(m => m.ShowBarangPageModule)
-  },
-  {
-    path: 'jasa/show/:id',
-    loadChildren: () => import('./jasa/show/show.module').then(m => m.ShowJasaPageModule)
+    loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule)
   },
   {
     path: 'verif-lupa-pw',
-    loadChildren: () => import('./auth/verif-lupa-pw/verif-lupa-pw.module').then(m => m.VerifLupaPwPageModule)
+    loadChildren: () => import('./pages/auth/verif-lupa-pw/verif-lupa-pw.module').then(m => m.VerifLupaPwPageModule)
+  },
+  {
+    path: 'barang',
+    loadChildren: () => import('./pages/barang/index/index.module').then(m => m.IndexPageModule),
+    canLoad: [UpdateGuard]
+  },
+  {
+    path: 'barang/create',
+    loadChildren: () => import('./pages/barang/create/create.module').then(m => m.CreatePageModule)
+  },
+  {
+    path: 'barang/show/:id',
+    loadChildren: () => import('./pages/barang/show/show.module').then(m => m.ShowPageModule)
   },
   {
     path: 'barang/edit/:id',
-    loadChildren: () => import('./barang/edit/edit.module').then(m => m.EditPageModule)
+    loadChildren: () => import('./pages/barang/edit/edit.module').then(m => m.EditPageModule)
   },
   {
-    path: 'jasa/edit/:id',
-    loadChildren: () => import('./jasa/edit/edit.module').then(m => m.EditPageModule)
-  },  {
+    path: 'profil',
+    loadChildren: () => import('./pages/profil/index/index.module').then(m => m.IndexPageModule)
+  },
+  {
+    path: 'profil/edit',
+    loadChildren: () => import('./pages/profil/edit/edit.module').then(m => m.EditPageModule)
+  },
+  {
     path: 'update',
-    loadChildren: () => import('./update/update.module').then( m => m.UpdatePageModule)
-  }
-
+    loadChildren: () => import('./pages/update/update.module').then(m => m.UpdatePageModule)
+  },
+  {
+    path: 'pindah-perangkat',
+    loadChildren: () => import('./pages/pindah-perangkat/pindah-perangkat.module').then(m => m.PindahPerangkatPageModule)
+  },
+  {
+    path: '',
+    redirectTo: '/login',
+    pathMatch: 'full'
+  },
 ];
 @NgModule({
   imports: [

@@ -1,35 +1,33 @@
 import { Injectable } from '@angular/core';
-import { CanActivate, Router } from '@angular/router';
+import { CanLoad, Router } from '@angular/router';
+import { LocalStorageService } from '../services/Database/local-storage.service';
 import { App } from '@capacitor/app';
-import { APIService } from 'src/services/API/api.service';
-import { StorageService } from 'src/services/LocalStorage/storage.service';
 
 @Injectable({
   providedIn: 'root'
 })
-export class UpdateGuard implements CanActivate {
+export class UpdateGuard implements CanLoad {
 
-  constructor(private router: Router,
-    private apiService: APIService,
-    private storageService: StorageService) {
+  constructor(private localStorage: LocalStorageService,
+    private router: Router) {
   }
 
-  canActivate(): Promise<boolean> {
-    return this.isUpdate();
+  canLoad(): Promise<boolean> {
+    return this.isNewUpdate();
   }
 
-  async isUpdate(): Promise<boolean> {
-    const getUpdate = await this.apiService.getLatestVersion();
-    const data = {
-      currentVersion: (await App.getInfo()).version,
-      latestVersion: getUpdate.data.latest_version,
-      urlUpdate: getUpdate.data.url_update
+  async isNewUpdate(): Promise<boolean> {
+    const data = await this.localStorage.get('update');
+    if (!data) {
+      return true;
     }
-    if (parseFloat(data.currentVersion) < parseFloat(data.latestVersion)) {
-      await this.storageService.set('update', data);
-      await this.router.navigateByUrl('/update');
+    const latestVersion = parseFloat(data.latestVersion);
+    const currentVersion = parseFloat((await App.getInfo()).version);
+    if (latestVersion > currentVersion) {
+      this.router.navigateByUrl('/update');
       return false;
     }
+    this.localStorage.remove('update');
     return true;
   }
 }
