@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
 import { Filesystem, Directory } from "@capacitor/filesystem";
-import { Platform } from "@ionic/angular";
 
 const IMAGE_DIR = '.Barangku/Images';
 
@@ -10,24 +9,22 @@ const IMAGE_DIR = '.Barangku/Images';
 })
 export class PhotoService {
 
-  constructor(private platform: Platform) {
+  constructor() {
     this.initPermissions();
   }
 
   async initPermissions() {
-    if (this.platform.is('android')) {
-      const cameraPermission = await Camera.checkPermissions();
-      const storagePermission = await Filesystem.checkPermissions();
-      if (!cameraPermission.camera || !cameraPermission.photos) {
-        await Camera.requestPermissions();
-        await this.initPermissions();
-      }
-      if (!storagePermission.publicStorage) {
-        await Filesystem.requestPermissions();
-        await this.initPermissions();
-      }
-      await this.initDirectory();
+    const cameraPermission = await Camera.checkPermissions();
+    const storagePermission = await Filesystem.checkPermissions();
+    if (!cameraPermission.camera || !cameraPermission.photos) {
+      await Camera.requestPermissions();
+      await this.initPermissions();
     }
+    if (!storagePermission.publicStorage) {
+      await Filesystem.requestPermissions();
+      await this.initPermissions();
+    }
+    await this.initDirectory();
   }
 
   async initDirectory() {

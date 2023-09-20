@@ -1,30 +1,27 @@
 import { Injectable } from '@angular/core';
 import { LocalNotifications } from "@capacitor/local-notifications";
-import { Platform } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
 })
 export class LocalNotifService {
 
-  constructor(private platform: Platform) {
+  constructor() {
     this.init();
   }
 
   async init() {
-    if (this.platform.is("android")) {
-      if ((await LocalNotifications.checkPermissions()).display !== "granted") {
-        await LocalNotifications.requestPermissions();
-        await this.init();
-      }
-      const list = await LocalNotifications.listChannels();
-      if (list.channels.length < 2) {
-        await LocalNotifications.createChannel({
-          id: '1',
-          name: 'Barang',
-          importance: 4,
-        });
-      }
+    if ((await LocalNotifications.checkPermissions()).display !== "granted") {
+      await LocalNotifications.requestPermissions();
+      await this.init();
+    }
+    const list = await LocalNotifications.listChannels();
+    if (list.channels.length < 2) {
+      await LocalNotifications.createChannel({
+        id: '1',
+        name: 'Barang',
+        importance: 4,
+      });
     }
   }
 
