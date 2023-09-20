@@ -15,6 +15,7 @@ import { LocalNotifService } from 'src/app/services/App/local-notif.service';
   styleUrls: ['./index.page.scss'],
 })
 export class IndexPage implements OnInit {
+  platform: any = null;
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
   formatJam: Function = formatTime;
@@ -58,6 +59,7 @@ export class IndexPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
     await this.photo.initPermissions();
     this.isLoaded = false;
     await showLoading(this.loadingCtrl, 'Memuat data...');

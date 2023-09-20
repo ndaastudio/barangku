@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-verif-lupa-pw',
@@ -10,6 +11,7 @@ import { AuthService } from 'src/app/services/API/auth.service';
   styleUrls: ['./verif-lupa-pw.page.scss'],
 })
 export class VerifLupaPwPage implements OnInit {
+  platform: any = null;
   kode_lupa_password: any = null;
   password_baru: any = null;
   konfirmasi_password_baru: any = null;
@@ -21,10 +23,12 @@ export class VerifLupaPwPage implements OnInit {
   constructor(private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private auth: AuthService,
-    private router: Router) {
+    private router: Router,
+    private localStorage: LocalStorageService,) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
   }
 
   async submitResetPassword() {

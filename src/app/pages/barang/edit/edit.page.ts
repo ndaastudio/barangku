@@ -6,6 +6,7 @@ import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-edit',
@@ -13,6 +14,7 @@ import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
   styleUrls: ['./edit.page.scss'],
 })
 export class EditPage implements OnInit {
+  platform: any = null;
   id: any = this.route.snapshot.paramMap.get('id');
   dataBarang: any = [];
   nama_barang: any = null;
@@ -91,10 +93,12 @@ export class EditPage implements OnInit {
     private alertCtrl: AlertController,
     private notif: LocalNotifService,
     private photo: PhotoService,
-    private animationCtrl: AnimationController,) {
+    private animationCtrl: AnimationController,
+    private localStorage: LocalStorageService) {
   }
 
   async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
     const data = await this.sqliteBarang.getById(this.id);
     this.dataBarang = data;
     this.nama_barang = data.nama_barang;

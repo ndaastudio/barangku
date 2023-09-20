@@ -1,5 +1,6 @@
 <ion-content>
-  <ion-header class="flex ion-no-border justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+  <ion-header *ngIf="platform == 'android'"
+    class="flex ion-no-border justify-center p-10 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
     <div>
       <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/login']">
         <ion-button>
@@ -12,6 +13,21 @@
       </div>
     </div>
   </ion-header>
+
+  <ion-header *ngIf="platform == 'ios'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%] mb-4">
+    <ion-toolbar color="transparent" class="text-white">
+      <ion-buttons slot="start">
+        <ion-back-button default-href="/login"></ion-back-button>
+      </ion-buttons>
+    </ion-toolbar>
+    <div class="flex justify-center">
+      <div class="space-y-4 text-3xl font-bold text-center text-white">
+        <ion-img src="../../../assets/images/app_icon.png" class="w-36"></ion-img>
+        <p>Barangku</p>
+      </div>
+    </div>
+  </ion-header>
+
   <div class="mb-4 ion-padding">
     <div class="space-y-4" *ngIf="!isValidKodeDaftar">
       <ion-item mode="md" fill="outline">

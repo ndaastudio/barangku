@@ -14,6 +14,7 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
   styleUrls: ['./login.page.scss'],
 })
 export class LoginPage implements OnInit {
+  platform: any = null;
   nomor_telepon: any = null;
   password: any = null;
   registered_email: any = null;
@@ -31,7 +32,8 @@ export class LoginPage implements OnInit {
     private notif: LocalNotifService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
   }
 
   async submitLogin() {

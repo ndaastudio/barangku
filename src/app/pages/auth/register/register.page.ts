@@ -4,6 +4,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { Browser } from '@capacitor/browser';
 import { AuthService } from 'src/app/services/API/auth.service';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-register',
@@ -11,6 +12,7 @@ import { showAlert, showLoading } from 'src/app/helpers/functions';
   styleUrls: ['./register.page.scss'],
 })
 export class RegisterPage implements OnInit {
+  platform: any = null;
   nama: any = null;
   email: any = null;
   nomor_telepon: any = null;
@@ -27,10 +29,12 @@ export class RegisterPage implements OnInit {
   constructor(private loadingCtrl: LoadingController,
     private alertCtrl: AlertController,
     private auth: AuthService,
-    private router: Router) {
+    private router: Router,
+    private localStorage: LocalStorageService,) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
   }
 
   async submitDaftar() {

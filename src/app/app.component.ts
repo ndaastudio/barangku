@@ -5,6 +5,7 @@ import { App } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { InitDbService } from './services/Database/SQLite/init-db.service';
+import { LocalStorageService } from './services/Database/local-storage.service';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +15,8 @@ import { InitDbService } from './services/Database/SQLite/init-db.service';
 export class AppComponent {
   constructor(private sqlite: InitDbService,
     private platform: Platform,
-    private router: Router) {
+    private router: Router,
+    private localStorage: LocalStorageService) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
       if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/barang' || this.router.url === '/update') {
         App.minimizeApp();
@@ -36,7 +38,15 @@ export class AppComponent {
     notifListener();
   }
 
+  async checkPlatform() {
+    const isPlatform = await this.localStorage.get('os');
+    if (!isPlatform) {
+      await this.localStorage.set('os', this.platform.platforms()[0]);
+    }
+  }
+
   ngOnInit() {
     this.sqlite.init();
+    this.checkPlatform();
   }
 }

@@ -13,6 +13,7 @@ import { Browser } from '@capacitor/browser';
   styleUrls: ['./index.page.scss'],
 })
 export class IndexPage implements OnInit {
+  platform: any = null;
   nama: any;
   email: any;
   nomor_telepon: any;
@@ -27,6 +28,7 @@ export class IndexPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
     const profile = await this.localStorage.get('profile');
     this.nama = profile.nama;
     this.email = profile.email;

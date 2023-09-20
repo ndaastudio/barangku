@@ -3,6 +3,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { SyncDataService } from 'src/app/services/App/sync-data.service';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-pindah-perangkat',
@@ -10,14 +11,17 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
   styleUrls: ['./pindah-perangkat.page.scss'],
 })
 export class PindahPerangkatPage implements OnInit {
+  platform: any = null;
 
   constructor(private alertCtrl: AlertController,
     private sync: SyncDataService,
     private loadingCtrl: LoadingController,
-    private dataRefresh: DataRefreshService,) {
+    private dataRefresh: DataRefreshService,
+    private localStorage: LocalStorageService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
   }
 
   async uploadData() {

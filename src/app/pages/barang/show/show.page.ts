@@ -6,6 +6,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-show',
@@ -13,6 +14,7 @@ import { PhotoService } from 'src/app/services/App/photo.service';
   styleUrls: ['./show.page.scss'],
 })
 export class ShowPage implements OnInit {
+  platform: any = null;
   id: any = this.route.snapshot.paramMap.get('id');
   dataBarang: any = [];
   dataImage: any = [];
@@ -42,10 +44,12 @@ export class ShowPage implements OnInit {
     private popoverCtrl: PopoverController,
     private notif: LocalNotifService,
     private photo: PhotoService,
-    private animationCtrl: AnimationController,) {
+    private animationCtrl: AnimationController,
+    private localStorage: LocalStorageService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
     this.initGetData();
     this.dataRefresh.refreshedData.subscribe(() => {
       this.initGetData();

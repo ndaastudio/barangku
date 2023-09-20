@@ -10,6 +10,7 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
   styleUrls: ['./edit.page.scss'],
 })
 export class EditPage implements OnInit {
+  platform: any = null;
   nama: any = null;
   email: any = null;
   nomor_telepon: any = null;
@@ -27,6 +28,7 @@ export class EditPage implements OnInit {
   }
 
   async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
     const profile = await this.localStorage.get('profile');
     this.nama = profile.nama;
     this.email = profile.email;

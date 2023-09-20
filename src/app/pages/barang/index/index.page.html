@@ -1,4 +1,5 @@
-<ion-header class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+<ion-header *ngIf="platform == 'android'"
+  class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <div>
     <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/profil']">
       <ion-button>
@@ -13,6 +14,23 @@
     </ion-buttons>
   </div>
 </ion-header>
+
+<ion-header *ngIf="platform == 'ios'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+  <ion-toolbar color="transparent" class="text-white">
+    <ion-buttons slot="start" [routerLink]="['/profil']">
+      <ion-button>
+        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Barangku</ion-title>
+    <ion-buttons slot="end" (click)="showKategori()">
+      <ion-button>
+        <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
 <div class="ion-padding">
   <div class="relative">
     <input type="search" placeholder="Cari barang..."

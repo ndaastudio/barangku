@@ -8,6 +8,7 @@ import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
   selector: 'app-create',
@@ -15,6 +16,7 @@ import { DataRefreshService } from 'src/app/services/Database/data-refresh.servi
   styleUrls: ['./create.page.scss'],
 })
 export class CreatePage implements OnInit {
+  platform: any = null;
   nama_barang: any = null;
   kategori: any = null;
   kategori_lainnya: any = null;
@@ -92,10 +94,12 @@ export class CreatePage implements OnInit {
     private animationCtrl: AnimationController,
     private checkUpdate: CheckUpdateService,
     private checkAkun: CheckAkunService,
-    private loadingCtrl: LoadingController,) {
+    private loadingCtrl: LoadingController,
+    private localStorage: LocalStorageService) {
   }
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.platform = await this.localStorage.get('os');
   }
 
   async saveToDatabase() {
