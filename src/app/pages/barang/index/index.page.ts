@@ -6,6 +6,8 @@ import { formatDate, formatTime, showAlert, showLoading } from '../../../helpers
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { CheckAkunService } from 'src/app/services/App/check-akun.service';
+import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
+import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 
 @Component({
   selector: 'app-index',
@@ -50,7 +52,9 @@ export class IndexPage implements OnInit {
     private dataRefresh: DataRefreshService,
     private photo: PhotoService,
     private checkAkun: CheckAkunService,
-    private loadingCtrl: LoadingController,) {
+    private loadingCtrl: LoadingController,
+    private localStorage: LocalStorageService,
+    private notif: LocalNotifService) {
   }
 
   async ngOnInit() {
@@ -60,8 +64,15 @@ export class IndexPage implements OnInit {
     try {
       await this.checkAkun.initCheckDeviceLogin();
       await this.checkAkun.initCheckExpiredDataUpload();
-    } catch (error) {
+    } catch (error: any) {
       await this.loadingCtrl.dismiss();
+      if (error.status == 401) {
+        await this.localStorage.clear();
+        await this.notif.deleteAll();
+        return showAlert(this.alertCtrl, 'Error!', 'Sesi anda telah berakhir, silahkan login kembali').then(() => {
+          this.router.navigateByUrl('/login');
+        });
+      }
       return showAlert(this.alertCtrl, 'Error!', 'Periksa koneksi internet anda');
     }
     await this.initGetData();
