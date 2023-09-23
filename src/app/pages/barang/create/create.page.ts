@@ -146,6 +146,9 @@ export class CreatePage implements OnInit {
           });
         }
         const date = new Date(data.jadwal_notifikasi);
+        const notifTime = date.getTime();
+        const nowTime = new Date().getTime();
+        if (notifTime > nowTime) {
         await this.notif.create('1', 'Pengingat!', `Jangan lupa ${data.nama_barang.toLowerCase()} ${data.status.toLowerCase()}`, idBarang, new Date(date.getTime()), `/barang/show/${idBarang}`).then(() => {
           this.nama_barang = null;
           this.kategori = null;
@@ -161,12 +164,13 @@ export class CreatePage implements OnInit {
           this.pickedPhoto = false;
           this.dataImage = [];
         });
+      }
         await this.loadingCtrl.dismiss();
         await this.router.navigateByUrl('/barang');
         this.dataRefresh.refresh();
       } catch (error: any) {
         await this.loadingCtrl.dismiss();
-        showAlert(this.alertCtrl, 'Error!', error);
+        showAlert(this.alertCtrl, 'Error!', error.message);
       }
     } else {
       showAlert(this.alertCtrl, 'Error!', 'Tidak boleh ada yang kosong');

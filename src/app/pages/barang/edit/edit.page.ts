@@ -134,8 +134,12 @@ export class EditPage implements OnInit {
       this.dataBarang.reminder = this.reminder;
       const jadwalNotifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
       const date = new Date(jadwalNotifikasi);
-      await this.notif.delete(this.id);
+      const notifTime = date.getTime();
+        const nowTime = new Date().getTime();
+        await this.notif.delete(this.id);
+        if (notifTime > nowTime) {
       await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
+        }
       await this.sqliteBarang.update(this.dataBarang);
       if (this.pickedPhoto) {
         this.otherImage.forEach(async (dataGambar: any) => {
