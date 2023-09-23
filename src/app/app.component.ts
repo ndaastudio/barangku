@@ -36,17 +36,16 @@ export class AppComponent {
       });
     }
     notifListener();
-  }
-
-  async checkPlatform() {
-    const isPlatform = await this.localStorage.get('os');
-    if (!isPlatform) {
-      await this.localStorage.set('os', this.platform.platforms()[0]);
+    const checkPlatform = async () => {
+      const isPlatform = await this.localStorage.get('os');
+      if (!isPlatform) {
+        await this.localStorage.set('os', this.platform.platforms()[0]);
+      }
     }
+    checkPlatform();
   }
 
   ngOnInit() {
     this.sqlite.init();
-    this.checkPlatform();
   }
 }
