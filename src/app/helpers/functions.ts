@@ -35,6 +35,16 @@ export async function showLoading(loadingCtrl: LoadingController, message: strin
     await loading.present();
 }
 
+export async function dismissAllLoaders(loadingCtrl: LoadingController) {
+    let topLoader = await loadingCtrl.getTop();
+    while (topLoader) {
+      if (!(await topLoader.dismiss())) {
+        throw new Error('Could not dismiss the topmost loader. Aborting...');
+      }
+      topLoader = await loadingCtrl.getTop();
+    }
+  }
+
 export function truncateString(str: string, maxLength: number): string {
     if (str.length <= maxLength) {
         return str;

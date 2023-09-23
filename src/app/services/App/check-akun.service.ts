@@ -3,8 +3,8 @@ import { LocalStorageService } from 'src/app/services/Database/local-storage.ser
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { Router } from '@angular/router';
 import { Device } from '@capacitor/device';
-import { showAlert } from '../../helpers/functions';
-import { AlertController } from '@ionic/angular';
+import { dismissAllLoaders, showAlert } from '../../helpers/functions';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthService } from '../../services/API/auth.service';
 import { ProfilService } from '../../services/API/profil.service';
 
@@ -18,7 +18,8 @@ export class CheckAkunService {
     private localStorage: LocalStorageService,
     private notif: LocalNotifService,
     private router: Router,
-    private alertCtrl: AlertController) {
+    private alertCtrl: AlertController,
+    private loadingCtrl: LoadingController) {
   }
 
   public async initCheckDeviceLogin(): Promise<void> {
@@ -29,6 +30,7 @@ export class CheckAkunService {
       await this.auth.logout(token);
       await this.localStorage.clear();
       await this.notif.deleteAll();
+      await dismissAllLoaders(this.loadingCtrl);
       await this.router.navigateByUrl('/login');
       await showAlert(this.alertCtrl, 'Error!', 'Akun anda telah login di perangkat lain, silahkan login kembali');
     }
