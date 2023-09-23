@@ -10,7 +10,7 @@
   </div>
 </ion-header>
 
-<ion-header *ngIf="platform == 'ios'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+<ion-header *ngIf="platform == 'ios' || platform == 'iphone' || platform == 'mobile'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <ion-toolbar color="transparent" class="text-white">
     <ion-buttons slot="start">
       <ion-back-button default-href="/profil"></ion-back-button>
