@@ -80,10 +80,10 @@ export class IndexPage implements OnInit {
     await Browser.open({ url: url });
   }
 
-  async submitNonaktifkanAkun() {
-    const alertNonaktifkanAkun = await this.alertCtrl.create({
-      header: 'Nonaktifkan Akun',
-      message: 'Anda akan dialihkan ke website Barangku untuk menonaktifkan akun. Lanjutkan?',
+  async submitHapusAkun() {
+    const alertHapusAkun = await this.alertCtrl.create({
+      header: 'Hapus Akun',
+      message: 'Anda akan dialihkan ke website Barangku untuk menghapus akun. Lanjutkan?',
       buttons: [{
         text: 'Batal',
         role: 'cancel',
@@ -92,10 +92,10 @@ export class IndexPage implements OnInit {
       {
         text: 'Ya',
         handler: async () => {
-          this.openBrowser('https://barangku.web.id/nonaktifkan-akun');
+          this.openBrowser('https://barangku.web.id/hapus-akun');
         }
       }]
     });
-    await alertNonaktifkanAkun.present();
+    await alertHapusAkun.present();
   }
 }
