@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
-import { UpdateGuard } from './guards/update.guard';
 
 const routes: Routes = [
   {
@@ -18,9 +17,8 @@ const routes: Routes = [
     loadChildren: () => import('./pages/auth/verif-lupa-pw/verif-lupa-pw.module').then(m => m.VerifLupaPwPageModule)
   },
   {
-    path: 'barang',
-    loadChildren: () => import('./pages/barang/index/index.module').then(m => m.IndexPageModule),
-    canLoad: [UpdateGuard]
+    path: 'tabs',
+    loadChildren: () => import('./pages/tabs/tabs.module').then(m => m.TabsPageModule)
   },
   {
     path: 'barang/create',
@@ -55,6 +53,11 @@ const routes: Routes = [
     redirectTo: '/login',
     pathMatch: 'full'
   },
+  {
+    path: 'analytic',
+    loadChildren: () => import('./pages/analytic/analytic.module').then(m => m.AnalyticPageModule)
+  },
+
 ];
 @NgModule({
   imports: [
