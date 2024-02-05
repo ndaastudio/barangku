@@ -1,12 +1,18 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { AlertController, AnimationController, PopoverController } from '@ionic/angular';
+import { AlertController, IonicSafeString, AlertInput, AnimationController, PopoverController } from '@ionic/angular';
 import { formatDate, formatTime } from 'src/app/helpers/functions';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
+
+interface INotif{
+  id: number,
+  id_barang: number,
+  jadwal_notifikasi: string,
+};
 
 @Component({
   selector: 'app-show',
@@ -35,6 +41,8 @@ export class ShowPage implements OnInit {
     Dikembalikan: 'kepada siapa',
     Diambil: 'dimana'
   }
+  dataNotifikasi: INotif[] = [];
+  buffer: any;
 
   constructor(private sqliteBarang: SQLiteBarang,
     private route: ActivatedRoute,
@@ -58,7 +66,9 @@ export class ShowPage implements OnInit {
 
   async initGetData() {
     const data = await this.sqliteBarang.getById(this.id);
-    this.dataBarang = data;
+    this.dataBarang = data;    
+    const dataNotif = await this.sqliteBarang.getNotifByIdBarang(this.id);
+    this.dataNotifikasi = dataNotif;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     this.dataImage = [];
     resultGambar.forEach(async (data: any) => {
@@ -134,6 +144,15 @@ export class ShowPage implements OnInit {
               await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
             } else if (dataOpsi == 1) {
               await this.notif.delete(this.id);
+              // delete notif tunda
+              // cek apakah ada notifikasi tunda
+              if(this.dataNotifikasi.length > 1) {
+                // ambil list tunda notif
+                let list_notif = this.dataNotifikasi.slice(1);
+                // ambil list id tunda notif dan jadikan sebuah string dengan format: id, id, id, ...
+                let list_id_notif = list_notif.map(notif => notif.id).join(", ");
+                await this.sqliteBarang.deleteNotifByListId(list_id_notif);
+              }
             }
             this.dataRefresh.refresh();
           }
@@ -179,4 +198,58 @@ export class ShowPage implements OnInit {
   leaveAnimation = (baseEl: HTMLElement) => {
     return this.enterAnimation(baseEl).direction('reverse');
   };
+
+  async tundaAksi() {
+    // generate input for alert tunda
+    let input_tunda: AlertInput[] = [];
+    for (let i = 0; i < 7; i++) {
+      input_tunda[i] = {
+        label: `${i+1} Hari`,
+        type: 'radio',
+        value: i+1,
+      };
+    }
+
+    let message_alert = 'Silahkan pilih waktu notifikasi pengingat aksi selanjutnya! <br> <span class="text-sm text-amber-400">*pengingat ini akan terulang maksimal sebanyak 5</span>';
+
+    const alertTundaAksi = await this.alertCtrl.create({
+      header: "Tunda Aksi",
+      message: new IonicSafeString(message_alert),
+      inputs: input_tunda,
+      buttons: [
+        {
+          text: 'Cancel',          
+          cssClass: '!text-gray-500',
+          role: 'cancel',
+        },
+        {
+          text: 'Save',
+          role: 'confirm',
+          handler: async (value) => {
+            // save tunda ke database
+            // ambil data jadwal_notifikasi utama     
+            let old_notif = new Date(this.dataNotifikasi[0].jadwal_notifikasi);
+            // ulangi create notif sebanyak 5 kali dengan masing-masing interval "value" hari
+            for(let i = 1; i <= 5; i++){
+              // tambahkan sebanyak "value" hari dari jadwal_notifikasi utama
+              old_notif.setDate(old_notif.getDate() + value);
+              // convert date menjadi string "yyyy/mm/ddThh:ii:ss"
+              let tunda_notif = old_notif.toISOString();              
+              let data_tunda = {
+                id_barang: this.id,
+                jadwal_notifikasi: tunda_notif,
+              };
+              // simpan data ke sql storage tabel notifications
+              await this.sqliteBarang.createNotif(data_tunda);
+            }
+            // refresh data barang
+            this.dataRefresh.refresh();
+          },
+        },
+      ]
+    });
+
+    await alertTundaAksi.present();
+
+  }
 }

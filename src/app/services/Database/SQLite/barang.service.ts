@@ -30,27 +30,28 @@ export class BarangService {
             reminder TEXT,
             progress INTEGER DEFAULT 0
         );`, []);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      alert(error.message);
     }
   }
 
   public async createTableNotif() {
     try {
       await this.db.executeSql(`CREATE TABLE IF NOT EXISTS notifications (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,            
+            id INTEGER PRIMARY KEY AUTOINCREMENT,       
+            id_barang INTEGER,     
             jadwal_notifikasi DATETIME,
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      alert(error.message);
     }
   }
 
-  public async createNotif(id_barang: number, jadwal_notifikasi: string) {
+  public async createNotif(data: any) {
     try {
       const sql = `INSERT INTO notifications (id_barang, jadwal_notifikasi) VALUES (?, ?);`;
-      const results = await this.db.executeSql(sql, [id_barang, jadwal_notifikasi]);
+      const results = await this.db.executeSql(sql, [data.id_barang, data.jadwal_notifikasi]);
       return results.insertId;
     } catch (error) {
       alert(error);
@@ -61,7 +62,7 @@ export class BarangService {
   public async getNotifById(id: string) {
     try {
       const sql = `SELECT * FROM notifications WHERE id IN (${id});`;
-      const results = await this.db.executeSql(sql, [id]);
+      const results = await this.db.executeSql(sql);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
         data.push(results.rows.item(i));
@@ -73,14 +74,29 @@ export class BarangService {
     }
   }
 
-  public async deleteNotifByIdBarang(id_notif: string) {
+  public async getNotifByIdBarang(id_barang: string) {
     try {
-      const sql = `DELETE FROM notifications WHERE id_barang IN (${id_notif});`;
-      await this.db.executeSql(sql);
-      return true;
+      const sql = `SELECT * FROM notifications WHERE id_barang = ? ;`;
+      const results = await this.db.executeSql(sql, [id_barang]);
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      return data;
     } catch (error) {
       alert(error);
-      return false;
+      return [];
+    }
+  }
+
+  public async deleteNotifByListId(id_notif: string) {
+    try {
+      const sql = `DELETE FROM notifications WHERE id IN (${id_notif});`;
+      await this.db.executeSql(sql,[]);
+      return true;
+    } catch (error: any) {
+      alert(error.message);
+      return error;
     }
   }
 
@@ -92,8 +108,8 @@ export class BarangService {
             gambar TEXT,
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      alert(error.message);
     }
   }
 
