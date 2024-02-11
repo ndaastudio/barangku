@@ -14,8 +14,10 @@ export class TabsPage implements OnInit {
 
   async ngOnInit() {
     this.tabs = [
-      { url: 'barang', icon: 'home', label: 'Barang' },
-      { url: 'analytic', icon: 'stats-chart', label: 'Analytic' },
+      { url: 'barang', icon: 'color-wand', label: 'Aksi' },
+      { url: 'letak', icon: 'file-tray-stacked', label: 'Letak' },
+      { url: 'galeri', icon: 'images', label: 'Galeri' },
+      // { url: 'analytic', icon: 'stats-chart', label: 'Analytic' },
     ];
   }
 
