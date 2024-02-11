@@ -149,24 +149,24 @@ export class CreatePage implements OnInit {
         const notifTime = date.getTime();
         const nowTime = new Date().getTime();
         if (notifTime > nowTime) {
-        await this.notif.create('1', 'Pengingat!', `Jangan lupa ${data.nama_barang.toLowerCase()} ${data.status.toLowerCase()}`, idBarang, new Date(date.getTime()), `/barang/show/${idBarang}`).then(() => {
-          this.nama_barang = null;
-          this.kategori = null;
-          this.kategori_lainnya = null;
-          this.status = null;
-          this.extend_status = null;
-          this.jumlah_barang = null;
-          this.letak_barang = null;
-          this.keterangan = null;
-          this.jadwal_rencana = null;
-          this.jadwal_notifikasi = null;
-          this.reminder = null;
-          this.pickedPhoto = false;
-          this.dataImage = [];
-        });
-      }
+          await this.notif.create('1', 'Pengingat!', `Jangan lupa ${data.nama_barang.toLowerCase()} ${data.status.toLowerCase()}`, idBarang, new Date(date.getTime()), `/barang/show/${idBarang}`).then(() => {
+            this.nama_barang = null;
+            this.kategori = null;
+            this.kategori_lainnya = null;
+            this.status = null;
+            this.extend_status = null;
+            this.jumlah_barang = null;
+            this.letak_barang = null;
+            this.keterangan = null;
+            this.jadwal_rencana = null;
+            this.jadwal_notifikasi = null;
+            this.reminder = null;
+            this.pickedPhoto = false;
+            this.dataImage = [];
+          });
+        }
         await this.loadingCtrl.dismiss();
-        await this.router.navigateByUrl('/barang');
+        await this.router.navigateByUrl('/tabs/barang');
         this.dataRefresh.refresh();
       } catch (error: any) {
         await this.loadingCtrl.dismiss();

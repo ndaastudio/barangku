@@ -87,7 +87,7 @@ export class ShowPage implements OnInit {
               await this.sqliteBarang.deleteGambarByName(dataGambar.fileName);
             });
             await this.notif.delete(this.id);
-            await this.router.navigateByUrl('/barang');
+            await this.router.navigateByUrl('/tabs/barang');
             this.dataRefresh.refresh();
           },
           cssClass: '!text-red-500'
