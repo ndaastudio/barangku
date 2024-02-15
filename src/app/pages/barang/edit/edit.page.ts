@@ -7,6 +7,7 @@ import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { getCurrentDateTime, showAlert } from 'src/app/helpers/functions';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
+import { INotification } from 'src/app/interfaces/i-notification';
 
 @Component({
   selector: 'app-edit',
@@ -85,6 +86,8 @@ export class EditPage implements OnInit {
     Dikembalikan: 'Letak barang saat ini',
     Diambil: 'Akan diambil dimana'
   }
+  dataNotifikasi: INotification[] = [];
+  id_notif: number = 0;
 
   constructor(private sqliteBarang: SQLiteBarang,
     private dataRefresh: DataRefreshService,
@@ -110,8 +113,11 @@ export class EditPage implements OnInit {
     this.letak_barang = data.letak_barang;
     this.keterangan = data.keterangan;
     this.jadwal_rencana = data.jadwal_rencana;
-    this.jadwal_notifikasi = data.jadwal_notifikasi;
     this.reminder = data.reminder;
+    const dataNotif = await this.sqliteBarang.getNotifByIdBarang(this.id);
+    this.dataNotifikasi = dataNotif;    
+    this.jadwal_notifikasi = this.dataNotifikasi[0].jadwal_notifikasi;
+    this.id_notif = this.dataNotifikasi[0].id;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
       const loadedGambar = await this.photo.load(data.gambar);
@@ -130,16 +136,24 @@ export class EditPage implements OnInit {
       this.dataBarang.letak_barang = this.letak_barang;
       this.dataBarang.keterangan = this.keterangan;
       this.dataBarang.jadwal_rencana = this.jadwal_rencana;
-      this.dataBarang.jadwal_notifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
       this.dataBarang.reminder = this.reminder;
       const jadwalNotifikasi = this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi;
       const date = new Date(jadwalNotifikasi);
       const notifTime = date.getTime();
-        const nowTime = new Date().getTime();
-        await this.notif.delete(this.id);
-        if (notifTime > nowTime) {
-      await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
-        }
+      const nowTime = new Date().getTime();
+      // update notifikasi
+      await this.notif.delete(this.id_notif);
+      if (notifTime > nowTime) {
+        await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.nama_barang.toLowerCase()} ${this.status.toLowerCase()}`, this.id_notif, new Date(date.getTime()), `/barang/show/${this.id}`);
+      }
+      // update database notifikasi
+      let data_notif: INotification = {
+        id: this.id_notif,
+        id_barang: this.id,
+        jadwal_notifikasi: this.jadwal_notifikasi,
+      };
+      await this.sqliteBarang.updateNotif(data_notif);
+      // update barang
       await this.sqliteBarang.update(this.dataBarang);
       if (this.pickedPhoto) {
         this.otherImage.forEach(async (dataGambar: any) => {

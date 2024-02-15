@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
+import { INotification } from 'src/app/interfaces/i-notification';
 
 @Injectable({
   providedIn: 'root'
@@ -58,11 +59,38 @@ export class BarangService {
       return false;
     }
   }
+  
+
+  public async createNotifWithCustomId(data: INotification) {
+    try {
+      const sql = `INSERT INTO notifications (id, id_barang, jadwal_notifikasi) VALUES (?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id, data.id_barang, data.jadwal_notifikasi]);
+      return results.insertId;
+    } catch (error) {
+      alert(error);
+      return false;
+    }
+  }
+
+  public async getAllNotif() {
+    try {
+      const sql = `SELECT * FROM notifications ORDER BY id ASC;`;
+      const results = await this.db.executeSql(sql, []);
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      return data;
+    } catch (error) {
+      alert(error);
+      return [];
+    }
+  }
 
   public async getNotifById(id: string) {
     try {
       const sql = `SELECT * FROM notifications WHERE id IN (${id});`;
-      const results = await this.db.executeSql(sql);
+      const results = await this.db.executeSql(sql, []);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
         data.push(results.rows.item(i));
@@ -76,7 +104,7 @@ export class BarangService {
 
   public async getNotifByIdBarang(id_barang: string) {
     try {
-      const sql = `SELECT * FROM notifications WHERE id_barang = ? ;`;
+      const sql = `SELECT * FROM notifications WHERE id_barang = ? ORDER BY id ASC;`;
       const results = await this.db.executeSql(sql, [id_barang]);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
@@ -86,6 +114,17 @@ export class BarangService {
     } catch (error) {
       alert(error);
       return [];
+    }
+  }
+
+  public async updateNotif(data: any) {
+    try {
+      const sql = `UPDATE notifications SET id_barang = ?, jadwal_notifikasi = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.id_barang, data.jadwal_notifikasi, data.id]);
+      return true;
+    } catch (error) {
+      alert(error);
+      return false;
     }
   }
 

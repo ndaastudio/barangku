@@ -48,7 +48,10 @@ export class LoginPage implements OnInit {
         const results = await this.auth.login(data);
         const dataBarang = await this.sqliteBarang.getAll();
         dataBarang.forEach(async (barang) => {
-          await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, barang.id, new Date(barang.jadwal_notifikasi), `/barang/show/${barang.id}`);
+          let notifications = await this.sqliteBarang.getNotifByIdBarang(barang.id);
+          notifications.forEach(async (notif) => {
+            await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, notif.id, new Date(notif.jadwal_notifikasi), `/barang/show/${barang.id}`);
+          });          
         });
         this.localStorage.set('access_token', results.access_token);
         this.localStorage.set('profile', results.data);
