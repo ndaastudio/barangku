@@ -73,7 +73,7 @@
         [(ngModel)]="keterangan"></ion-textarea>
     </ion-item>
     <div class="flex justify-center">
-      <ion-datetime mode="md" hourCycle="h24" presentation="date-time" [(ngModel)]="jadwal_rencana">
+      <ion-datetime mode="md" hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_rencana">
         <span slot="title">Jadwal Rencana</span>
         <span slot="time-label">Pukul</span>
       </ion-datetime>
