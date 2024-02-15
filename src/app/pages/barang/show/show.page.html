@@ -136,7 +136,7 @@
               formatJam(dataNotifikasi[0]?.jadwal_notifikasi) }} WIB
             </span>
           </ion-col>
-          <ion-col class="ion-text-right" *ngIf="dataNotifikasi.length == 1">
+          <ion-col class="ion-text-right" *ngIf="dataNotifikasi.length == 1 && dataBarang.progress == 0">
             <ion-button (click)="tundaAksi()" color="secondary" class="transform-none text-[14px] capitalize">
               Tunda Aksi
             </ion-button>

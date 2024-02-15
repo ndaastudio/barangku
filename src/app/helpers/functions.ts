@@ -74,3 +74,13 @@ export function formatTime(time: string): string {
         return time;
     }
 }
+
+export function convertDateToISOFormatWithLocalTime(tanggal: Date): string {
+    const year = tanggal.getFullYear();
+    const month = String(tanggal.getMonth() + 1).padStart(2, '0');
+    const day = String(tanggal.getDate()).padStart(2, '0');
+    const hours = String(tanggal.getHours()).padStart(2, '0');
+    const minutes = String(tanggal.getMinutes()).padStart(2, '0');
+    const seconds = String(tanggal.getSeconds()).padStart(2, '0');
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+}
