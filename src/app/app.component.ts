@@ -18,7 +18,7 @@ export class AppComponent {
     private router: Router,
     private localStorage: LocalStorageService) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/barang' || this.router.url === '/update') {
+      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/barang' || this.router.url === '/update') {
         App.minimizeApp();
       }
     });

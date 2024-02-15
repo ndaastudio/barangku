@@ -18,7 +18,7 @@ export class AuthGuard implements CanActivate {
   async isLoggedIn(): Promise<boolean> {
     const token = await this.localStorage.get('access_token');
     if (token) {
-      this.router.navigateByUrl('/barang');
+      this.router.navigateByUrl('/tabs/barang');
       return false;
     }
     return true;

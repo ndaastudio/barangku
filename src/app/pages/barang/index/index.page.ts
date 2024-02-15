@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { AlertController, LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { formatDate, formatTime, showAlert, showLoading } from '../../../helpers/functions';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
@@ -15,6 +15,13 @@ import { LocalNotifService } from 'src/app/services/App/local-notif.service';
   styleUrls: ['./index.page.scss'],
 })
 export class IndexPage implements OnInit {
+  selectedKategori: any = [];
+  selectedProgress: any = null;
+  selectedWaktu: any = null;
+  optionFilterKategori: any = [];
+  optionFilterProgress: any = [0, 1];
+  optionFilterWaktu: any = ['Notifikasi Terdekat', 'Notifikasi Terjauh', 'Baru Ditambahkan', 'Terlama Ditambahkan'];
+  isOptionsFilterOpen: boolean = false;
   platform: any = null;
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
@@ -55,7 +62,8 @@ export class IndexPage implements OnInit {
     private checkAkun: CheckAkunService,
     private loadingCtrl: LoadingController,
     private localStorage: LocalStorageService,
-    private notif: LocalNotifService) {
+    private notif: LocalNotifService,
+    private modalCtrl: ModalController) {
   }
 
   async ngOnInit() {
@@ -88,44 +96,42 @@ export class IndexPage implements OnInit {
   async initGetData() {
     const data = await this.sqliteBarang.getAll();
     this.dataBarang = data;
+    this.optionFilterKategori = this.dataBarang.map((barang: any) => barang.kategori).filter((value: any, index: any, self: any) => self.indexOf(value) === index);
   }
 
-  async showKategori() {
-    const alertShowKategori = await this.alertCtrl.create({
-      header: 'Pilih Kategori',
-      inputs: this.optionsKategori.map((kategori: any) => {
-        return {
-          name: 'kategori',
-          type: 'radio',
-          label: kategori,
-          value: kategori
-        }
-      }),
-      buttons: [
-        {
-          text: 'Batal',
-          role: 'cancel',
-          cssClass: '!text-gray-500'
-        },
-        {
-          text: 'Pilih',
-          handler: async (dataOpsi) => {
-            if (dataOpsi) {
-              const data = await this.sqliteBarang.getByKategori(dataOpsi);
-              if (data?.length == 0) {
-                showAlert(this.alertCtrl, 'Error!', `Tidak ada barang dengan kategori "${dataOpsi}"`);
-              } else {
-                this.dataBarang = data;
-              }
-            } else {
-              const data = await this.sqliteBarang.getAll();
-              this.dataBarang = data;
-            }
-          }
-        }
-      ]
-    });
-    alertShowKategori.present();
+  async confirmFilterOptions() {
+    this.modalCtrl.dismiss();
+    if (this.selectedKategori.length == 0 && this.selectedProgress == null && this.selectedWaktu == null) {
+      this.initGetData();
+      return;
+    }
+    const data = await this.sqliteBarang.multipleFilter(this.selectedKategori, this.selectedProgress, this.selectedWaktu);
+    this.dataBarang = data;
+    this.isSearchBarang = true;
+  }
+
+  handlePilihKategori(value: string) {
+    if (this.selectedKategori.includes(value)) {
+      this.selectedKategori = this.selectedKategori.filter((kategori: string) => kategori !== value);
+    } else {
+      this.selectedKategori.push(value);
+    }
+  }
+
+  handlePilihProgress(value: string) {
+    if (this.selectedProgress === value) {
+      this.selectedProgress = null;
+      return;
+    }
+    this.selectedProgress = value;
+  }
+
+  handlePilihWaktu(value: string) {
+    if (this.selectedWaktu === value) {
+      this.selectedWaktu = null;
+      return;
+    }
+    this.selectedWaktu = value;
   }
 
   goToTambahBarang() {
@@ -155,5 +161,13 @@ export class IndexPage implements OnInit {
       await event.target.complete();
       await this.ngOnInit();
     }, 1500);
+  }
+
+  setOpenOptionsFilter(isOpen: boolean) {
+    this.isOptionsFilterOpen = isOpen;
+  }
+
+  onWillDismissModal(isOpen: boolean) {
+    this.isOptionsFilterOpen = isOpen;
   }
 }
