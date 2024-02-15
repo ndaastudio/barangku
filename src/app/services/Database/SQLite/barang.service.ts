@@ -275,4 +275,61 @@ export class BarangService {
       return [];
     }
   }
+
+  public async multipleFilter(kategori?: string[], progress?: string, waktu?: string) {
+    try {
+      if (!kategori) kategori = [];
+
+      let baseQuery = `SELECT * FROM barang `;
+      let whereClause = '';
+      let whereValues = [];
+
+      if (kategori.length > 0) {
+        whereClause += `kategori IN (${kategori.map(() => '?').join(', ')}) `;
+        whereValues.push(...kategori);
+      }
+
+      if (progress) {
+        if (whereClause.length > 0) {
+          whereClause += `AND progress = ? `;
+        } else {
+          whereClause += `progress = ? `;
+        }
+        whereValues.push(progress);
+      }
+
+      if (whereClause.length > 0) {
+        baseQuery += `WHERE ${whereClause} `;
+      }
+
+      if (waktu) {
+        if (waktu == 'Notifikasi Terdekat') {
+          baseQuery += `ORDER BY ABS(julianday(jadwal_notifikasi) - julianday('now')) DESC`;
+        }
+        if (waktu == 'Notifikasi Terjauh') {
+          baseQuery += `ORDER BY ABS(julianday(jadwal_notifikasi) - julianday('now')) ASC`;
+        }
+        if (waktu == 'Baru Ditambahkan') {
+          baseQuery += `ORDER BY id DESC`;
+        }
+        if (waktu == 'Terlama Ditambahkan') {
+          baseQuery += `ORDER BY id ASC`;
+        }
+      }
+
+      const results = await this.db.executeSql(baseQuery, whereValues);
+
+      let data = [];
+
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+
+      return data;
+    } catch (error) {
+      alert(error);
+      return [];
+    }
+  }
+
 }

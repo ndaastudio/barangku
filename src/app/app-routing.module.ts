@@ -57,6 +57,14 @@ const routes: Routes = [
     path: 'analytic',
     loadChildren: () => import('./pages/analytic/analytic.module').then(m => m.AnalyticPageModule)
   },
+  {
+    path: 'letak',
+    loadChildren: () => import('./pages/letak/index/index.module').then(m => m.IndexPageModule)
+  },
+  {
+    path: 'galeri',
+    loadChildren: () => import('./pages/galeri/index/index.module').then(m => m.IndexPageModule)
+  },
 
 ];
 @NgModule({

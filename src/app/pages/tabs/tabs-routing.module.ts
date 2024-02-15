@@ -18,6 +18,14 @@ const routes: Routes = [
         loadChildren: () => import('../analytic/analytic.module').then(m => m.AnalyticPageModule),
       },
       {
+        path: 'letak',
+        loadChildren: () => import('../letak/index/index.module').then(m => m.IndexPageModule)
+      },
+      {
+        path: 'galeri',
+        loadChildren: () => import('../galeri/index/index.module').then(m => m.IndexPageModule)
+      },
+      {
         path: '',
         redirectTo: '/tabs/barang',
         pathMatch: 'full'

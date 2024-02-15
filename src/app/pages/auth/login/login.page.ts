@@ -55,7 +55,7 @@ export class LoginPage implements OnInit {
         this.nomor_telepon = null;
         this.password = null;
         await this.loadingCtrl.dismiss();
-        await this.router.navigateByUrl('/barang');
+        await this.router.navigateByUrl('/tabs/barang');
       } catch (error: any) {
         await this.loadingCtrl.dismiss();
         await showAlert(this.alertCtrl, 'Error!', error.error.message);
