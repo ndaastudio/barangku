@@ -21,6 +21,7 @@ export class IndexPage implements OnInit {
   optionFilterKategori: any = [];
   optionFilterProgress: any = [0, 1];
   optionFilterWaktu: any = ['Notifikasi Terdekat', 'Notifikasi Terjauh', 'Baru Ditambahkan', 'Terlama Ditambahkan'];
+  isOptionsFilterOpen: boolean = false;
   platform: any = null;
   dataBarang: any = [];
   formatTanggal: Function = formatDate;
@@ -160,5 +161,13 @@ export class IndexPage implements OnInit {
       await event.target.complete();
       await this.ngOnInit();
     }, 1500);
+  }
+
+  setOpenOptionsFilter(isOpen: boolean) {
+    this.isOptionsFilterOpen = isOpen;
+  }
+
+  onWillDismissModal(isOpen: boolean) {
+    this.isOptionsFilterOpen = isOpen;
   }
 }
