@@ -27,12 +27,76 @@ export class BarangService {
             letak_barang TEXT,
             keterangan TEXT,
             jadwal_rencana DATETIME,
-            jadwal_notifikasi DATETIME,
             reminder TEXT,
             progress INTEGER DEFAULT 0
         );`, []);
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
+  public async createTableNotif() {
+    try {
+      await this.db.executeSql(`CREATE TABLE IF NOT EXISTS notifications (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,       
+            id_barang INTEGER,     
+            jadwal_notifikasi DATETIME,
+            FOREIGN KEY (id_barang) REFERENCES barang (id)
+        );`, []);
+    } catch (error: any) {
+      alert(error.message);
+    }
+  }
+
+  public async createNotif(data: any) {
+    try {
+      const sql = `INSERT INTO notifications (id_barang, jadwal_notifikasi) VALUES (?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id_barang, data.jadwal_notifikasi]);
+      return results.insertId;
     } catch (error) {
       alert(error);
+      return false;
+    }
+  }
+
+  public async getNotifById(id: string) {
+    try {
+      const sql = `SELECT * FROM notifications WHERE id IN (${id});`;
+      const results = await this.db.executeSql(sql);
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      return data;
+    } catch (error) {
+      alert(error);
+      return [];
+    }
+  }
+
+  public async getNotifByIdBarang(id_barang: string) {
+    try {
+      const sql = `SELECT * FROM notifications WHERE id_barang = ? ;`;
+      const results = await this.db.executeSql(sql, [id_barang]);
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      return data;
+    } catch (error) {
+      alert(error);
+      return [];
+    }
+  }
+
+  public async deleteNotifByListId(id_notif: string) {
+    try {
+      const sql = `DELETE FROM notifications WHERE id IN (${id_notif});`;
+      await this.db.executeSql(sql,[]);
+      return true;
+    } catch (error: any) {
+      alert(error.message);
+      return error;
     }
   }
 
@@ -44,8 +108,8 @@ export class BarangService {
             gambar TEXT,
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      alert(error.message);
     }
   }
 
@@ -88,8 +152,8 @@ export class BarangService {
 
   public async create(data: any) {
     try {
-      const sql = `INSERT INTO barang (nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder]);
+      const sql = `INSERT INTO barang (nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, reminder) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.reminder]);
       return results.insertId;
     } catch (error) {
       alert(error);
@@ -99,8 +163,8 @@ export class BarangService {
 
   public async createWithCustomId(data: any) {
     try {
-      const sql = `INSERT INTO barang (id, nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, jadwal_notifikasi, reminder, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.id_barang, data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress]);
+      const sql = `INSERT INTO barang (id, nama_barang, kategori, kategori_lainnya, status, extend_status, jumlah_barang, letak_barang, keterangan, jadwal_rencana, reminder, progress) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id_barang, data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.reminder, data.progress]);
       return results;
     } catch (error) {
       alert(error);
@@ -166,8 +230,8 @@ export class BarangService {
 
   public async update(data: any) {
     try {
-      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, status = ?, extend_status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, jadwal_notifikasi = ?, reminder = ?, progress = ? WHERE id = ?;`;
-      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.jadwal_notifikasi, data.reminder, data.progress, data.id]);
+      const sql = `UPDATE barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, status = ?, extend_status = ?, jumlah_barang = ?, letak_barang = ?, keterangan = ?, jadwal_rencana = ?, reminder = ?, progress = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.status, data.extend_status, data.jumlah_barang, data.letak_barang, data.keterangan, data.jadwal_rencana, data.reminder, data.progress, data.id]);
       return true;
     } catch (error) {
       alert(error);

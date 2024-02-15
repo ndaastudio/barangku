@@ -21,6 +21,7 @@ export class InitDbService {
       });
       this.barang.init(this.db);
       await this.barang.createTable();
+      await this.barang.createTableNotif();
       await this.barang.createTableGambar();
     } catch (error) {
       alert(error);

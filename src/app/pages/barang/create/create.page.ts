@@ -134,10 +134,15 @@ export class CreatePage implements OnInit {
           letak_barang: this.letak_barang,
           keterangan: this.keterangan,
           jadwal_rencana: this.jadwal_rencana,
-          jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
           reminder: this.reminder
         };
         const idBarang = await this.sqliteBarang.create(data);
+        //save notifikasi
+        let data_notif = {
+          id_barang: idBarang,
+          jadwal_notifikasi: this.reminder == 'Jadwal Rencana' ? this.jadwal_rencana : this.jadwal_notifikasi,
+        };
+        await this.sqliteBarang.createNotif(data_notif);
         if (this.pickedPhoto) {
           this.dataImage.forEach(async (dataGambar: any) => {
             const date = new Date().getTime();
@@ -145,7 +150,7 @@ export class CreatePage implements OnInit {
             await this.sqliteBarang.createGambar(idBarang, dataSave);
           });
         }
-        const date = new Date(data.jadwal_notifikasi);
+        const date = new Date(data_notif.jadwal_notifikasi);
         const notifTime = date.getTime();
         const nowTime = new Date().getTime();
         if (notifTime > nowTime) {

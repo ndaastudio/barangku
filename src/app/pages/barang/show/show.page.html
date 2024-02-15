@@ -120,14 +120,45 @@
           formatJam(dataBarang.jadwal_rencana) }}
         </span>
       </p>
-      <p class="mt-2 text-sm">
-        <b class="text-sm text-gray-500">Notifikasi</b><br>
-        <span class="ml-auto text-xs text-gray-500">{{ formatTanggal(dataBarang.jadwal_notifikasi) }}, {{
-          formatJam(dataBarang.jadwal_notifikasi) }}
-        </span>
-      </p>
     </div>
   </div>
+
+  <div *ngIf="dataNotifikasi" class="border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
+    <div class="pl-[10px] pt-[10px]">
+      <span class="px-2 py-1 font-bold text-gray-800 bg-gray-200 rounded text-[1rem]">Jadwal Notifikasi</span>
+    </div>
+    <div class="px-4 pt-1 pb-4">
+      <p class="mt-2 text-sm">
+        <ion-row>
+          <ion-col>
+            <b class="text-sm text-gray-500">Notifikasi Utama</b><br>
+            <span class="ml-auto text-xs text-gray-500">{{ formatTanggal(dataNotifikasi[0]?.jadwal_notifikasi) }}, {{
+              formatJam(dataNotifikasi[0]?.jadwal_notifikasi) }} WIB
+            </span>
+          </ion-col>
+          <ion-col class="ion-text-right" *ngIf="dataNotifikasi.length == 1">
+            <ion-button (click)="tundaAksi()" color="secondary" class="transform-none text-[14px] capitalize">
+              Tunda Aksi
+            </ion-button>
+          </ion-col>
+        </ion-row>
+      </p>
+      <!-- {{buffer | json}} -->
+      <div class="mt-2 text-sm" *ngIf="dataNotifikasi.length > 1">
+        <hr class="mb-4">
+        <b class="text-sm text-gray-500 mb-1">Notifikasi Tunda</b>
+        <br>
+        <ul class="list-disc list-inside ml-2">
+          <li *ngFor="let notif of dataNotifikasi | slice:1">
+            <span class="ml-auto text-xs text-gray-500">{{ formatTanggal(notif.jadwal_notifikasi) }}, {{
+              formatJam(notif.jadwal_notifikasi) }} WIB
+            </span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
   <div *ngIf="dataBarang.keterangan"
     class="w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
     <div class="text-sm font-bold text-gray-700">Keterangan</div>

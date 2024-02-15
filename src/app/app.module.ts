@@ -16,7 +16,9 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
 @NgModule({
   declarations: [AppComponent],
   imports: [BrowserModule,
-    IonicModule.forRoot(),
+    IonicModule.forRoot({
+      innerHTMLTemplatesEnabled: true
+    }),
     AppRoutingModule,
     IonicStorageModule.forRoot({
       name: 'barangku-db',
