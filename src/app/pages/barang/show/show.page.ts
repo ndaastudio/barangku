@@ -7,12 +7,7 @@ import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
-
-interface INotif{
-  id: number,
-  id_barang: number,
-  jadwal_notifikasi: string,
-};
+import { INotification } from 'src/app/interfaces/i-notification';
 
 @Component({
   selector: 'app-show',
@@ -41,7 +36,8 @@ export class ShowPage implements OnInit {
     Dikembalikan: 'kepada siapa',
     Diambil: 'dimana'
   }
-  dataNotifikasi: INotif[] = [];
+  dataNotifikasi: INotification[] = [];
+  id_notif: number = 0;
   buffer: any;
 
   constructor(private sqliteBarang: SQLiteBarang,
@@ -69,6 +65,7 @@ export class ShowPage implements OnInit {
     this.dataBarang = data;    
     const dataNotif = await this.sqliteBarang.getNotifByIdBarang(this.id);
     this.dataNotifikasi = dataNotif;
+    this.id_notif = this.dataNotifikasi[0].id;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     this.dataImage = [];
     resultGambar.forEach(async (data: any) => {
@@ -92,11 +89,13 @@ export class ShowPage implements OnInit {
           text: 'Ya',
           handler: async () => {
             await this.sqliteBarang.deleteById(this.id);
+            let list_id_notif = this.dataNotifikasi.map(notif => notif.id).join(", ");
+            await this.sqliteBarang.deleteNotifByListId(list_id_notif);
             this.dataImage.forEach(async (dataGambar: any) => {
               await this.photo.delete(dataGambar.fileName);
               await this.sqliteBarang.deleteGambarByName(dataGambar.fileName);
             });
-            await this.notif.delete(this.id);
+            await this.notif.delete(this.id_notif);
             await this.router.navigateByUrl('/tabs/barang');
             this.dataRefresh.refresh();
           },
@@ -139,12 +138,13 @@ export class ShowPage implements OnInit {
             this.dataBarang.progress = dataOpsi;
             await this.sqliteBarang.update(this.dataBarang);
             if (dataOpsi == 0) {
-              let date = new Date(this.dataBarang.jadwal_notifikasi);
-              await this.notif.delete(this.id);
-              await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, this.id, new Date(date.getTime()), `/barang/show/${this.id}`);
+              let date = new Date(this.dataNotifikasi[0].jadwal_notifikasi);
+              await this.notif.delete(this.id_notif);
+              await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, this.id_notif, new Date(date.getTime()), `/barang/show/${this.id}`);
             } else if (dataOpsi == 1) {
-              await this.notif.delete(this.id);
-              // delete notif tunda
+              // delete all notif yang terjadwal
+              this.dataNotifikasi.forEach(async (notif) => await this.notif.delete(notif.id));
+              // delete notif tunda dari database
               // cek apakah ada notifikasi tunda
               if(this.dataNotifikasi.length > 1) {
                 // ambil list tunda notif

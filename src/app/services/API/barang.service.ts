@@ -35,6 +35,16 @@ export class BarangService {
     return await this.http.delete<any>(`${environment.apiURL}/gambar-barang/hapus/${idUser}/${idGambarBarang}`, httpHeaders).toPromise();
   }
 
+  public async deleteNotifById(idUser: number, token: string, idNotifBarang: number): Promise<any> {
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+    return await this.http.delete<any>(`${environment.apiURL}/notif-barang/hapus/${idUser}/${idNotifBarang}`, httpHeaders).toPromise();
+  }
+
   public async upData(data: any, token: string): Promise<any> {
     const httpHeaders = {
       headers: new HttpHeaders({
@@ -43,6 +53,16 @@ export class BarangService {
       })
     };
     return await this.http.post<any>(`${environment.apiURL}/barang/upload`, data, httpHeaders).toPromise();
+  }
+
+  public async upNotif(data: any, token: string): Promise<any> {
+    const httpHeaders = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      })
+    };
+    return await this.http.post<any>(`${environment.apiURL}/notif-barang/upload`, data, httpHeaders).toPromise();
   }
 
   public async upGambar(data: any, token: string): Promise<any> {
