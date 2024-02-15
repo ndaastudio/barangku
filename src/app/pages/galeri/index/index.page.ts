@@ -4,6 +4,7 @@ import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
+import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 
 @Component({
   selector: 'app-index',
@@ -22,11 +23,15 @@ export class IndexPage implements OnInit {
     private photo: PhotoService,
     private animationCtrl: AnimationController,
     private router: Router,
+    private dataRefresh: DataRefreshService,
   ) { }
 
   async ngOnInit() {
     this.platform = await this.localStorage.get('os');
-    await this.initGetData();
+    this.initGetData();
+    this.dataRefresh.refreshedData.subscribe(() => {
+      this.initGetData();
+    });
   }
 
   async initGetData() {
