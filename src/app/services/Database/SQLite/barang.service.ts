@@ -371,4 +371,19 @@ export class BarangService {
     }
   }
 
+  public async getKategoriAndCount() {
+    try {
+      const sql = `SELECT kategori, COUNT(*) as jumlah FROM barang GROUP BY kategori;`;
+      const results = await this.db.executeSql(sql, []);
+      let data = [];
+      for (let i = 0; i < results.rows.length; i++) {
+        data.push(results.rows.item(i));
+      }
+      return data;
+    } catch (error) {
+      alert(error);
+      return [];
+    }
+  }
+
 }
