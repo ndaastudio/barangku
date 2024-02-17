@@ -20,7 +20,7 @@ export class IndexPage implements OnInit {
   selectedWaktu: any = null;
   optionFilterKategori: any = [];
   optionFilterProgress: any = [0, 1];
-  optionFilterWaktu: any = ['Notifikasi Terdekat', 'Notifikasi Terjauh', 'Baru Ditambahkan', 'Terlama Ditambahkan'];
+  optionFilterWaktu: any = ['Rencana Terdekat', 'Rencana Terjauh', 'Baru Ditambahkan', 'Terlama Ditambahkan'];
   isOptionsFilterOpen: boolean = false;
   platform: any = null;
   dataBarang: any = [];

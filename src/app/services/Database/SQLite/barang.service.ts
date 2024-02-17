@@ -59,7 +59,7 @@ export class BarangService {
       return false;
     }
   }
-  
+
 
   public async createNotifWithCustomId(data: INotification) {
     try {
@@ -131,7 +131,7 @@ export class BarangService {
   public async deleteNotifByListId(id_notif: string) {
     try {
       const sql = `DELETE FROM notifications WHERE id IN (${id_notif});`;
-      await this.db.executeSql(sql,[]);
+      await this.db.executeSql(sql, []);
       return true;
     } catch (error: any) {
       alert(error.message);
@@ -315,7 +315,7 @@ export class BarangService {
     }
   }
 
-  public async multipleFilter(kategori?: string[], progress?: string, waktu?: string) {
+  public async multipleFilter(kategori?: string[], progress?: number, waktu?: string) {
     try {
       if (!kategori) kategori = [];
 
@@ -328,7 +328,7 @@ export class BarangService {
         whereValues.push(...kategori);
       }
 
-      if (progress) {
+      if (progress !== null) {
         if (whereClause.length > 0) {
           whereClause += `AND progress = ? `;
         } else {
@@ -341,12 +341,12 @@ export class BarangService {
         baseQuery += `WHERE ${whereClause} `;
       }
 
-      if (waktu) {
-        if (waktu == 'Notifikasi Terdekat') {
-          baseQuery += `ORDER BY ABS(julianday(jadwal_notifikasi) - julianday('now')) DESC`;
+      if (waktu !== null) {
+        if (waktu == 'Rencana Terdekat') {
+          baseQuery += `ORDER BY ABS(julianday(jadwal_rencana) - julianday('now')) DESC`;
         }
-        if (waktu == 'Notifikasi Terjauh') {
-          baseQuery += `ORDER BY ABS(julianday(jadwal_notifikasi) - julianday('now')) ASC`;
+        if (waktu == 'Rencana Terjauh') {
+          baseQuery += `ORDER BY ABS(julianday(jadwal_rencana) - julianday('now')) ASC`;
         }
         if (waktu == 'Baru Ditambahkan') {
           baseQuery += `ORDER BY id DESC`;
