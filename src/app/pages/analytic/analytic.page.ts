@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Chart } from 'chart.js/auto';
+import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
@@ -13,6 +14,7 @@ export class AnalyticPage implements OnInit {
 
   constructor(
     private localStorage: LocalStorageService,
+    private sqliteBarang: SQLiteBarang
   ) { }
 
   async ngOnInit() {
@@ -20,23 +22,17 @@ export class AnalyticPage implements OnInit {
     this.createChart();
   }
 
-  createChart() {
+  async createChart() {
+    const results = await this.sqliteBarang.getKategoriAndCount();
+    const labels = results.map((result: any) => result.kategori);
+    const data = results.map((result: any) => result.jumlah);
     this.chart = new Chart('statistik-barang', {
       type: 'doughnut',
       data: {
-        labels: [
-          'Elektronik',
-          'Fashion',
-          'Otomotif'
-        ],
+        labels: labels,
         datasets: [{
           label: 'Jumlah Barang',
-          data: [10, 2, 3],
-          backgroundColor: [
-            'rgb(255, 99, 132)',
-            'rgb(54, 162, 235)',
-            'rgb(255, 205, 86)'
-          ],
+          data: data,
           hoverOffset: 4
         }]
       }
