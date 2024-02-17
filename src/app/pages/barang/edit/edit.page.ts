@@ -150,7 +150,7 @@ export class EditPage implements OnInit {
       let data_notif: INotification = {
         id: this.id_notif,
         id_barang: this.id,
-        jadwal_notifikasi: this.jadwal_notifikasi,
+        jadwal_notifikasi: jadwalNotifikasi,
       };
       await this.sqliteBarang.updateNotif(data_notif);
       // update barang

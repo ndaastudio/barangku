@@ -8,6 +8,7 @@ import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/
 import { PhotoService } from 'src/app/services/App/photo.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 import { INotification } from 'src/app/interfaces/i-notification';
+import { convertDateToISOFormatWithLocalTime } from 'src/app/helpers/functions';
 
 @Component({
   selector: 'app-show',
@@ -228,19 +229,20 @@ export class ShowPage implements OnInit {
           handler: async (value) => {
             // save tunda ke database
             // ambil data jadwal_notifikasi utama     
-            let old_notif = new Date(this.dataNotifikasi[0].jadwal_notifikasi);
+            let old_notif = new Date(this.dataNotifikasi[0].jadwal_notifikasi);      
             // ulangi create notif sebanyak 5 kali dengan masing-masing interval "value" hari
             for(let i = 1; i <= 5; i++){
               // tambahkan sebanyak "value" hari dari jadwal_notifikasi utama
               old_notif.setDate(old_notif.getDate() + value);
               // convert date menjadi string "yyyy/mm/ddThh:ii:ss"
-              let tunda_notif = old_notif.toISOString();              
+              let tunda_notif = convertDateToISOFormatWithLocalTime(old_notif);              
               let data_tunda = {
                 id_barang: this.id,
                 jadwal_notifikasi: tunda_notif,
               };
               // simpan data ke sql storage tabel notifications
-              await this.sqliteBarang.createNotif(data_tunda);
+              let id_notif = await this.sqliteBarang.createNotif(data_tunda);
+              await this.notif.create('1', 'Pengingat!', `Jangan lupa ${this.dataBarang.nama_barang.toLowerCase()} ${this.dataBarang.status.toLowerCase()}`, id_notif, new Date(tunda_notif), `/barang/show/${this.id}`);
             }
             // refresh data barang
             this.dataRefresh.refresh();
