@@ -73,6 +73,7 @@ export class IndexPage implements OnInit {
   }
 
   goToPindahPerangkat() {
+    return showAlert(this.alertCtrl, 'Perhatian', 'Fitur ini sedang dalam perbaikan');
     this.router.navigateByUrl('/pindah-perangkat');
   }
 
