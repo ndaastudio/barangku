@@ -102,7 +102,7 @@ export class RegisterPage implements OnInit {
         }, {
           text: 'Ya',
           handler: () => {
-            const waAdmin = `https://wa.me/6281367676651/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
+            const waAdmin = `https://wa.me/6285267777823/?text=${encodeURIComponent('Halo admin, saya ingin mendaftar aplikasi Barangku. Bagaimana cara saya mendapatkan kode daftar? Terima kasih')}`;
             this.openBrowser(waAdmin);
           }
         }
