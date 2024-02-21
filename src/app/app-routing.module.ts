@@ -64,7 +64,11 @@ const routes: Routes = [
   {
     path: 'galeri',
     loadChildren: () => import('./pages/galeri/index/index.module').then(m => m.IndexPageModule)
+  },  {
+    path: 'show',
+    loadChildren: () => import('./pages/letak/show/show.module').then( m => m.ShowPageModule)
   },
+
 
 ];
 @NgModule({
