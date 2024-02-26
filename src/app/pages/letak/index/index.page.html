@@ -1,6 +1,11 @@
 <ion-header *ngIf="platform == 'android'"
   class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <div>
+    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/profil']">
+      <ion-button>
+        <ion-icon name="person-circle-outline" slot="icon-only" class="text-white"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <h5 class="text-xl font-bold text-white">Barangku</h5>
     <ion-buttons (click)="setOpenOptionsFilter(true)" class="absolute top-4 right-4" slot="primary">
       <ion-button>
@@ -12,8 +17,17 @@
 
 <ion-header *ngIf="platform !== 'android'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <ion-toolbar color="transparent" class="text-white">
+    <ion-buttons slot="start" [routerLink]="['/profil']">
+      <ion-button>
+        <ion-icon name="person-circle-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>Barangku</ion-title>
+<<<<<<< HEAD
     <ion-buttons (click)="setOpenOptionsFilter(true)" slot="end">
+=======
+    <ion-buttons slot="end">
+>>>>>>> 6c75e35dfcf6b61be4d0c2985930cb0e75f94630
       <ion-button>
         <ion-icon name="filter-outline" slot="icon-only"></ion-icon>
       </ion-button>
@@ -21,7 +35,11 @@
   </ion-toolbar>
 </ion-header>
 
+<<<<<<< HEAD
 <ion-modal #modalFilter [isOpen]="isOptionsFilterOpen" (willDismiss)="onWillDismissModal(false)">
+=======
+<!-- <ion-modal #modalFilter [isOpen]="isOptionsFilterOpen" (willDismiss)="onWillDismissModal(false)">
+>>>>>>> 6c75e35dfcf6b61be4d0c2985930cb0e75f94630
   <ng-template>
     <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
       <div>
@@ -49,11 +67,22 @@
           dataKategori }}</ion-chip>
       </div>
       <div class="space-y-2">
+<<<<<<< HEAD
+=======
+        <p class="text-gray-500 font-semibold text-lg">Berdasarkan Progress:</p>
+        <ion-chip
+          class="{{ selectedProgress == dataProgress ? 'bg-[#30a2ff] text-white' : 'bg-gray-200 text-[#30a2ff]' }}"
+          *ngFor="let dataProgress of optionFilterProgress" (click)="handlePilihProgress(dataProgress)">{{
+          dataProgress == 0 ? 'Belum' : 'Selesai' }}</ion-chip>
+      </div>
+      <div class="space-y-2">
+>>>>>>> 6c75e35dfcf6b61be4d0c2985930cb0e75f94630
         <p class="text-gray-500 font-semibold text-lg">Berdasarkan Waktu:</p>
         <ion-chip class="{{ selectedWaktu == dataWaktu ? 'bg-[#30a2ff] text-white' : 'bg-gray-200 text-[#30a2ff]' }}"
           *ngFor="let dataWaktu of optionFilterWaktu" (click)="handlePilihWaktu(dataWaktu)">{{
           dataWaktu }}</ion-chip>
       </div>
+<<<<<<< HEAD
       <div class="space-y-2">
         <p class="text-gray-500 font-semibold text-lg">Berdasarkan Urutan Abjad:</p>
         <ion-chip class="{{ selectedAbjad == dataAbjad ? 'bg-[#30a2ff] text-white' : 'bg-gray-200 text-[#30a2ff]' }}"
@@ -69,6 +98,15 @@
     <input type="search" placeholder="Cari barang..."
       class="w-full h-12 px-5 pr-10 text-sm bg-gray-100 rounded-full focus:outline-none"
       (input)="onSearchBarang($event)">
+=======
+    </ion-content>
+  </ng-template>
+</ion-modal> -->
+
+<ion-content class="space-y-4 ion-padding">
+  <div class="flex h-full justify-center items-center">
+    <p class="text-gray-500">Coming Soon</p>
+>>>>>>> 6c75e35dfcf6b61be4d0c2985930cb0e75f94630
   </div>
 </div>
 
