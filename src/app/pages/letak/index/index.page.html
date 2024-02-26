@@ -54,6 +54,12 @@
           *ngFor="let dataWaktu of optionFilterWaktu" (click)="handlePilihWaktu(dataWaktu)">{{
           dataWaktu }}</ion-chip>
       </div>
+      <div class="space-y-2">
+        <p class="text-gray-500 font-semibold text-lg">Berdasarkan Urutan Abjad:</p>
+        <ion-chip class="{{ selectedAbjad == dataAbjad ? 'bg-[#30a2ff] text-white' : 'bg-gray-200 text-[#30a2ff]' }}"
+          *ngFor="let dataAbjad of optionFilterAbjad" (click)="handlePilihAbjad(dataAbjad)">{{
+          dataAbjad }}</ion-chip>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>

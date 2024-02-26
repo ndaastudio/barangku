@@ -18,9 +18,11 @@ export class IndexPage implements OnInit {
   selectedKategori: any = [];
   selectedProgress: any = null;
   selectedWaktu: any = null;
+  selectedAbjad: any = 'A-Z';
   optionFilterKategori: any = [];
   optionFilterProgress: any = [0, 1];
   optionFilterWaktu: any = ['Baru Ditambahkan', 'Terlama Ditambahkan'];
+  optionFilterAbjad: any = ['A-Z', 'Z-A'];
   optionsKategori: any = [
     'Fashion',
     'Kuliner',
@@ -106,6 +108,14 @@ export class IndexPage implements OnInit {
       return;
     }
     this.selectedWaktu = value;
+  }
+
+  handlePilihAbjad(value: string) {
+    if (this.selectedAbjad === value) {
+      this.selectedAbjad = null;
+      return;
+    }
+    this.selectedAbjad = value;
   }
 
   setOpenOptionsFilter(isOpen: boolean) {
