@@ -67,8 +67,17 @@ const routes: Routes = [
   },
   {
     path: 'letak/show/:id',
-    loadChildren: () => import('./pages/letak/show/show.module').then( m => m.ShowPageModule)
+    loadChildren: () => import('./pages/letak/show/show.module').then(m => m.ShowPageModule)
   },
+  {
+    path: 'letak/create',
+    loadChildren: () => import('./pages/letak/create/create.module').then(m => m.CreatePageModule)
+  },
+  {
+    path: 'letak/edit',
+    loadChildren: () => import('./pages/letak/edit/edit.module').then(m => m.EditPageModule)
+  },
+
 
 
 ];

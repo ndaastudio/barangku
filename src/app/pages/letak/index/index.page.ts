@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoadingController, ModalController, NavController } from '@ionic/angular';
+import { Router } from '@angular/router';
+import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 import { showLoading } from '../../../helpers/functions';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
@@ -43,6 +45,8 @@ export class IndexPage implements OnInit {
     private loadingCtrl: LoadingController,
     private dataRefresh: DataRefreshService,
     private navCtrl: NavController,
+    private router: Router,
+    private sqliteLetakBarang: SQLiteLetakBarang,
   ) { }
 
   async ngOnInit() {
@@ -128,6 +132,10 @@ export class IndexPage implements OnInit {
 
   goToDetail(id: number) {
     this.navCtrl.navigateForward(['letak/show/' + id])
+  }
+
+  goToTambahBarang() {
+    this.router.navigateByUrl('/letak/create');
   }
 
 }

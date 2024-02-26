@@ -3,6 +3,7 @@ import { SQLite, SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
 import { BarangService } from './barang.service';
 import { showError } from 'src/app/helpers/functions';
 import { AlertController } from '@ionic/angular';
+import { LetakService } from './letak.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,6 +16,7 @@ export class InitDbService {
     private sqlite: SQLite,
     private barang: BarangService,
     private alertCtrl: AlertController,
+    private letak: LetakService,
     ) {
   }
 
@@ -25,6 +27,7 @@ export class InitDbService {
         location: 'default'
       });
       this.barang.init(this.db);
+      this.letak.init(this.db);
       await this.barang.createTable();
       await this.barang.createTableNotif();
       await this.barang.createTableGambar();
