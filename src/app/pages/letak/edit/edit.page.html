@@ -1,21 +1,21 @@
 <ion-header *ngIf="platform == 'android'"
   class="flex ion-no-border justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <div>
-    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/tabs/barang']">
+    <ion-buttons class="absolute top-4 left-4" slot="primary" [routerLink]="['/letak/show', id]">
       <ion-button>
         <ion-icon name="arrow-back-outline" slot="icon-only" color="light"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <h5 class="text-xl font-bold text-white">Tambah Barang</h5>
+    <h5 class="text-xl font-bold text-white">Edit Barang</h5>
   </div>
 </ion-header>
 
 <ion-header *ngIf="platform !== 'android'" class="ion-no-border p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
   <ion-toolbar color="transparent" class="text-white">
     <ion-buttons slot="start">
-      <ion-back-button default-href="/tabs/barang"></ion-back-button>
+      <ion-back-button default-href="['/letak/show', id]"></ion-back-button>
     </ion-buttons>
-    <ion-title>Tambah Barang</ion-title>
+    <ion-title>Edit Barang</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -40,70 +40,41 @@
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: Kebutuhan Suami)" type="text"
         [(ngModel)]="kategori_lainnya" (input)="countInputKategori()"></ion-input>
     </ion-item>
-    <ion-item mode="md" fill="outline" lines="none">
-      <ion-select [(ngModel)]="status" label="Rencana" placeholder="-- Pilih Rencana --" okText="Pilih"
-        cancelText="Batal">
-        <ion-select-option *ngFor="let dataStatus of optionsStatus;" value="{{ dataStatus }}">{{ dataStatus
-          }}</ion-select-option>
-      </ion-select>
-    </ion-item>
-    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
-      <ion-label position="floating">{{ status }} {{ optionsExtendStatus[status] }}</ion-label>
-      <ion-input autocapitalize="on" maxlength="50" placeholder="{{ status }} {{ optionsExtendStatus[status] }}"
-        type="text" [(ngModel)]="extend_status" (input)="countInputStatus()"></ion-input>
-    </ion-item>
     <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
       <ion-label position="floating">Jumlah</ion-label>
       <ion-input maxlength="30" autocapitalize="on" placeholder="(contoh: 1 pcs)" type="text"
         [(ngModel)]="jumlah_barang" (input)="countInputJumlah()"></ion-input>
     </ion-item>
-    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter" *ngIf="status">
-      <ion-label position="floating">{{ optionsLetak[status] }}</ion-label>
+    <ion-item mode="md" fill="outline" counter="true" [counterFormatter]="customCounterFormatter">
+      <ion-label position="floating">Letak Barang</ion-label>
       <ion-input maxlength="50" autocapitalize="on" placeholder="(contoh: Dibawah meja)" type="text"
         [(ngModel)]="letak_barang" (input)="countInputLetak()"></ion-input>
     </ion-item>
-    <ion-item mode="md" fill="outline">
-      <ion-label position="floating">Keterangan (Opsional)</ion-label>
-      <ion-textarea autocapitalize="on" [rows]="5" placeholder="Alasan/sebab" type="text"
-        [(ngModel)]="keterangan"></ion-textarea>
-    </ion-item>
-    <div class="flex justify-center">
-      <ion-datetime mode="md" hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_rencana">
-        <span slot="title">Jadwal Rencana</span>
-        <span slot="time-label">Pukul</span>
-      </ion-datetime>
-    </div>
-    <div>
-      <ion-item mode="md" fill="outline" lines="none">
-        <ion-select [(ngModel)]="reminder" label="Jadwal Notifikasi" placeholder="-- Pilih --" okText="Pilih"
-          cancelText="Batal">
-          <ion-select-option value="Jadwal Rencana">Jadwal Rencana</ion-select-option>
-          <ion-select-option value="Isi Sendiri">Isi Sendiri</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <p class="p-0 mt-2 text-xs italic text-justify text-gray-500">*silahkan pilih jadwal notifikasi: sesuai "Jadwal
-        Rencana" atau
-        "Isi
-        Sendiri"</p>
-    </div>
-    <div class="flex justify-center" *ngIf="reminder == 'Isi Sendiri'">
-      <ion-datetime mode="md" hourCycle="h24" [min]="getToday" presentation="date-time" [(ngModel)]="jadwal_notifikasi">
-        <span slot="title">Jadwal Notifikasi</span>
-        <span slot="time-label">Pukul</span>
-      </ion-datetime>
-    </div>
     <div *ngFor="let image of dataImage; let i = index;">
-      <div *ngIf="pickedPhoto" class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
-        <img (click)="viewFull(true, i)" src="{{ image.webPath }}" class="object-cover w-full h-full" />
-        <ion-buttons slot="primary" (click)="deleteImage(i)">
+      <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
+        <img (click)="viewFull(true, i, 'webviewPath')" src="{{ image.webviewPath }}"
+          class="object-cover w-full h-full" />
+        <ion-buttons slot="primary" (click)="deleteImageFromDatabase(i)">
           <ion-button class="absolute bg-white rounded-full top-2 right-2">
             <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
           </ion-button>
         </ion-buttons>
       </div>
     </div>
+    <div *ngIf="pickedPhoto" class="space-y-4">
+      <div *ngFor="let image of otherImage; let i = index;">
+        <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
+          <img (click)="viewFull(true, i, 'webPath')" src="{{ image.webPath }}" class="object-cover w-full h-full" />
+          <ion-buttons slot="primary" (click)="deleteImageFromArray(i)">
+            <ion-button class="absolute bg-white rounded-full top-2 right-2">
+              <ion-icon color="danger" name="trash-outline" slot="icon-only"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+        </div>
+      </div>
+    </div>
     <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"
-      (willDismiss)="viewFull(false, undefined)">
+      (willDismiss)="viewFull(false, undefined, undefined)">
       <ng-template>
         <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
           <ion-button>

@@ -18,8 +18,9 @@ export class AppComponent {
     private router: Router,
     private localStorage: LocalStorageService) {
     this.platform.backButton.subscribeWithPriority(-1, () => {
-      if (this.router.url === '/' || this.router.url === '/login' || this.router.url === '/tabs/barang' || this.router.url === '/update') {
-        App.minimizeApp();
+      const rootUrl = ['/', '/login', '/tabs/barang', '/update', '/tabs/letak', '/tabs/galeri', '/tabs/analytic'];
+      if (rootUrl.includes(this.router.url)) {
+        App.exitApp();
       }
     });
     const setStatusBarStyleDark = async () => {
