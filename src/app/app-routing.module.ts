@@ -64,8 +64,9 @@ const routes: Routes = [
   {
     path: 'galeri',
     loadChildren: () => import('./pages/galeri/index/index.module').then(m => m.IndexPageModule)
-  },  {
-    path: 'show',
+  },
+  {
+    path: 'letak/show/:id',
     loadChildren: () => import('./pages/letak/show/show.module').then( m => m.ShowPageModule)
   },
 

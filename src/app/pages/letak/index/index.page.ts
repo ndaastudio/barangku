@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController } from '@ionic/angular';
+import { LoadingController, ModalController, NavController } from '@ionic/angular';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 import { showLoading } from '../../../helpers/functions';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
@@ -40,7 +40,8 @@ export class IndexPage implements OnInit {
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
     private dataRefresh: DataRefreshService,
-    ) { }
+    private navCtrl: NavController,
+  ) { }
 
   async ngOnInit() {
     this.platform = await this.localStorage.get('os');
@@ -113,6 +114,10 @@ export class IndexPage implements OnInit {
 
   onWillDismissModal(isOpen: boolean) {
     this.isOptionsFilterOpen = isOpen;
+  }
+
+  goToDetail(id: number) {
+    this.navCtrl.navigateForward(['letak/show/' + id])
   }
 
 }

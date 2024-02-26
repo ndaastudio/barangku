@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
+import { AlertController } from '@ionic/angular';
+import { showError } from 'src/app/helpers/functions';
 import { INotification } from 'src/app/interfaces/i-notification';
 
 @Injectable({
@@ -9,7 +11,9 @@ export class BarangService {
 
   private db!: SQLiteObject;
 
-  constructor() { }
+  constructor(
+    private alertCtrl: AlertController,
+  ) { }
 
   init(db: SQLiteObject) {
     this.db = db;
@@ -32,7 +36,7 @@ export class BarangService {
             progress INTEGER DEFAULT 0
         );`, []);
     } catch (error: any) {
-      alert(error.message);
+      showError(this.alertCtrl, 'Error', error.message);
     }
   }
 
@@ -45,7 +49,7 @@ export class BarangService {
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
     } catch (error: any) {
-      alert(error.message);
+      showError(this.alertCtrl, 'Error', error.message);
     }
   }
 
@@ -148,7 +152,7 @@ export class BarangService {
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
     } catch (error: any) {
-      alert(error.message);
+      showError(this.alertCtrl, 'Error', error.message);
     }
   }
 

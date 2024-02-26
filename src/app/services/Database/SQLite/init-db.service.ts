@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { SQLite, SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
 import { BarangService } from './barang.service';
+import { showError } from 'src/app/helpers/functions';
+import { AlertController } from '@ionic/angular';
 
 @Injectable({
   providedIn: 'root'
@@ -9,8 +11,11 @@ export class InitDbService {
 
   private db!: SQLiteObject;
 
-  constructor(private sqlite: SQLite,
-    private barang: BarangService) {
+  constructor(
+    private sqlite: SQLite,
+    private barang: BarangService,
+    private alertCtrl: AlertController,
+    ) {
   }
 
   async init() {
@@ -23,8 +28,8 @@ export class InitDbService {
       await this.barang.createTable();
       await this.barang.createTableNotif();
       await this.barang.createTableGambar();
-    } catch (error) {
-      alert(error);
+    } catch (error: any) {
+      showError(this.alertCtrl, 'Error', error);
     }
   }
 }
