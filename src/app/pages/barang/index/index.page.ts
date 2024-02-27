@@ -164,6 +164,10 @@ export class IndexPage implements OnInit {
   }
 
   setOpenOptionsFilter(isOpen: boolean) {
+    if (this.dataBarang.length == 0) {
+      showAlert(this.alertCtrl, 'Error!', 'Data belum tersedia untuk di filter. Silahkan tambahkan data terlebih dahulu.');
+      return;
+    }
     this.isOptionsFilterOpen = isOpen;
   }
 
