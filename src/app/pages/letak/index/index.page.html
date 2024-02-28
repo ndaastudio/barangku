@@ -101,20 +101,20 @@
       </div>
     </div>
   </div>
-  <div (click)="goToDetail(1)" class="relative w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
-    <p class="mt-2 font-bold text-gray-700 text-md">Novel Suluh Rindu</p>
-    <p class="!mt-0 mb-2 text-sm text-gray-500">1 Buku</p>
+  <div *ngFor="let barang of dataLetakBarang" (click)="goToDetail(barang.id)" class="relative w-full p-4 space-y-2 border border-gray-200 rounded-lg bg-gray-50 shadow-inherit">
+    <p class="mt-2 font-bold text-gray-700 text-md">{{barang.nama_barang}}</p>
+    <p class="!mt-0 mb-2 text-sm text-gray-500">{{barang.jumlah_barang}}</p>
     <div class="flex justify-between !mt-4">
       <div class="flex items-end mr-2">
         <p class="text-sm text-[#30a2ff] text-center">
-          <i>Pendidikan</i>
+          <i>{{ barang.kategori == 'Opsi Lainnya' ? barang.kategori_lainnya : barang.kategori }}</i>
         </p>
       </div>
     </div>
     <div class="border-t-2 border-[#e7e7e7]"></div>
     <p class="text-sm font-bold text-right text-gray-500 !tracking-[0.2px]">
       <ion-icon name="location-sharp" class="!mr-[2px]"></ion-icon>
-      <span>Di Meja Belajar</span>
+      <span>{{barang.letak_barang}}</span>
     </p>
   </div>
 </ion-content>

@@ -31,6 +31,8 @@ export class InitDbService {
       await this.barang.createTable();
       await this.barang.createTableNotif();
       await this.barang.createTableGambar();
+      await this.letak.createTable();
+      await this.letak.createTableGambar();
     } catch (error: any) {
       showError(this.alertCtrl, 'Error', error);
     }

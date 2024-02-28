@@ -1,10 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController, NavController } from '@ionic/angular';
+import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
-import { showLoading } from '../../../helpers/functions';
+import { showError, showLoading } from '../../../helpers/functions';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
+import { ILetakBarang } from 'src/app/interfaces/i-letak-barang';
 
 @Component({
   selector: 'app-index',
@@ -18,11 +19,9 @@ export class IndexPage implements OnInit {
   isLoaded: boolean = false;
   platform: any = null;
   selectedKategori: any = [];
-  selectedProgress: any = null;
   selectedWaktu: any = null;
   selectedAbjad: any = 'A-Z';
   optionFilterKategori: any = [];
-  optionFilterProgress: any = [0, 1];
   optionFilterWaktu: any = ['Baru Ditambahkan', 'Terlama Ditambahkan'];
   optionFilterAbjad: any = ['A-Z', 'Z-A'];
   optionsKategori: any = [
@@ -38,6 +37,7 @@ export class IndexPage implements OnInit {
     'Office',
   ].sort();
   dataLetakBarang: any = [];
+  items: ILetakBarang[] = [];
 
   constructor(
     private localStorage: LocalStorageService,
@@ -47,35 +47,44 @@ export class IndexPage implements OnInit {
     private navCtrl: NavController,
     private router: Router,
     private sqliteLetakBarang: SQLiteLetakBarang,
+    private alertCtrl: AlertController,
   ) { }
 
   async ngOnInit() {
     this.platform = await this.localStorage.get('os');
     this.isLoaded = false;
+    this.sqliteLetakBarang.list_letak_barang.subscribe((list) => {
+      this.dataLetakBarang = list;
+      this.items = this.dataLetakBarang;
+      if (this.dataLetakBarang.length > 0) {
+        this.optionFilterKategori = this.dataLetakBarang.map((barang: any) => barang.kategori).filter((value: any, index: any, self: any) => self.indexOf(value) === index);
+      }
+    });
+    this.loadData();
+  }
+
+  async loadData() {
     await showLoading(this.loadingCtrl, 'Memuat data...');
-    await this.loadingCtrl.dismiss();
-    this.isLoaded = true;
-    this.dataRefresh.refreshedData.subscribe(() => {
-      this.initGetData();
+    this.sqliteLetakBarang.getAll().then(async () => {
+      await this.loadingCtrl.dismiss();
+      this.isLoaded = true;
+    }).catch((error) => {
+      showError(this.alertCtrl, 'Error', error);
     });
   }
 
-  async initGetData() {
-    // const data = await this.sqliteBarang.getAll();
-    // this.dataBarang = data;
-    // this.optionFilterKategori = this.dataBarang.map((barang: any) => barang.kategori).filter((value: any, index: any, self: any) => self.indexOf(value) === index);
-  }
-
   async onSearchBarang(event: any) {
-    const keyword = event.target.value;
-    if (keyword.length == 0) {
-      // this.initGetData();
-      // this.isSearchBarang = false;
-      return;
+    const keyword: string | undefined = event.target.value;
+    if (keyword === undefined) {
+      this.dataLetakBarang = [...this.items];
+      this.isSearchBarang = false;
+    } else {
+      const normalizedQuery = keyword.toLowerCase();
+      this.dataLetakBarang = this.items.filter(item => {
+        return item.nama_barang.toLowerCase().includes(normalizedQuery) || item.letak_barang.toLowerCase().includes(normalizedQuery) || (item.kategori == 'Opsi Lainnya' ? item.kategori_lainnya.toLowerCase().includes(normalizedQuery) :  item.kategori.toLowerCase().includes(normalizedQuery));
+      });
+      this.isSearchBarang = true;
     }
-    // const data = await this.sqliteBarang.search(keyword);
-    // this.dataBarang = data;
-    // this.isSearchBarang = true;
   }
 
   async handleRefresh(event: any) {
@@ -83,7 +92,7 @@ export class IndexPage implements OnInit {
     this.dataLetakBarang = [];
     setTimeout(async () => {
       await event.target.complete();
-      await this.ngOnInit();
+      await this.loadData();
     }, 1500);
   }
 
