@@ -74,7 +74,7 @@ const routes: Routes = [
     loadChildren: () => import('./pages/letak/create/create.module').then(m => m.CreatePageModule)
   },
   {
-    path: 'letak/edit',
+    path: 'letak/edit/:id',
     loadChildren: () => import('./pages/letak/edit/edit.module').then(m => m.EditPageModule)
   },
 

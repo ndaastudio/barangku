@@ -11,5 +11,4 @@ export interface ILetakBarang {
     kategori_lainnya: string,
     jumlah_barang: string,
     letak_barang: string,
-    gambar: IGambarLetakBarang[],
 }

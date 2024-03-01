@@ -12,6 +12,7 @@ import { IonicStorageModule } from '@ionic/storage-angular';
 
 import { HttpClientModule } from '@angular/common/http';
 import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
+import { ComponentsModule } from './modules/components/components.module';
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,7 +25,9 @@ import { SQLite } from '@awesome-cordova-plugins/sqlite/ngx';
       name: 'barangku-db',
       driverOrder: [Drivers.SecureStorage, Drivers.IndexedDB, Drivers.LocalStorage]
     }),
-    HttpClientModule],
+    HttpClientModule,
+    ComponentsModule,
+  ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }, SQLite],
   bootstrap: [AppComponent],
 })

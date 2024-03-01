@@ -1,29 +1,28 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { AlertController, LoadingController, ModalController, NavController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 import { showError, showLoading } from '../../../helpers/functions';
-import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { ILetakBarang } from 'src/app/interfaces/i-letak-barang';
+import { ModalFilterLetakComponent } from 'src/app/components/modal-filter-letak/modal-filter-letak.component';
+import { Subscription } from 'rxjs';
+
+interface IFilter {
+  kategori: string[],
+  urutkan: string,
+}
 
 @Component({
   selector: 'app-index',
   templateUrl: './index.page.html',
   styleUrls: ['./index.page.scss'],
 })
-export class IndexPage implements OnInit {
+export class IndexPage implements OnInit, OnDestroy {
+  private subscribtions = new Subscription();
 
-  isOptionsFilterOpen: boolean = false;
-  isSearchBarang: boolean = false;
   isLoaded: boolean = false;
   platform: any = null;
-  selectedKategori: any = [];
-  selectedWaktu: any = null;
-  selectedAbjad: any = 'A-Z';
-  optionFilterKategori: any = [];
-  optionFilterWaktu: any = ['Baru Ditambahkan', 'Terlama Ditambahkan'];
-  optionFilterAbjad: any = ['A-Z', 'Z-A'];
   optionsKategori: any = [
     'Fashion',
     'Kuliner',
@@ -39,11 +38,25 @@ export class IndexPage implements OnInit {
   dataLetakBarang: any = [];
   items: ILetakBarang[] = [];
 
+  keyword: string | undefined;
+  searchedBarang: ILetakBarang[] = [];
+  isSearchBarang: boolean = false;
+
+  //filter
+  isFilterBarang: boolean = false;
+  filteredBarang: ILetakBarang[] = [];
+
+  optionFilterKategori: any = [];
+
+  selectedFilter: IFilter = {
+    kategori: [],
+    urutkan: 'A-Z',
+  };
+
   constructor(
     private localStorage: LocalStorageService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
-    private dataRefresh: DataRefreshService,
     private navCtrl: NavController,
     private router: Router,
     private sqliteLetakBarang: SQLiteLetakBarang,
@@ -53,19 +66,30 @@ export class IndexPage implements OnInit {
   async ngOnInit() {
     this.platform = await this.localStorage.get('os');
     this.isLoaded = false;
-    this.sqliteLetakBarang.list_letak_barang.subscribe((list) => {
+    let list_letak_barang_subs = this.sqliteLetakBarang.list_letak_barang.subscribe((list) => {
       this.dataLetakBarang = list;
       this.items = this.dataLetakBarang;
       if (this.dataLetakBarang.length > 0) {
         this.optionFilterKategori = this.dataLetakBarang.map((barang: any) => barang.kategori).filter((value: any, index: any, self: any) => self.indexOf(value) === index);
       }
     });
+    this.subscribtions.add(list_letak_barang_subs);
     this.loadData();
+  }
+
+  ngOnDestroy(): void {
+    this.subscribtions.unsubscribe();
   }
 
   async loadData() {
     await showLoading(this.loadingCtrl, 'Memuat data...');
     this.sqliteLetakBarang.getAll().then(async () => {
+      if (this.isSearchBarang) {
+        await this.onSearchBarang({ target: { value: this.keyword } });
+      }
+      if(this.isFilterBarang){
+        this.filterBarang();
+      }
       await this.loadingCtrl.dismiss();
       this.isLoaded = true;
     }).catch((error) => {
@@ -74,15 +98,18 @@ export class IndexPage implements OnInit {
   }
 
   async onSearchBarang(event: any) {
-    const keyword: string | undefined = event.target.value;
-    if (keyword === undefined) {
-      this.dataLetakBarang = [...this.items];
+    this.keyword = event.target.value;
+    let default_list = this.isFilterBarang ? this.filteredBarang : this.items;
+    if (this.keyword === undefined) {
+      this.dataLetakBarang = [...default_list];
+      this.searchedBarang = [];
       this.isSearchBarang = false;
     } else {
-      const normalizedQuery = keyword.toLowerCase();
-      this.dataLetakBarang = this.items.filter(item => {
-        return item.nama_barang.toLowerCase().includes(normalizedQuery) || item.letak_barang.toLowerCase().includes(normalizedQuery) || (item.kategori == 'Opsi Lainnya' ? item.kategori_lainnya.toLowerCase().includes(normalizedQuery) :  item.kategori.toLowerCase().includes(normalizedQuery));
+      const normalizedQuery = this.keyword.toLowerCase();
+      this.dataLetakBarang = default_list.filter(item => {
+        return item.nama_barang.toLowerCase().includes(normalizedQuery) || item.letak_barang.toLowerCase().includes(normalizedQuery) || (item.kategori == 'Opsi Lainnya' ? item.kategori_lainnya.toLowerCase().includes(normalizedQuery) : item.kategori.toLowerCase().includes(normalizedQuery));
       });
+      this.searchedBarang = [...this.dataLetakBarang];
       this.isSearchBarang = true;
     }
   }
@@ -96,47 +123,57 @@ export class IndexPage implements OnInit {
     }, 1500);
   }
 
-  async confirmFilterOptions() {
-    this.modalCtrl.dismiss();
-    // if (this.selectedKategori.length == 0 && this.selectedProgress == null && this.selectedWaktu == null) {
-    //   this.initGetData();
-    //   return;
-    // }
-    // const data = await this.sqliteBarang.multipleFilter(this.selectedKategori, this.selectedProgress, this.selectedWaktu);
-    // this.dataBarang = data;
-    // this.isSearchBarang = true;
+  async openFilter() {
+    const selected_kategori = this.selectedFilter.kategori.map((cat) => cat);
+    let modalFilter = await this.modalCtrl.create({
+      id: 'modal-filter-letak',
+      component: ModalFilterLetakComponent,
+      componentProps: {
+        'kategori': this.optionFilterKategori,
+        'selected_kategori': selected_kategori,
+        'selected_urutkan': this.selectedFilter.urutkan,
+      },
+      backdropDismiss: false,
+    });
+
+    await modalFilter.present();
+
+    const { data } = await modalFilter.onDidDismiss();
+    if (data) {
+      // do filter
+      this.selectedFilter = data.filter;
+      this.filterBarang();
+    }
   }
 
-  handlePilihKategori(value: string) {
-    if (this.selectedKategori.includes(value)) {
-      this.selectedKategori = this.selectedKategori.filter((kategori: string) => kategori !== value);
+  filterBarang() {
+    let default_list = this.isSearchBarang ? this.searchedBarang : this.items;
+    if (this.selectedFilter.kategori.length > 0) {
+      this.dataLetakBarang = default_list.filter(item => {
+        return (this.selectedFilter.kategori.includes(item.kategori) || this.selectedFilter.kategori.includes(item.kategori_lainnya));
+      });
+      this.filteredBarang = [...this.dataLetakBarang];
+      this.isFilterBarang = true;
     } else {
-      this.selectedKategori.push(value);
+      this.dataLetakBarang = default_list;
+      this.filteredBarang = [];
+      this.isFilterBarang = false;
     }
-  }
 
-  handlePilihWaktu(value: string) {
-    if (this.selectedWaktu === value) {
-      this.selectedWaktu = null;
-      return;
+    switch (this.selectedFilter.urutkan) {
+      case 'A-Z':
+        this.dataLetakBarang = this.dataLetakBarang.sort((a: ILetakBarang, b: ILetakBarang) => (a.nama_barang > b.nama_barang) ? 1 : -1);
+        break;
+      case 'Z-A':
+        this.dataLetakBarang = this.dataLetakBarang.sort((a: ILetakBarang, b: ILetakBarang) => b.nama_barang.localeCompare(a.nama_barang));
+        break;
+      case 'Baru Ditambahkan':
+        this.dataLetakBarang = this.dataLetakBarang.sort((a: ILetakBarang, b: ILetakBarang) => b.id - a.id);
+        break;
+      case 'Terlama Ditambahkan':
+        this.dataLetakBarang = this.dataLetakBarang.sort((a: ILetakBarang, b: ILetakBarang) => a.id - b.id);
+        break;
     }
-    this.selectedWaktu = value;
-  }
-
-  handlePilihAbjad(value: string) {
-    if (this.selectedAbjad === value) {
-      this.selectedAbjad = null;
-      return;
-    }
-    this.selectedAbjad = value;
-  }
-
-  setOpenOptionsFilter(isOpen: boolean) {
-    this.isOptionsFilterOpen = isOpen;
-  }
-
-  onWillDismissModal(isOpen: boolean) {
-    this.isOptionsFilterOpen = isOpen;
   }
 
   goToDetail(id: number) {
