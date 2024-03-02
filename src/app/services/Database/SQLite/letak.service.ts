@@ -174,12 +174,13 @@ export class LetakService {
 
   public async update(data: any) {
     try {
-      const sql = `UPDATE letak_barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, jumlah_barang = ?, letak_barang = ?, progress = ? WHERE id = ?;`;
-      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang, data.progress, data.id]);
+      const sql = `UPDATE letak_barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, jumlah_barang = ?, letak_barang = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang, data.id]);
       return true;
     } catch (error) {
-      alert(error);
-      return false;
+      // alert(error);
+      // return false;
+      return new Error("Terjadi kesalahan sistem! Silahkan hubungi admin Barangku!");
     }
   }
 

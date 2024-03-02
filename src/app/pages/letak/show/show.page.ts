@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, AnimationController, IonInput, LoadingController, NavController, Platform, PopoverController } from '@ionic/angular';
 import { Subscription } from 'rxjs';
-import { showError, showLoading } from 'src/app/helpers/functions';
+import { showAlert, showError, showLoading } from 'src/app/helpers/functions';
 import { IGambarLetakBarang, ILetakBarang } from 'src/app/interfaces/i-letak-barang';
 import { LetakService } from 'src/app/services/Database/SQLite/letak.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
@@ -116,8 +116,7 @@ export class ShowPage implements OnInit, OnDestroy {
             // hapus letak barang
             await this.letakBarangService.deleteById(this.id);
             await this.letakBarangService.getAll();
-            await this.letakBarangService.getById(this.id);
-            await this.router.navigateByUrl('/tabs/barang');
+            await this.router.navigateByUrl('/tabs/letak');
           },
           cssClass: '!text-red-500'
         }
@@ -139,9 +138,30 @@ export class ShowPage implements OnInit, OnDestroy {
     this.inputPindahLokasi.setFocus();
   }
 
-  ubahLokasi(){
+  async ubahLokasi(){
     this.isModalPindahkanOpen = false;
-
+    await showLoading(this.loadingCtrl, 'Memuat data...');
+    // populate data
+    let data_letak_barang = {
+      id: this.letak_barang?.id,
+      nama_barang: this.letak_barang?.nama_barang,
+      kategori: this.letak_barang?.kategori,
+      kategori_lainnya: this.letak_barang?.kategori_lainnya,
+      jumlah_barang: this.letak_barang?.jumlah_barang,
+      letak_barang: this.formPindah.value['lokasi_pindah_barang'],
+    }
+    // update database
+    this.letakBarangService.update(data_letak_barang).then(async () => {
+      await this.letakBarangService.getAll();
+      await this.letakBarangService.getById(this.id);
+      showAlert(this.alertCtrl, "Success", "Update letak barang berhasil!");
+    }).catch((e) => {
+      showError(this.alertCtrl, 'Error', e.message);
+    });
+    // dismiss loading
+    setTimeout(async ()=>{
+      await this.loadingCtrl.dismiss();
+    }, 500);
   }
 
   viewFull(isFull: boolean, index: number | undefined) {
