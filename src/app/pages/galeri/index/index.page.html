@@ -12,6 +12,15 @@
 </ion-header>
 
 <ion-content class="space-y-4 ion-padding">
+  <ion-segment [(ngModel)]="segment" value="aksi" (ionChange)="segmentChanged()">
+    <ion-segment-button value="aksi">
+      <ion-label>Aksi</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="letak">
+      <ion-label>Letak</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
