@@ -115,13 +115,12 @@ export class EditPage implements OnInit {
     this.jadwal_rencana = data.jadwal_rencana;
     this.reminder = data.reminder;
     const dataNotif = await this.sqliteBarang.getNotifByIdBarang(this.id);
-    this.dataNotifikasi = dataNotif;    
+    this.dataNotifikasi = dataNotif;
     this.jadwal_notifikasi = this.dataNotifikasi[0].jadwal_notifikasi;
     this.id_notif = this.dataNotifikasi[0].id;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
-      const loadedGambar = await this.photo.load(data.gambar);
-      this.dataImage.push(loadedGambar);
+      this.dataImage.push(data.gambar);
     });
   }
 

@@ -5,6 +5,7 @@ import { PhotoService } from 'src/app/services/App/photo.service';
 import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
+import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
 
 @Component({
   selector: 'app-index',
@@ -17,9 +18,13 @@ export class IndexPage implements OnInit {
   isViewFull: boolean = false;
   urlFullImage: any;
   idBarang: any;
+  segment: string = 'aksi';
+  dataAksi: any = [];
+  dataLetak: any = [];
 
   constructor(private localStorage: LocalStorageService,
     private sqliteBarang: SQLiteBarang,
+    private sqliteLetakBarang: SQLiteLetakBarang,
     private photo: PhotoService,
     private animationCtrl: AnimationController,
     private router: Router,
@@ -35,7 +40,13 @@ export class IndexPage implements OnInit {
   }
 
   async initGetData() {
-    const resultsGaleri = await this.sqliteBarang.getAllGambar();
+    this.dataAksi = await this.sqliteBarang.getAllGambar();
+    this.dataLetak = await this.sqliteLetakBarang.getAllGambar();
+    this.segmentChanged();
+  }
+
+  segmentChanged() {
+    const resultsGaleri = this.segment == 'aksi' ? this.dataAksi : this.dataLetak;
     this.dataGaleri = [];
     resultsGaleri.forEach(async (data: any) => {
       const loadedGambar = await this.photo.load(data.gambar);
