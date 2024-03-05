@@ -6,6 +6,7 @@ import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-index',
@@ -47,11 +48,11 @@ export class IndexPage implements OnInit {
 
   segmentChanged() {
     const resultsGaleri = this.segment == 'aksi' ? this.dataAksi : this.dataLetak;
-    this.dataGaleri = [];
-    resultsGaleri.forEach(async (data: any) => {
-      const loadedGambar = await this.photo.load(data.gambar);
-      this.dataGaleri.push({ id: data.id_barang, gambar: loadedGambar });
-    });
+    this.dataGaleri = resultsGaleri; //[];
+    // resultsGaleri.forEach(async (data: any) => {
+    //   const loadedGambar = await this.photo.load(data.gambar);
+    //   this.dataGaleri.push({ id: data.id_barang, gambar: loadedGambar });
+    // });
   }
 
   async handleRefresh(event: any) {
@@ -62,10 +63,10 @@ export class IndexPage implements OnInit {
     }, 1500);
   }
 
-  viewFull(isFull: boolean, index: number | undefined, id: number | undefined) {
+  viewFull(isFull: boolean, url: string | undefined, id: number | undefined) {
     this.isViewFull = isFull;
-    if (index != undefined) {
-      this.urlFullImage = this.dataGaleri[index].gambar.webviewPath;
+    if (url != undefined) {
+      this.urlFullImage = url;
       this.idBarang = id;
     }
   }

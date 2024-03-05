@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
+import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from "@capacitor/filesystem";
 
 const IMAGE_DIR = '.Barangku/Images';
@@ -58,7 +59,7 @@ export class PhotoService {
     });
     return {
       fileName: fileName,
-      path: path.uri,
+      path: Capacitor.convertFileSrc(path.uri),
     };
   }
 
