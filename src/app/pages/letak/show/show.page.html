@@ -131,8 +131,8 @@
   </div>
 
   <div *ngIf="isLoaded">
-    <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
-      <img (click)="viewFull(true, 0)" src="assets/images/upload.png" class="object-cover w-full h-full" />
+    <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border" *ngFor="let gambar of gambar_letak_barang">
+      <img (click)="viewFull(true, gambar.url)" src="{{ gambar.url }}" class="object-cover w-full h-full" />
     </div>
   </div>
 
@@ -147,7 +147,7 @@
       </ion-buttons>
       <div class="flex items-center justify-center h-screen bg-black">
         <div class="flex items-center">
-          <img src="assets/images/upload.png" />
+          <img src="{{ urlFullImage }}" />
         </div>
       </div>
     </ng-template>

@@ -2,6 +2,7 @@ export interface IGambarLetakBarang {
     id: number,
     id_letak_barang: number,
     gambar: string,
+    url: string,
 }
 
 export interface ILetakBarang {

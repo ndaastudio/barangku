@@ -164,10 +164,10 @@ export class ShowPage implements OnInit, OnDestroy {
     }, 500);
   }
 
-  viewFull(isFull: boolean, index: number | undefined) {
+  viewFull(isFull: boolean, url: string | undefined) {
     this.isViewFull = isFull;
-    if (index != undefined) {
-      this.urlFullImage = 'assets/images/upload.png';
+    if (url != undefined) {
+      this.urlFullImage = url;
     }
   }
 
