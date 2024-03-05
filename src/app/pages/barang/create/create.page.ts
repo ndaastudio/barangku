@@ -147,7 +147,7 @@ export class CreatePage implements OnInit {
           this.dataImage.forEach(async (dataGambar: any) => {
             const date = new Date().getTime();
             const dataSave = await this.photo.save(dataGambar, `${this.nama_barang}-${date}.jpeg`);
-            await this.sqliteBarang.createGambar(idBarang, dataSave);
+            await this.sqliteBarang.createGambar(idBarang, dataSave.fileName, dataSave.url);
           });
         }
         const date = new Date(data_notif.jadwal_notifikasi);

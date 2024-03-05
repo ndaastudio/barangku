@@ -53,7 +53,7 @@ export class SyncDataService {
       });
     dataServer.gambarBarang.forEach(async (gambarBarang: any) => {
       await this.sqliteBarang.deleteGambarById(gambarBarang.id_gambar_barang);
-      await this.sqliteBarang.createGambar(gambarBarang.barang_id, gambarBarang.gambar);
+      await this.sqliteBarang.createGambar(gambarBarang.barang_id, gambarBarang.gambar, gambarBarang.url);
     });
   }
 

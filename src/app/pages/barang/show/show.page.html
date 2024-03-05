@@ -166,7 +166,7 @@
   </div>
   <div *ngFor="let image of dataImage; let i = index;">
     <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border">
-      <img (click)="viewFull(true, i)" src="{{ image.webviewPath }}" class="object-cover w-full h-full" />
+      <img (click)="viewFull(true, i)" src="{{ image.url }}" class="object-cover w-full h-full" />
     </div>
   </div>
   <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"

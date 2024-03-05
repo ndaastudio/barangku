@@ -42,7 +42,7 @@
   <div class="grid grid-cols-3 gap-2">
     <div *ngFor="let image of dataGaleri; let i = index;">
       <div class="aspect-square border-gray-300 border-2 shadow-md rounded-lg overflow-hidden">
-        <img (click)="viewFull(true, i, image.id)" src="{{ image.gambar.webviewPath }}"
+        <img (click)="viewFull(true, image.url, image.id_barang)" src="{{ image.url }}"
           class="object-cover w-full h-full" />
       </div>
     </div>

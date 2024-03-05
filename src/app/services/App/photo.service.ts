@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Camera, CameraResultType, CameraSource, Photo } from "@capacitor/camera";
+import { Capacitor } from '@capacitor/core';
 import { Filesystem, Directory } from "@capacitor/filesystem";
 
 const IMAGE_DIR = '.Barangku/Images';
@@ -51,12 +52,15 @@ export class PhotoService {
 
   public async save(cameraPhoto: Photo, fileName: string) {
     const base64Data = await this.readAsBase64(cameraPhoto);
-    await Filesystem.writeFile({
+    const path = await Filesystem.writeFile({
       path: `${IMAGE_DIR}/${fileName}`,
       data: base64Data,
       directory: Directory.Documents
     });
-    return fileName;
+    return {
+      fileName: fileName,
+      url: Capacitor.convertFileSrc(path.uri),
+    };
   }
 
   private async readAsBase64(cameraPhoto: Photo) {
@@ -76,16 +80,16 @@ export class PhotoService {
     });
   }
 
-  public async load(fileName: string) {
-    const photo = await Filesystem.readFile({
-      path: `${IMAGE_DIR}/${fileName}`,
-      directory: Directory.Documents
-    });
-    return {
-      fileName: fileName,
-      webviewPath: `data:image/jpeg;base64,${photo.data}`
-    };
-  }
+  // public async load(fileName: string) {
+  //   const photo = await Filesystem.readFile({
+  //     path: `${IMAGE_DIR}/${fileName}`,
+  //     directory: Directory.Documents
+  //   });
+  //   return {
+  //     fileName: fileName,
+  //     webviewPath: `data:image/jpeg;base64,${photo.data}`
+  //   };
+  // }
 
   public async delete(fileName: string) {
     await Filesystem.deleteFile({
