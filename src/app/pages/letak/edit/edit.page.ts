@@ -78,7 +78,7 @@ export class EditPage implements OnInit {
         this.otherImage.forEach(async (dataGambar: any) => {
           const date = new Date().getTime();
           const dataSave = await this.photo.save(dataGambar, `${this.nama_barang}-${date}.jpeg`);
-          await this.sqliteLetakBarang.createGambar(this.id, dataSave);
+          await this.sqliteLetakBarang.createGambar(this.id, dataSave.fileName, dataSave.path);
         });
       }
       await this.router.navigateByUrl(`/letak/show/${this.id}`);

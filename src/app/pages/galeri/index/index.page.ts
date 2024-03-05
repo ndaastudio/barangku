@@ -5,6 +5,8 @@ import { PhotoService } from 'src/app/services/App/photo.service';
 import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
+import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
+import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-index',
@@ -17,9 +19,13 @@ export class IndexPage implements OnInit {
   isViewFull: boolean = false;
   urlFullImage: any;
   idBarang: any;
+  segment: string = 'aksi';
+  dataAksi: any = [];
+  dataLetak: any = [];
 
   constructor(private localStorage: LocalStorageService,
     private sqliteBarang: SQLiteBarang,
+    private sqliteLetakBarang: SQLiteLetakBarang,
     private photo: PhotoService,
     private animationCtrl: AnimationController,
     private router: Router,
@@ -35,12 +41,18 @@ export class IndexPage implements OnInit {
   }
 
   async initGetData() {
-    const resultsGaleri = await this.sqliteBarang.getAllGambar();
-    this.dataGaleri = [];
-    resultsGaleri.forEach(async (data: any) => {
-      const loadedGambar = await this.photo.load(data.gambar);
-      this.dataGaleri.push({ id: data.id_barang, gambar: loadedGambar });
-    });
+    this.dataAksi = await this.sqliteBarang.getAllGambar();
+    this.dataLetak = await this.sqliteLetakBarang.getAllGambar();
+    this.segmentChanged();
+  }
+
+  segmentChanged() {
+    const resultsGaleri = this.segment == 'aksi' ? this.dataAksi : this.dataLetak;
+    this.dataGaleri = resultsGaleri; //[];
+    // resultsGaleri.forEach(async (data: any) => {
+    //   const loadedGambar = await this.photo.load(data.gambar);
+    //   this.dataGaleri.push({ id: data.id_barang, gambar: loadedGambar });
+    // });
   }
 
   async handleRefresh(event: any) {
@@ -51,10 +63,10 @@ export class IndexPage implements OnInit {
     }, 1500);
   }
 
-  viewFull(isFull: boolean, index: number | undefined, id: number | undefined) {
+  viewFull(isFull: boolean, url: string | undefined, id: number | undefined) {
     this.isViewFull = isFull;
-    if (index != undefined) {
-      this.urlFullImage = this.dataGaleri[index].gambar.webviewPath;
+    if (url != undefined) {
+      this.urlFullImage = url;
       this.idBarang = id;
     }
   }

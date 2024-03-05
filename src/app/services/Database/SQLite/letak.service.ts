@@ -40,6 +40,7 @@ export class LetakService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_letak_barang INTEGER,
             gambar TEXT,
+            url TEXT,
             FOREIGN KEY (id_letak_barang) REFERENCES letak_barang (id)
         );`, []);
     } catch (error: any) {
@@ -47,10 +48,10 @@ export class LetakService {
     }
   }
 
-  public async createGambar(id: number, nama: string) {
+  public async createGambar(id: number, nama: string, url: string) {
     try {
-      const sql = `INSERT INTO gambar_letak_barang (id_letak_barang, gambar) VALUES (?, ?);`;
-      const results = await this.db.executeSql(sql, [id, nama]);
+      const sql = `INSERT INTO gambar_letak_barang (id_letak_barang, gambar, url) VALUES (?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [id, nama, url]);
       return results.insertId;
     } catch (error) {
       alert(error);
