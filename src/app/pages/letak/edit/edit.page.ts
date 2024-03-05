@@ -61,8 +61,7 @@ export class EditPage implements OnInit {
     this.letak_barang = data.letak_barang;
     const resultGambar = await this.sqliteLetakBarang.getGambarById(this.id);
     resultGambar.forEach(async (data: any) => {
-      const loadedGambar = await this.photo.load(data.gambar);
-      this.dataImage.push(loadedGambar);
+      this.dataImage.push({ fileName: data.fileName, url: data.url });
     });
   }
 
@@ -78,7 +77,7 @@ export class EditPage implements OnInit {
         this.otherImage.forEach(async (dataGambar: any) => {
           const date = new Date().getTime();
           const dataSave = await this.photo.save(dataGambar, `${this.nama_barang}-${date}.jpeg`);
-          await this.sqliteLetakBarang.createGambar(this.id, dataSave.fileName, dataSave.path);
+          await this.sqliteLetakBarang.createGambar(this.id, dataSave.fileName, dataSave.url);
         });
       }
       await this.router.navigateByUrl(`/letak/show/${this.id}`);
@@ -176,7 +175,7 @@ export class EditPage implements OnInit {
   viewFull(isFull: boolean, index: number | undefined, pathSource: string | undefined) {
     this.isViewFull = isFull;
     if (index != undefined && pathSource != undefined) {
-      this.urlFullImage = pathSource == 'webviewPath' ? this.dataImage[index].webviewPath : this.otherImage[index].webPath;
+      this.urlFullImage = pathSource == 'webviewPath' ? this.dataImage[index].url : this.otherImage[index].webPath;
     }
   }
 

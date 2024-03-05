@@ -63,15 +63,14 @@ export class ShowPage implements OnInit {
 
   async initGetData() {
     const data = await this.sqliteBarang.getById(this.id);
-    this.dataBarang = data;    
+    this.dataBarang = data;
     const dataNotif = await this.sqliteBarang.getNotifByIdBarang(this.id);
     this.dataNotifikasi = dataNotif;
     this.id_notif = this.dataNotifikasi[0].id;
     const resultGambar = await this.sqliteBarang.getGambarById(this.id);
     this.dataImage = [];
     resultGambar.forEach(async (data: any) => {
-      const loadedGambar = await this.photo.load(data.gambar);
-      this.dataImage.push(loadedGambar);
+      this.dataImage.push({ fileName: data.fileName, url: data.url });
     });
   }
 
@@ -147,7 +146,7 @@ export class ShowPage implements OnInit {
               this.dataNotifikasi.forEach(async (notif) => await this.notif.delete(notif.id));
               // delete notif tunda dari database
               // cek apakah ada notifikasi tunda
-              if(this.dataNotifikasi.length > 1) {
+              if (this.dataNotifikasi.length > 1) {
                 // ambil list tunda notif
                 let list_notif = this.dataNotifikasi.slice(1);
                 // ambil list id tunda notif dan jadikan sebuah string dengan format: id, id, id, ...
@@ -171,7 +170,7 @@ export class ShowPage implements OnInit {
   viewFull(isFull: boolean, index: number | undefined) {
     this.isViewFull = isFull;
     if (index != undefined) {
-      this.urlFullImage = this.dataImage[index].webviewPath;
+      this.urlFullImage = this.dataImage[index].url;
     }
   }
 
@@ -205,9 +204,9 @@ export class ShowPage implements OnInit {
     let input_tunda: AlertInput[] = [];
     for (let i = 0; i < 7; i++) {
       input_tunda[i] = {
-        label: `${i+1} Hari`,
+        label: `${i + 1} Hari`,
         type: 'radio',
-        value: i+1,
+        value: i + 1,
       };
     }
 
@@ -219,7 +218,7 @@ export class ShowPage implements OnInit {
       inputs: input_tunda,
       buttons: [
         {
-          text: 'Cancel',          
+          text: 'Cancel',
           cssClass: '!text-gray-500',
           role: 'cancel',
         },
@@ -229,13 +228,13 @@ export class ShowPage implements OnInit {
           handler: async (value) => {
             // save tunda ke database
             // ambil data jadwal_notifikasi utama     
-            let old_notif = new Date(this.dataNotifikasi[0].jadwal_notifikasi);      
+            let old_notif = new Date(this.dataNotifikasi[0].jadwal_notifikasi);
             // ulangi create notif sebanyak 5 kali dengan masing-masing interval "value" hari
-            for(let i = 1; i <= 5; i++){
+            for (let i = 1; i <= 5; i++) {
               // tambahkan sebanyak "value" hari dari jadwal_notifikasi utama
               old_notif.setDate(old_notif.getDate() + value);
               // convert date menjadi string "yyyy/mm/ddThh:ii:ss"
-              let tunda_notif = convertDateToISOFormatWithLocalTime(old_notif);              
+              let tunda_notif = convertDateToISOFormatWithLocalTime(old_notif);
               let data_tunda = {
                 id_barang: this.id,
                 jadwal_notifikasi: tunda_notif,

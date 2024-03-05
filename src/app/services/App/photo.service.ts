@@ -59,7 +59,7 @@ export class PhotoService {
     });
     return {
       fileName: fileName,
-      path: Capacitor.convertFileSrc(path.uri),
+      url: Capacitor.convertFileSrc(path.uri),
     };
   }
 
@@ -80,16 +80,16 @@ export class PhotoService {
     });
   }
 
-  public async load(fileName: string) {
-    const photo = await Filesystem.readFile({
-      path: `${IMAGE_DIR}/${fileName}`,
-      directory: Directory.Documents
-    });
-    return {
-      fileName: fileName,
-      webviewPath: `data:image/jpeg;base64,${photo.data}`
-    };
-  }
+  // public async load(fileName: string) {
+  //   const photo = await Filesystem.readFile({
+  //     path: `${IMAGE_DIR}/${fileName}`,
+  //     directory: Directory.Documents
+  //   });
+  //   return {
+  //     fileName: fileName,
+  //     webviewPath: `data:image/jpeg;base64,${photo.data}`
+  //   };
+  // }
 
   public async delete(fileName: string) {
     await Filesystem.deleteFile({

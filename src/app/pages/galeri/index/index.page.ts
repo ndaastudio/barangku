@@ -6,7 +6,7 @@ import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
-import { Capacitor } from '@capacitor/core';
+// import { Capacitor } from '@capacitor/core';
 
 @Component({
   selector: 'app-index',
