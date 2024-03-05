@@ -145,6 +145,7 @@ export class BarangService {
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             id_barang INTEGER,
             gambar TEXT,
+            url TEXT,
             FOREIGN KEY (id_barang) REFERENCES barang (id)
         );`, []);
     } catch (error: any) {
@@ -152,10 +153,10 @@ export class BarangService {
     }
   }
 
-  public async createGambar(id: number, nama: string) {
+  public async createGambar(id: number, nama: string, url: string) {
     try {
-      const sql = `INSERT INTO gambar_barang (id_barang, gambar) VALUES (?, ?);`;
-      const results = await this.db.executeSql(sql, [id, nama]);
+      const sql = `INSERT INTO gambar_barang (id_barang, gambar, url) VALUES (?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [id, nama, url]);
       return results.insertId;
     } catch (error) {
       alert(error);

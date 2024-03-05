@@ -51,12 +51,15 @@ export class PhotoService {
 
   public async save(cameraPhoto: Photo, fileName: string) {
     const base64Data = await this.readAsBase64(cameraPhoto);
-    await Filesystem.writeFile({
+    const path = await Filesystem.writeFile({
       path: `${IMAGE_DIR}/${fileName}`,
       data: base64Data,
       directory: Directory.Documents
     });
-    return fileName;
+    return {
+      fileName: fileName,
+      path: path.uri,
+    };
   }
 
   private async readAsBase64(cameraPhoto: Photo) {
