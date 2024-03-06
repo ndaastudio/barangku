@@ -99,6 +99,7 @@ export class CreatePage implements OnInit {
         this.letak_barang = null;
         this.pickedPhoto = false;
         this.dataImage = [];
+        await this.sqliteLetakBarang.getAll();
         await this.loadingCtrl.dismiss();
         await this.router.navigateByUrl('/tabs/letak');
         this.dataRefresh.refresh();

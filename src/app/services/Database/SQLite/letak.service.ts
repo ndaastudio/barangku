@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
 import { SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
+import { BehaviorSubject } from 'rxjs';
+import { IGambarLetakBarang, ILetakBarang } from 'src/app/interfaces/i-letak-barang';
 
 @Injectable({
   providedIn: 'root'
@@ -7,6 +9,9 @@ import { SQLiteObject } from "@awesome-cordova-plugins/sqlite/ngx";
 export class LetakService {
 
   private db!: SQLiteObject;
+  letak_barang: BehaviorSubject<ILetakBarang | null> = new BehaviorSubject<ILetakBarang | null>(null);
+  list_letak_barang: BehaviorSubject<ILetakBarang[]> = new BehaviorSubject<ILetakBarang[]>([]);
+  gambar_letak_barang: BehaviorSubject<IGambarLetakBarang[]> = new BehaviorSubject<IGambarLetakBarang[]>([]);
 
   constructor() { }
 
@@ -22,8 +27,7 @@ export class LetakService {
             kategori TEXT,
             kategori_lainnya TEXT DEFAULT NULL,
             jumlah_barang TEXT,
-            letak_barang TEXT,
-            progress INTEGER DEFAULT 0
+            letak_barang TEXT
         );`, []);
     } catch (error: any) {
       alert(error.message);
@@ -57,16 +61,21 @@ export class LetakService {
 
   public async getGambarById(id: number) {
     try {
+      this.gambar_letak_barang.next([]);
       const sql = `SELECT * FROM gambar_letak_barang WHERE id_letak_barang = ?;`;
       const results = await this.db.executeSql(sql, [id]);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
         data.push(results.rows.item(i));
       }
+      this.gambar_letak_barang.next(data);
       return data;
-    } catch (error) {
-      alert(error);
-      return [];
+    } catch (error: any) {
+      // debuging
+      // throw new Error(JSON.stringify(error));
+      // publish
+      throw new Error("Terjadi kesalahan sistem! Silahkan hubungi admin Barangku!");
+      // return [];
     }
   }
 
@@ -94,8 +103,8 @@ export class LetakService {
 
   public async createWithCustomId(data: any) {
     try {
-      const sql = `INSERT INTO letak_barang (id, nama_barang, kategori, kategori_lainnya, jumlah_barang, letak_barang, progress) VALUES (?, ?, ?, ?, ?, ?, ?);`;
-      const results = await this.db.executeSql(sql, [data.id_letak_barang, data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang, data.progress]);
+      const sql = `INSERT INTO letak_barang (id, nama_barang, kategori, kategori_lainnya, jumlah_barang, letak_barang) VALUES (?, ?, ?, ?, ?, ?);`;
+      const results = await this.db.executeSql(sql, [data.id_letak_barang, data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang]);
       return results;
     } catch (error) {
       alert(error);
@@ -105,16 +114,17 @@ export class LetakService {
 
   public async getAll() {
     try {
-      const sql = `SELECT * FROM letak_barang ORDER BY id DESC;`;
+      this.list_letak_barang.next([]);
+      const sql = `SELECT * FROM letak_barang ORDER BY nama_barang ASC;`;
       const results = await this.db.executeSql(sql, []);
       let data = [];
       for (let i = 0; i < results.rows.length; i++) {
         data.push(results.rows.item(i));
       }
-      return data;
-    } catch (error) {
-      alert(error);
-      return [];
+      this.list_letak_barang.next(data);
+      return true;
+    } catch (error: any) {
+      return error.message;
     }
   }
 
@@ -135,12 +145,16 @@ export class LetakService {
 
   public async getById(id: number) {
     try {
+      this.letak_barang.next(null);
       const sql = `SELECT * FROM letak_barang WHERE id = ?;`;
       const results = await this.db.executeSql(sql, [id]);
+      this.letak_barang.next(results.rows.item(0));
       return results.rows.item(0);
     } catch (error) {
-      alert(error);
-      return null;
+      // debuging
+      // throw new Error(JSON.stringify(error));
+      // publish
+      throw new Error("Terjadi kesalahan sistem! Silahkan hubungi admin Barangku!");
     }
   }
 
@@ -161,12 +175,13 @@ export class LetakService {
 
   public async update(data: any) {
     try {
-      const sql = `UPDATE letak_barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, jumlah_barang = ?, letak_barang = ?, progress = ? WHERE id = ?;`;
-      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang, data.progress, data.id]);
+      const sql = `UPDATE letak_barang SET nama_barang = ?, kategori = ?, kategori_lainnya = ?, jumlah_barang = ?, letak_barang = ? WHERE id = ?;`;
+      await this.db.executeSql(sql, [data.nama_barang, data.kategori, data.kategori_lainnya, data.jumlah_barang, data.letak_barang, data.id]);
       return true;
     } catch (error) {
-      alert(error);
-      return false;
+      // alert(error);
+      // return false;
+      return new Error("Terjadi kesalahan sistem! Silahkan hubungi admin Barangku!");
     }
   }
 
@@ -189,21 +204,6 @@ export class LetakService {
     } catch (error) {
       alert(error);
       return false;
-    }
-  }
-
-  public async search(keyword: string) {
-    try {
-      const sql = `SELECT * FROM letak_barang WHERE nama_barang LIKE ? OR kategori LIKE ? OR kategori_lainnya LIKE ?;`;
-      const results = await this.db.executeSql(sql, ['%' + keyword + '%', '%' + keyword + '%', '%' + keyword + '%']);
-      let data = [];
-      for (let i = 0; i < results.rows.length; i++) {
-        data.push(results.rows.item(i));
-      }
-      return data;
-    } catch (error) {
-      alert(error);
-      return [];
     }
   }
 

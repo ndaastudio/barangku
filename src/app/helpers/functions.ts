@@ -28,6 +28,20 @@ export async function showAlert(alertCtrl: AlertController, header: string, mess
     });
 }
 
+export async function showError(alertCtrl: AlertController, header: string, message: string) {
+    const topError = await alertCtrl.getTop();
+    if (!topError) {
+        const alert = await alertCtrl.create({
+            header: header,
+            message: message,
+            buttons: [{
+                text: 'OK'
+            }]
+        });
+        await alert.present();
+    }
+}
+
 export async function showLoading(loadingCtrl: LoadingController, message: string) {
     const loading = await loadingCtrl.create({
         message: message,
@@ -38,12 +52,12 @@ export async function showLoading(loadingCtrl: LoadingController, message: strin
 export async function dismissAllLoaders(loadingCtrl: LoadingController) {
     let topLoader = await loadingCtrl.getTop();
     while (topLoader) {
-      if (!(await topLoader.dismiss())) {
-        throw new Error('Could not dismiss the topmost loader. Aborting...');
-      }
-      topLoader = await loadingCtrl.getTop();
+        if (!(await topLoader.dismiss())) {
+            throw new Error('Could not dismiss the topmost loader. Aborting...');
+        }
+        topLoader = await loadingCtrl.getTop();
     }
-  }
+}
 
 export function truncateString(str: string, maxLength: number): string {
     if (str.length <= maxLength) {

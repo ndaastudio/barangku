@@ -38,3 +38,29 @@ ion-datetime {
     border-radius: 2.5%;
     box-shadow: rgba(var(--ion-color-rose-rgb), 0.3) 0px 10px 15px -3px;
 }
+
+ion-modal#modal-filter-letak{
+    --height: 50%;
+    --width: fit-content;
+    --min-width: 90%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal#modal-filter-letak::part(backdrop) {
+  background: rgba(209, 213, 219);
+  opacity: 1;
+}
+
+ion-modal#modal-pindahkan-barang {
+    --height: 250px;
+    --width: fit-content;
+    --min-width: 90%;
+    --border-radius: 16px;
+    --box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+ion-modal#modal-pindahkan-barang::part(backdrop) {
+    background: rgba(209, 213, 219);
+    opacity: 1;
+}
