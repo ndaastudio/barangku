@@ -72,14 +72,14 @@ export class IndexPage implements OnInit {
     this.isLoaded = false;
     await showLoading(this.loadingCtrl, 'Memuat data...');
     try {
-      await this.checkAkun.initCheckDeviceLogin();
+      // await this.checkAkun.initCheckDeviceLogin();
       await this.checkAkun.initCheckExpiredDataUpload();
     } catch (error: any) {
       await this.loadingCtrl.dismiss();
       if (error.status == 401) {
         await this.localStorage.clear();
         await this.notif.deleteAll();
-        return showAlert(this.alertCtrl, 'Error!', 'Sesi anda telah berakhir, silahkan login kembali').then(() => {
+        return showAlert(this.alertCtrl, 'Error!', 'Akun anda telah login di perangkat lain, silahkan login kembali').then(() => {
           this.router.navigateByUrl('/login');
         });
       }

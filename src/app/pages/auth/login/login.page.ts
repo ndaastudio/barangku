@@ -36,22 +36,29 @@ export class LoginPage implements OnInit {
     this.platform = await this.localStorage.get('os');
   }
 
-  async submitLogin() {
+  async submitLogin(konfirmasiLogin?: number) {
     if (this.nomor_telepon && this.password) {
       try {
         await showLoading(this.loadingCtrl, 'Loading...');
         const data = {
           nomor_telepon: `0${this.nomor_telepon}`,
           password: this.password,
-          device_login: (await Device.getId()).identifier
+          konfirmasi_login: konfirmasiLogin ? konfirmasiLogin : 0
         };
         const results = await this.auth.login(data);
+        if (!results.status) {
+          if (results.message.confirm) {
+            await this.loadingCtrl.dismiss();
+            await this.presentConfirm(results.message.confirm);
+            return;
+          }
+        }
         const dataBarang = await this.sqliteBarang.getAll();
         dataBarang.forEach(async (barang) => {
           let notifications = await this.sqliteBarang.getNotifByIdBarang(barang.id);
           notifications.forEach(async (notif) => {
             await this.notif.create('1', 'Pengingat!', `Jangan lupa ${barang.nama_barang.toLowerCase()} ${barang.status.toLowerCase()}`, notif.id, new Date(notif.jadwal_notifikasi), `/barang/show/${barang.id}`);
-          });          
+          });
         });
         this.localStorage.set('access_token', results.access_token);
         this.localStorage.set('profile', results.data);
@@ -112,5 +119,26 @@ export class LoginPage implements OnInit {
 
   onWillDismissModal(isOpen: boolean) {
     this.isModalOpen = isOpen;
+  }
+
+  async presentConfirm(message: string) {
+    const alert = await this.alertCtrl.create({
+      header: 'Konfirmasi Login',
+      message: message,
+      buttons: [
+        {
+          text: 'Tidak',
+          role: 'cancel',
+          cssClass: '!text-gray-500'
+        }, {
+          text: 'Ya',
+          handler: () => {
+            this.submitLogin(1);
+          }
+        }
+      ]
+    });
+
+    await alert.present();
   }
 }
