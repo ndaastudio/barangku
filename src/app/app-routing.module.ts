@@ -1,20 +1,24 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
 import { AuthGuard } from './guards/auth.guard';
+import { UpdateGuard } from './guards/update.guard';
 
 const routes: Routes = [
   {
     path: 'login',
     loadChildren: () => import('./pages/auth/login/login.module').then(m => m.LoginPageModule),
-    canActivate: [AuthGuard]
+    canActivate: [AuthGuard],
+    canLoad: [UpdateGuard]
   },
   {
     path: 'register',
-    loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/auth/register/register.module').then(m => m.RegisterPageModule),
+    canLoad: [UpdateGuard]
   },
   {
     path: 'verif-lupa-pw',
-    loadChildren: () => import('./pages/auth/verif-lupa-pw/verif-lupa-pw.module').then(m => m.VerifLupaPwPageModule)
+    loadChildren: () => import('./pages/auth/verif-lupa-pw/verif-lupa-pw.module').then(m => m.VerifLupaPwPageModule),
+    canLoad: [UpdateGuard]
   },
   {
     path: 'tabs',
@@ -26,7 +30,8 @@ const routes: Routes = [
   },
   {
     path: 'barang/show/:id',
-    loadChildren: () => import('./pages/barang/show/show.module').then(m => m.ShowPageModule)
+    loadChildren: () => import('./pages/barang/show/show.module').then(m => m.ShowPageModule),
+    canLoad: [UpdateGuard]
   },
   {
     path: 'barang/edit/:id',
@@ -67,7 +72,8 @@ const routes: Routes = [
   },
   {
     path: 'letak/show/:id',
-    loadChildren: () => import('./pages/letak/show/show.module').then(m => m.ShowPageModule)
+    loadChildren: () => import('./pages/letak/show/show.module').then(m => m.ShowPageModule),
+    canLoad: [UpdateGuard]
   },
   {
     path: 'letak/create',
