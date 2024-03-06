@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Device } from '@capacitor/device';
 import { AlertController, LoadingController, ModalController } from '@ionic/angular';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
+import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 import { LocalNotifService } from 'src/app/services/App/local-notif.service';
 import { BarangService as SQLiteBarang } from 'src/app/services/Database/SQLite/barang.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
@@ -29,7 +29,9 @@ export class LoginPage implements OnInit {
     private localStorage: LocalStorageService,
     private modalCtrl: ModalController,
     private sqliteBarang: SQLiteBarang,
-    private notif: LocalNotifService) {
+    private notif: LocalNotifService,
+    private checkUpdate: CheckUpdateService,
+  ) {
   }
 
   async ngOnInit() {
@@ -40,6 +42,12 @@ export class LoginPage implements OnInit {
     if (this.nomor_telepon && this.password) {
       try {
         await showLoading(this.loadingCtrl, 'Loading...');
+        const isUpdate = await this.checkUpdate.isUpdate();
+        if (isUpdate) {
+          await this.loadingCtrl.dismiss();
+          await this.router.navigateByUrl('/update');
+          return;
+        }
         const data = {
           nomor_telepon: `0${this.nomor_telepon}`,
           password: this.password,
@@ -79,6 +87,12 @@ export class LoginPage implements OnInit {
     if (this.registered_email) {
       try {
         await showLoading(this.loadingCtrl, 'Sedang memproses...');
+        const isUpdate = await this.checkUpdate.isUpdate();
+        if (isUpdate) {
+          await this.loadingCtrl.dismiss();
+          await this.router.navigateByUrl('/update');
+          return;
+        }
         const data = {
           email: this.registered_email
         };

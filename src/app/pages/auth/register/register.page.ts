@@ -5,6 +5,7 @@ import { Browser } from '@capacitor/browser';
 import { AuthService } from 'src/app/services/API/auth.service';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
+import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 
 @Component({
   selector: 'app-register',
@@ -30,7 +31,8 @@ export class RegisterPage implements OnInit {
     private alertCtrl: AlertController,
     private auth: AuthService,
     private router: Router,
-    private localStorage: LocalStorageService,) {
+    private localStorage: LocalStorageService,
+    private checkUpdate: CheckUpdateService,) {
   }
 
   async ngOnInit() {
@@ -43,6 +45,12 @@ export class RegisterPage implements OnInit {
         if (this.password == this.konfirmasi_password) {
           try {
             await showLoading(this.loadingCtrl, 'Sedang mendaftar...');
+            const isUpdate = await this.checkUpdate.isUpdate();
+            if (isUpdate) {
+              await this.loadingCtrl.dismiss();
+              await this.router.navigateByUrl('/update');
+              return;
+            }
             const data = {
               nama: this.nama,
               email: this.email,
@@ -77,6 +85,12 @@ export class RegisterPage implements OnInit {
     if (this.kode_daftar) {
       try {
         await showLoading(this.loadingCtrl, 'Memeriksa kode daftar...');
+        const isUpdate = await this.checkUpdate.isUpdate();
+        if (isUpdate) {
+          await this.loadingCtrl.dismiss();
+          await this.router.navigateByUrl('/update');
+          return;
+        }
         const results = await this.auth.getByKodeDaftar(this.kode_daftar);
         await this.loadingCtrl.dismiss();
         this.isValidKodeDaftar = true;

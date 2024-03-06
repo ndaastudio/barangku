@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { showAlert, showLoading } from 'src/app/helpers/functions';
 import { AuthService } from 'src/app/services/API/auth.service';
+import { CheckUpdateService } from 'src/app/services/App/check-update.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
 
 @Component({
@@ -24,7 +25,8 @@ export class VerifLupaPwPage implements OnInit {
     private alertCtrl: AlertController,
     private auth: AuthService,
     private router: Router,
-    private localStorage: LocalStorageService,) {
+    private localStorage: LocalStorageService,
+    private checkUpdate: CheckUpdateService,) {
   }
 
   async ngOnInit() {
@@ -36,6 +38,12 @@ export class VerifLupaPwPage implements OnInit {
       if (this.password_baru == this.konfirmasi_password_baru) {
         try {
           showLoading(this.loadingCtrl, 'Sedang memproses...');
+          const isUpdate = await this.checkUpdate.isUpdate();
+          if (isUpdate) {
+            await this.loadingCtrl.dismiss();
+            await this.router.navigateByUrl('/update');
+            return;
+          }
           const data = {
             kode_lupa_password: this.kode_lupa_password,
             password_baru: this.password_baru,
