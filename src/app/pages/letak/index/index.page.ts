@@ -3,7 +3,7 @@ import { AlertController, LoadingController, ModalController, NavController } fr
 import { Router } from '@angular/router';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
 import { LocalStorageService } from 'src/app/services/Database/local-storage.service';
-import { showError, showLoading } from '../../../helpers/functions';
+import { showAlert, showError, showLoading } from '../../../helpers/functions';
 import { ILetakBarang } from 'src/app/interfaces/i-letak-barang';
 import { ModalFilterLetakComponent } from 'src/app/components/modal-filter-letak/modal-filter-letak.component';
 import { Subscription } from 'rxjs';
@@ -87,7 +87,7 @@ export class IndexPage implements OnInit, OnDestroy {
       if (this.isSearchBarang) {
         await this.onSearchBarang({ target: { value: this.keyword } });
       }
-      if(this.isFilterBarang){
+      if (this.isFilterBarang) {
         this.filterBarang();
       }
       await this.loadingCtrl.dismiss();
@@ -124,6 +124,10 @@ export class IndexPage implements OnInit, OnDestroy {
   }
 
   async openFilter() {
+    if (this.dataLetakBarang.length == 0 && !this.isSearchBarang) {
+      showAlert(this.alertCtrl, 'Error!', 'Data belum tersedia untuk di filter. Silahkan tambahkan data terlebih dahulu.');
+      return;
+    }
     const selected_kategori = this.selectedFilter.kategori.map((cat) => cat);
     let modalFilter = await this.modalCtrl.create({
       id: 'modal-filter-letak',
