@@ -174,4 +174,17 @@ export class IndexPage implements OnInit {
   onWillDismissModal(isOpen: boolean) {
     this.isOptionsFilterOpen = isOpen;
   }
+
+  async canDismiss(data?: any, role?: string) {
+    return role !== 'backdrop';
+  }
+
+  resetFilter() {
+    this.modalCtrl.dismiss();
+    this.isSearchBarang = false;
+    this.selectedKategori = [];
+    this.selectedProgress = null;
+    this.selectedWaktu = null;
+    this.initGetData();
+  }
 }
