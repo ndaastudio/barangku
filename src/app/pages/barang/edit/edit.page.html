@@ -122,16 +122,22 @@
     <ion-modal #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation" [isOpen]="isViewFull"
       (willDismiss)="viewFull(false, undefined, undefined)">
       <ng-template>
-        <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
-          <ion-button>
-            <ion-icon name="close-outline" slot="icon-only" color="light"></ion-icon>
-          </ion-button>
-        </ion-buttons>
-        <div class="flex items-center justify-center h-screen bg-black">
-          <div class="flex items-center">
-            <img src="{{ urlFullImage }}" />
+        <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+          <div>
+            <ion-buttons class="absolute top-4 left-4" slot="primary" (click)="modal.dismiss()">
+              <ion-button>
+                <ion-icon name="close-outline" slot="icon-only" class="text-white"></ion-icon>
+              </ion-button>
+            </ion-buttons>
+            <h5 class="text-xl font-bold text-white">Edit Barang</h5>
           </div>
         </div>
+
+        <ion-content class="ion-padding">
+          <div class="overflow-hidden rounded-xl">
+            <img src="{{ urlFullImage }}" class="object-cover w-full h-full" />
+          </div>
+        </ion-content>
       </ng-template>
     </ion-modal>
     <div class="grid grid-cols-1 space-y-2">

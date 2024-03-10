@@ -69,7 +69,7 @@
   <!-- refresher -->
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
-  </ion-refresher>  
+  </ion-refresher>
 
   <!-- skeleton -->
   <div class="space-y-2 border border-gray-200 rounded-lg p-3" *ngIf="!isLoaded">
@@ -80,8 +80,7 @@
     </div>
     <hr class="border-t-2 border-[#e7e7e7]">
     <div>
-      <p class="mx-1"><ion-skeleton-text [animated]="true"
-          style="width: 80%"></ion-skeleton-text></p>
+      <p class="mx-1"><ion-skeleton-text [animated]="true" style="width: 80%"></ion-skeleton-text></p>
       <p class="mx-1">
         <ion-skeleton-text [animated]="true" style="width: 50%"></ion-skeleton-text>
       </p>
@@ -90,10 +89,9 @@
     <div class="mt-4">
       <p class="ml-1"><ion-skeleton-text [animated]="true" style="width: 20%"></ion-skeleton-text>
       </p>
-      <p class="ml-1"><ion-skeleton-text [animated]="true"
-          style="width: 50%"></ion-skeleton-text></p>
+      <p class="ml-1"><ion-skeleton-text [animated]="true" style="width: 50%"></ion-skeleton-text></p>
     </div>
-  </div>  
+  </div>
 
   <div *ngIf="!isLoaded" class="rounded-xl" style="height: 200px;">
     <ion-skeleton-text [animated]="true" style="width: 100%; height: 100%;"></ion-skeleton-text>
@@ -131,7 +129,8 @@
   </div>
 
   <div *ngIf="isLoaded">
-    <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border" *ngFor="let gambar of gambar_letak_barang">
+    <div class="flex overflow-hidden text-gray-700 bg-white rounded-xl bg-clip-border"
+      *ngFor="let gambar of gambar_letak_barang">
       <img (click)="viewFull(true, gambar.url)" src="{{ gambar.url }}" class="object-cover w-full h-full" />
     </div>
   </div>
@@ -140,47 +139,55 @@
   <ion-modal *ngIf="isLoaded" #modal [enterAnimation]="enterAnimation" [leaveAnimation]="leaveAnimation"
     [isOpen]="isViewFull" (willDismiss)="viewFull(false, undefined)">
     <ng-template>
-      <ion-buttons (click)="modal.dismiss()" class="absolute top-2 left-2" slot="primary">
-        <ion-button>
-          <ion-icon name="close-outline" slot="icon-only" color="light"></ion-icon>
-        </ion-button>
-      </ion-buttons>
-      <div class="flex items-center justify-center h-screen bg-black">
-        <div class="flex items-center">
-          <img src="{{ urlFullImage }}" />
+      <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
+        <div>
+          <ion-buttons class="absolute top-4 left-4" slot="primary" (click)="modal.dismiss()">
+            <ion-button>
+              <ion-icon name="close-outline" slot="icon-only" class="text-white"></ion-icon>
+            </ion-button>
+          </ion-buttons>
+          <h5 class="text-xl font-bold text-white">Detail Letak Barang</h5>
         </div>
       </div>
+
+      <ion-content class="ion-padding">
+        <div class="overflow-hidden rounded-xl">
+          <img src="{{ urlFullImage }}" class="object-cover w-full h-full" />
+        </div>
+      </ion-content>
     </ng-template>
   </ion-modal>
 
   <!-- modal ganti lokasi -->
-  <ion-modal id="modal-pindahkan-barang" #modalPindahkan [isOpen]="isModalPindahkanOpen" (didPresent)="onDidModalPindahkanPresent()" (willDismiss)="onWillDismissModalPindahkan(false)">
+  <ion-modal id="modal-pindahkan-barang" #modalPindahkan [isOpen]="isModalPindahkanOpen"
+    (didPresent)="onDidModalPindahkanPresent()" (willDismiss)="onWillDismissModalPindahkan(false)">
     <ng-template>
       <div class="flex justify-center p-6 bg-[#30a2ff] rounded-br-[45%] rounded-bl-[45%]">
         <div>
           <h5 class="text-xl font-bold text-white">Pindahkan Lokasi Barang</h5>
-          <ion-buttons class="absolute top-4 right-4" slot="end"
-            (click)="modalPindahkan.dismiss()">
+          <ion-buttons class="absolute top-4 right-4" slot="end" (click)="modalPindahkan.dismiss()">
             <ion-button>
               <ion-icon name="close-outline" slot="icon-only" class="text-white"></ion-icon>
             </ion-button>
           </ion-buttons>
         </div>
       </div>
-  
+
       <ion-content class="ion-padding space-y-4">
         <form (ngSubmit)="ubahLokasi()" [formGroup]="formPindah">
-          <ion-item mode="md" fill="outline" >
-            <ion-label position="floating">Letak Barang</ion-label>      
+          <ion-item mode="md" fill="outline">
+            <ion-label position="floating">Letak Barang</ion-label>
             <ion-input #inputPindahLokasi type="text" maxLength="50" formControlName="lokasi_pindah_barang">
             </ion-input>
           </ion-item>
           <div *ngIf="lokasi_pindah_barang.errors" class="errors">
             <span *ngIf="lokasi_pindah_barang.errors?.required">Silahakan berikan informasi letak barang anda.</span>
-            <span *ngIf="lokasi_pindah_barang.errors?.maxLength">Informasi letak barang anda maksimal memiliki 50 karakter.</span>
+            <span *ngIf="lokasi_pindah_barang.errors?.maxLength">Informasi letak barang anda maksimal memiliki 50
+              karakter.</span>
           </div>
           <div class="text-right mt-2">
-            <ion-button class="transform-none capitalize" color="primary" mode="md" type="submit" [disabled]="!formPindah.valid">
+            <ion-button class="transform-none capitalize" color="primary" mode="md" type="submit"
+              [disabled]="!formPindah.valid">
               <span class="text-white">Save</span>
             </ion-button>
           </div>
