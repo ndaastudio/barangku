@@ -6,6 +6,7 @@ import { AnimationController } from '@ionic/angular';
 import { Router } from '@angular/router';
 import { DataRefreshService } from 'src/app/services/Database/data-refresh.service';
 import { LetakService as SQLiteLetakBarang } from 'src/app/services/Database/SQLite/letak.service';
+import * as e from 'express';
 // import { Capacitor } from '@capacitor/core';
 
 @Component({
@@ -72,7 +73,11 @@ export class IndexPage implements OnInit {
   }
 
   goToShowBarang(id: number) {
-    this.router.navigateByUrl(`/barang/show/${id}`);
+    if (this.segment == 'aksi') {
+      this.router.navigateByUrl(`/barang/show/${id}`);
+    } else {
+      this.router.navigateByUrl(`/letak/show/${id}`);
+    }
   }
 
   enterAnimation = (baseEl: HTMLElement) => {
